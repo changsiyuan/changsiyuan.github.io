@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JavaScript 原型和原型链的理解 | Eirc Chang&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="引言
+原型和原型链是js中比较重要但也是比较难的内容；
+正是因为有了原型链的概念，js中的继承才成为可能；
+本文结合js内置的数据类型，说说我对js原型和原型链的理解；
+
+Javascript和Java语言设计思想的区别
+java
+java是完全OOP的语言，对Java的认知是从类与对象开始的；
+class是一类具有共同特点的物体的抽象，object（对象）是某个class下具体的一个实现，Obj">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 原型和原型链的理解">
+<meta property="og:url" content="http://yoursite.com/2015/11/23/js-prototype/index.html">
+<meta property="og:site_name" content="Eirc Chang's Blog">
+<meta property="og:description" content="引言
+原型和原型链是js中比较重要但也是比较难的内容；
+正是因为有了原型链的概念，js中的继承才成为可能；
+本文结合js内置的数据类型，说说我对js原型和原型链的理解；
+
+Javascript和Java语言设计思想的区别
+java
+java是完全OOP的语言，对Java的认知是从类与对象开始的；
+class是一类具有共同特点的物体的抽象，object（对象）是某个class下具体的一个实现，Obj">
+<meta property="og:image" content="http://yoursite.com/images/prototype/java-js-diff.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/type1.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/type2.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/typeof.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/string.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/number.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/boolean.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/array.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/function.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/object.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/myobject.png">
+<meta property="og:image" content="http://yoursite.com/images/prototype/prototype.png">
+<meta property="og:updated_time" content="2015-12-06T08:04:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript 原型和原型链的理解">
+<meta name="twitter:description" content="引言
+原型和原型链是js中比较重要但也是比较难的内容；
+正是因为有了原型链的概念，js中的继承才成为可能；
+本文结合js内置的数据类型，说说我对js原型和原型链的理解；
+
+Javascript和Java语言设计思想的区别
+java
+java是完全OOP的语言，对Java的认知是从类与对象开始的；
+class是一类具有共同特点的物体的抽象，object（对象）是某个class下具体的一个实现，Obj">
+  
+    <link rel="alternative" href="/atom.xml" title="Eirc Chang&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/images/me.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/" style="font-family: Microsoft Yahei;">Eric Chang</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">归档</a></li>
+				        
+							<li><a href="/tags/feeling">感悟</a></li>
+				        
+							<li><a href="/tags/me">关于</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/changsiyuan" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/u/2803286360" title="weibo">weibo</a>
+					        
+								<a class="mail" target="_blank" href="mailto:changsiyuan2011@126.com" title="mail">mail</a>
+					        
+								<a class="linkedin" target="_blank" href="http://www.linkedin.com/profile/preview?locale=zh_CN&trk=prof-0-sb-preview-primary-button" title="linkedin">linkedin</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Algorithm/" style="font-size: 13.75px;">Algorithm</a> <a href="/tags/Angularjs/" style="font-size: 11.25px;">Angularjs</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 18.75px;">JavaScript</a> <a href="/tags/Latex/" style="font-size: 10px;">Latex</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Operating-System/" style="font-size: 10px;">Operating System</a> <a href="/tags/RESTful/" style="font-size: 10px;">RESTful</a> <a href="/tags/Web/" style="font-size: 17.5px;">Web</a> <a href="/tags/books/" style="font-size: 10px;">books</a> <a href="/tags/computer/" style="font-size: 11.25px;">computer</a> <a href="/tags/cooking/" style="font-size: 10px;">cooking</a> <a href="/tags/css/" style="font-size: 12.5px;">css</a> <a href="/tags/datebase/" style="font-size: 13.75px;">datebase</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/feeling/" style="font-size: 15px;">feeling</a> <a href="/tags/git/" style="font-size: 11.25px;">git</a> <a href="/tags/glassfish/" style="font-size: 10px;">glassfish</a> <a href="/tags/hadoop/" style="font-size: 16.25px;">hadoop</a> <a href="/tags/hardware/" style="font-size: 10px;">hardware</a> <a href="/tags/hdfs/" style="font-size: 10px;">hdfs</a> <a href="/tags/html/" style="font-size: 11.25px;">html</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/jQuery/" style="font-size: 12.5px;">jQuery</a> <a href="/tags/javaEE/" style="font-size: 10px;">javaEE</a> <a href="/tags/log/" style="font-size: 10px;">log</a> <a href="/tags/mail/" style="font-size: 10px;">mail</a> <a href="/tags/mapreduce/" style="font-size: 13.75px;">mapreduce</a> <a href="/tags/me/" style="font-size: 10px;">me</a> <a href="/tags/network/" style="font-size: 10px;">network</a> <a href="/tags/node-js/" style="font-size: 10px;">node.js</a> <a href="/tags/others/" style="font-size: 11.25px;">others</a> <a href="/tags/psychology/" style="font-size: 11.25px;">psychology</a> <a href="/tags/publicity/" style="font-size: 10px;">publicity</a> <a href="/tags/selenium/" style="font-size: 10px;">selenium</a> <a href="/tags/translation/" style="font-size: 11.25px;">translation</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.ruanyifeng.com/home.html">阮一峰</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://es6.ruanyifeng.com/#README">ES6</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript">MDN-JavaScript</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.uisdc.com/">优设网</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我叫常思源，毕业于北京邮电大学。专注前端开发事业。虽然在很多方面仍是小白，但我会不断努力哒~</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Eric Chang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/images/me.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Eric Chang</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">归档</a></li>
+		        
+					<li><a href="/tags/feeling">感悟</a></li>
+		        
+					<li><a href="/tags/me">关于</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/changsiyuan" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/u/2803286360" title="weibo">weibo</a>
+			        
+						<a class="mail" target="_blank" href="mailto:changsiyuan2011@126.com" title="mail">mail</a>
+			        
+						<a class="linkedin" target="_blank" href="http://www.linkedin.com/profile/preview?locale=zh_CN&trk=prof-0-sb-preview-primary-button" title="linkedin">linkedin</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-js-prototype" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/23/js-prototype/" class="article-date">
+  	<time datetime="2015-11-22T16:00:00.000Z" itemprop="datePublished">2015-11-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JavaScript 原型和原型链的理解
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Web/">Web</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="引言">引言</h3><ul>
+<li>原型和原型链是js中比较重要但也是比较难的内容；</li>
+<li>正是因为有了原型链的概念，js中的继承才成为可能；</li>
+<li>本文结合js内置的数据类型，说说我对js原型和原型链的理解；</li>
+</ul>
+<h3 id="Javascript和Java语言设计思想的区别">Javascript和Java语言设计思想的区别</h3><ul>
+<li>java<ul>
+<li>java是完全OOP的语言，对Java的认知是从类与对象开始的；</li>
+<li>class是一类具有共同特点的物体的抽象，object（对象）是某个class下具体的一个实现，Object类是所有类的顶层父类；</li>
+</ul>
+</li>
+<li>js<ul>
+<li>javascript是基于原型（而不是基于类的，尽管ES6新增了class关键字）的面向对象的语言，没有类的概念（ES6新增的类是语法糖）；</li>
+<li>javascript中的class本质上是一个函数对象，和java中的类的概念有本质区别；</li>
+<li>javascript存在类似面相对象的特性，这就是原型和原型链，从而派生出了类似于父类子类和继承的概念；</li>
+</ul>
+</li>
+<li>本图来自<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Details_of_the_Object_Model" target="_blank" rel="external">这里</a></li>
+</ul>
+<p><img src="/images/prototype/java-js-diff.png" alt="java-js-diff"></p>
+<h3 id="对象和数据类型">对象和数据类型</h3><ul>
+<li>js中的数据类型:<ul>
+<li>数据类型：string、number、boolean、object（数组、对象、null）、undefined、function；</li>
+<li>数组、对象、null是不精确的数据类型，在用typeof判断时均返回object；</li>
+<li>typeof关键字只能返回非精确的数据类型；</li>
+<li>用Object.prototype.toString判断精确的数据类型；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/prototype/type1.png" alt="type1"></p>
+<p><img src="/images/prototype/type2.png" alt="type2"></p>
+<ul>
+<li>首字母大小写的区别：<ul>
+<li>小写（string、number、boolean、object、null、undefined、function）表示数据类型；</li>
+<li>大写（String、Number、Boolean、Object、Array）表示js的内置对象（全部是function类型）；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/prototype/typeof.png" alt="typeof"></p>
+<ul>
+<li>js中对象的含义：<ul>
+<li>广义的对象（js一切皆为对象、包括window和document对象、也包括String、Number、Boolean、Object、Array、Math、Date等内置对象）；</li>
+<li>狭义的数据类型（数组、对象、null类型均为object，即被typeof关键字判断为object类型）;</li>
+<li>“对象”这种数据类型（请参考我的<a href="http://changsiyuan.github.io/2015/11/20/js-object/" target="_blank" rel="external">另一篇博客</a>）；</li>
+</ul>
+</li>
+</ul>
+<h3 id="原型链概述">原型链概述</h3><ul>
+<li>JavaScript中的每个对象都有一个内部的链接指向另一个对象，这个对象就是原对象的原型，这个原型对象也有自己的原型，直到对象的原型为 null 为止（也就是没有原型）；</li>
+<li>这种一级一级的链结构就称为原型链（prototype chain）；</li>
+<li>每个对象都有一个隐形的属性<strong>proto</strong>（两边都是双下划线），这个属性的值为一个地址，指向这个属性的原型对象，原型对象是每个对象都有指向的隐形对象；</li>
+<li>new出来的普通对象没有构造器，就没有prototype属性；</li>
+<li><strong>proto</strong>属性也可用someObject.[[Prototype]] 表示；</li>
+<li>如果一个对象是object类型，它的<strong>proto</strong>属性总是指向Object.prototype； </li>
+<li>如果一个对象是function类型，它的<strong>proto</strong>属性总是指向Function.prototype；</li>
+<li>继承属性：JavaScritp引擎在访问对象的属性时，如果在对象本身中没有找到，则会去原型链中查找，如果找到，直接返回值，如果整个链都遍历且没有找到属性，则返回undefined； </li>
+</ul>
+<h3 id="各种对象原型链的图示">各种对象原型链的图示</h3><ul>
+<li>String对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/string.png" alt="string"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> s = <span class="string">"sss"</span>;</span><br><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">String</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s); <span class="comment">//string</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.prototype.constructor); <span class="comment">// function String()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(s1);  <span class="comment">//String &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(s1.__proto__);  <span class="comment">//String &#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(s);  <span class="comment">//sss</span></span><br><span class="line"><span class="built_in">console</span>.log(s.__proto__);  <span class="comment">//String &#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Number对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/number.png" alt="number"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> n = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> n1 = <span class="keyword">new</span> <span class="built_in">Number</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n); <span class="comment">//number</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.prototype.constructor); <span class="comment">// function Number()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(n1);  <span class="comment">//Number &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(n1.__proto__);  <span class="comment">//Number &#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(n);  <span class="comment">//1</span></span><br><span class="line"><span class="built_in">console</span>.log(n.__proto__);  <span class="comment">//Number &#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Boolean对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/boolean.png" alt="boolean"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> b = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> b1 = <span class="keyword">new</span> <span class="built_in">Boolean</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b); <span class="comment">//boolean</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.prototype.constructor); <span class="comment">// function Boolean()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(b1);  <span class="comment">//Boolean &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b1.__proto__);  <span class="comment">//Boolean &#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(b.__proto__);  <span class="comment">//Boolean &#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Array对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/array.png" alt="array"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> a =[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> <span class="built_in">Array</span>(); </span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.prototype.constructor); <span class="comment">// function Array()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(a1);  <span class="comment">//[]</span></span><br><span class="line"><span class="built_in">console</span>.log(a1.__proto__);  <span class="comment">//包含Array的各种方法</span></span><br><span class="line"><span class="built_in">console</span>.log(a);  <span class="comment">//[1,2,3]</span></span><br><span class="line"><span class="built_in">console</span>.log(a.__proto__);  <span class="comment">//包含Array的各种方法</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Function对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/function.png" alt="function"></p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   var f = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">var f1 = new <span class="function"><span class="keyword">Function</span><span class="params">()</span></span>; </span><br><span class="line"></span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span></span>);  //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>);  //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.constructor);  //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.__proto__);  //object</span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span>.<span class="title">__proto__</span></span>);  //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof f1); //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof f); //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof f1.__proto__); //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof f.__proto__); //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.constructor); // <span class="function"><span class="keyword">function</span></span> <span class="function"><span class="keyword">Function</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.__proto__);  //Object &#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">__proto__</span></span>);  //<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">__proto__</span></span> == <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>);  //true</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.constructor.__proto__ == <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>);  //true</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.__proto__ == Object.prototype);  //true</span><br><span class="line">console.<span class="built_in">log</span>(f1);  //<span class="function"><span class="keyword">function</span></span> anonymous()&#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(f1.__proto__);  //<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(f);  //<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(f.__proto__);  //<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Object对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/object.png" alt="object"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> o1 = <span class="keyword">new</span> <span class="built_in">Object</span>(); </span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> o1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> o); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> o1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> o.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.constructor); <span class="comment">// function Object()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.__proto__);  <span class="comment">//null</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.__proto__ == <span class="literal">null</span>);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(o1);  <span class="comment">//Object&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o1.__proto__);  <span class="comment">//Object&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o);  <span class="comment">//Object&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o.__proto__);  <span class="comment">//Object&#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>自定义对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/myobject.png" alt="myobject"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name;</span><br><span class="line">	<span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">"Jack"</span>,<span class="number">22</span>);</span><br><span class="line"><span class="keyword">var</span> p = &#123;<span class="string">"Jack"</span>:<span class="number">22</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> p1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> p); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> p1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> p.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.constructor); <span class="comment">// function Person()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(p1);  <span class="comment">//Person &#123;name: "Jack", age: 22&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(p1.__proto__);  <span class="comment">//Person&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(p);  <span class="comment">//Object &#123;Jack: 22&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(p.__proto__);  <span class="comment">//Object&#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>最后附上一张知乎上面大神画的图，清楚地表示了Object和Function的继承关系</li>
+</ul>
+<p><img src="/images/prototype/prototype.png" alt="prototype"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/11/24/glassfish-error/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          glassfish 数据库连接报错的解决
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/11/20/js-object/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JavaScript 对象详解</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+  
+  <script>
+  (function() {
+    var cx = '017806109166577290598:caowtb3biqa';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:search></gcse:search>
+
+
+	<! -- ���Ӿ���ͼ�� -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="Pay for this article"></a>
+        <span class="donate_txt">
+           &uarr;<br>
+		   欣赏此文？求鼓励，求支持！
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<!-- ֧��������ͼ�� -->
+		<img src="/img/alipay-siyuan.png" alt="alipay"> 
+		<!-- ΢�Ŵ���ͼ�� -->
+		<!-- <img src="/img/weixin.jpg" alt="΢�Ŵ���"> -->  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- ���Ӿ���ͼ�� -->
+
+
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="js-prototype" data-title="JavaScript 原型和原型链的理解" data-url="http://yoursite.com/2015/11/23/js-prototype/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Eric Chang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+	
+	<a rel="license" href="http://creativecommons.org/licenses/by/3.0/cn/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by/3.0/cn/88x31.png" /></a><br />本作品采用<a rel="license" href="http://creativecommons.org/licenses/by/3.0/cn/">知识共享署名 3.0 中国大陆许可协议</a>进行许可。
+	
+	<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v1/st.js','_st');
+
+  _st('install','1BK1VZMDEA-ktxiBz_9B');
+</script>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1258423514'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1258423514%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+          
+	
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
