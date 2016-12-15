@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Eirc Chang&#39;s Blog</title>
+  <title>Eric Chang&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="~爱前端，爱生活~">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Eirc Chang's Blog">
+<meta property="og:title" content="Eric Chang's Blog">
 <meta property="og:url" content="http://yoursite.com/page/9/index.html">
-<meta property="og:site_name" content="Eirc Chang's Blog">
+<meta property="og:site_name" content="Eric Chang's Blog">
 <meta property="og:description" content="~爱前端，爱生活~">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Eirc Chang's Blog">
+<meta name="twitter:title" content="Eric Chang's Blog">
 <meta name="twitter:description" content="~爱前端，爱生活~">
   
-    <link rel="alternative" href="/atom.xml" title="Eirc Chang&#39;s Blog" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Eric Chang&#39;s Blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -516,13 +516,15 @@
 </ul>
 </blockquote>
 <hr>
-<h3 id="能力描述">能力描述</h3><ul>
-<li>熟悉HTML、CSS、JavaScript，熟悉MVC设计思想，了解Node.js、PHP.</li>
-<li>能开发符合W3C标准的页面，熟悉Angularjs、jQuery、Bootstrap，了解RequireJS，React.</li>
-<li>熟悉RESTful设计风格，熟练使用Java，熟悉PostgreSQL数据库设计.</li>
-<li>熟悉MapReduce原理与设计模式，了解Hadoop大数据处理架构、HDFS、HBase.</li>
-<li>有Git项目管理经验，熟练使用Markdown编写文档.</li>
-<li>具有良好的英语读写能力，翻译过多篇技术文档.</li>
+<h3 id="个人简介">个人简介</h3><ul>
+<li>我是一个认真负责、善于合作的人；我喜欢钻研自己所碰到的各类技术问题；我有时间概念，能在约定时间内保证完成任务。</li>
+<li>熟悉HTML、CSS、JavaScript，熟悉MVC设计思想，了解Node.js、PHP。</li>
+<li>能开发符合W3C标准的页面，熟悉Angularjs、jQuery、Bootstrap，了解RequireJS，React。</li>
+<li>熟悉RESTful设计风格，熟练使用Java、C#，熟悉PostgreSQL数据库设计。</li>
+<li>熟悉MicroSoft Azure、Microsoft Service Fabric、Event Tracing for Windows(ETW)、Circuit Breaker。</li>
+<li>熟悉MapReduce原理与设计模式，了解Hadoop大数据处理架构、HDFS、HBase。</li>
+<li>有Git和TFS项目管理经验，熟练使用Markdown编写文档。</li>
+<li>具有良好的英语读写能力，外企实习经历，在校积极和外教探讨学术问题，翻译过多篇技术文档。</li>
 </ul>
 <hr>
 <h3 id="项目描述">项目描述</h3><table>
@@ -570,7 +572,7 @@
 <td>2014.9-2017.3</td>
 <td>北京邮电大学/信息与通信工程专业</td>
 <td>前5%</td>
-<td>2014.09-至今：维护北邮数据科学中心微信公众号；<br>2016.03：以学生一作身份发表EI检索论文一篇(ICCSN 2016)；<br>2015.12：北京邮电大学研究生学业奖学金；</td>
+<td>2014.09-至今：维护北邮数据科学中心微信公众号；<br>2016.03：以学生一作身份发表EI检索论文一篇(IHMSC 2016)、获得发明专利两项；<br>2015.12：北京邮电大学研究生学业奖学金；</td>
 </tr>
 <tr>
 <td>2010.9-2014.6</td>
@@ -590,6 +592,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>2016.07-2016.10</td>
+<td>斯伦贝谢（北京地球科学中心）</td>
+<td><strong><em>工业油井实时数据传输系统日志记录模块</em></strong><br>- 使用ETW（Event Tracing for Windows）为部署在Microsoft Azure上的各种微服务（Azure Service Fabric）提供日志记录服务；<br>- 日志包括面相服务状态的日志、面向数据传输状态的日志、面向权限的日志等；<br>- 日志分为verbose、information、warning、error四个级别；<br>-日志全面记录各个Service之间以及Service和RabbitMQ、Service和微软物联网平台IoTHub之间的交互细节，并且可以通过kibana查看特定时间段、特定环境、特定服务的日志信息，为油井实时数据传输系统状态监控提供支持。<br><br><strong><em>工业油井实时数据传输系统熔断机制的设计和实现</em></strong><br>- 根据Microsoft circuit breaker机制编写c#代码；<br>- 创建包含circuit breaker机制的公司级library，其它项目可直接导入并引用；<br>- 在有数据交互的Service之间，或是Service和RabbitMQ、Service和MongoDB之间等有数据交互的场景下，设定熔断机制，即根据数据交互状态、抛出异常的种类和数量，使得双向数据连接状态在close、open、half open三种状态间转换，保证在网络中断或服务不可用时及时断开连接或将当前请求引导至其它备用服务上；<br>- 防止无限retry的情况发生、最大限度减少RabbitMQ队列中的数据积压，保证整个油井数据传输系统的可靠和稳定；<br>- 用c＃编写测试代码，保证特定事件能够准确触发circuit breaker状态转换。</td>
+</tr>
 <tr>
 <td>2013.07</td>
 <td>洛阳巨龙通信设备集团有限公司，质检部-质量检验员</td>
