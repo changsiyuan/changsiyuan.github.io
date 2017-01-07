@@ -507,11 +507,12 @@
         <h2 id="认真_负责_细致_深入"><strong>认真 负责 细致 深入</strong></h2><h3 id="基本信息">基本信息</h3><blockquote>
 <ul>
 <li>姓名：常思源</li>
+<li>性别：男</li>
 <li>家乡：河南-洛阳</li>
-<li>blog：<a href="http://changsiyuan.github.io/" target="_blank" rel="external">http://changsiyuan.github.io/</a></li>
+<li>个人博客：<a href="http://changsiyuan.github.io/" target="_blank" rel="external">http://changsiyuan.github.io/</a></li>
 <li>个人主页：<a href="http://www.yinshuisiyuan.net/" target="_blank" rel="external">http://www.yinshuisiyuan.net/</a></li>
+<li>Github：<a href="https://github.com/changsiyuan" target="_blank" rel="external">https://github.com/changsiyuan</a></li>
 <li>Email：changsiyuan2011@126.com</li>
-<li>github：<a href="https://github.com/changsiyuan" target="_blank" rel="external">https://github.com/changsiyuan</a></li>
 <li>爱好：读书、游泳、厨艺、心理学；</li>
 </ul>
 </blockquote>
@@ -572,13 +573,13 @@
 <td>2014.9-2017.3</td>
 <td>北京邮电大学/信息与通信工程专业</td>
 <td>前5%</td>
-<td>2014.09-至今：维护北邮数据科学中心微信公众号；<br>2016.03：以学生一作身份发表EI检索论文一篇(IHMSC 2016)、获得发明专利两项；<br>2015.12：北京邮电大学研究生学业奖学金；</td>
+<td>2014.09-2016.12：担任北邮数据科学中心微信公众号责任编辑；<br>2016.11：以学生一作身份获得发明专利两项：<br>&nbsp;&nbsp;&nbsp;- Method for implementing metadata management in massive network data environment.<br>&nbsp;&nbsp;&nbsp;- Method for storing and updating corresponding relation between IP and domain name.<br>2016.03：以学生一作身份发表EI检索论文一篇：《A Parallel Space Saving Algorithm and Performance Test》(IHMSC 2016)；<br>2015.12：北京邮电大学一等学业奖学金；<br>2015.06：北京邮电大学厨艺大赛一等奖；</td>
 </tr>
 <tr>
 <td>2010.9-2014.6</td>
 <td>郑州大学/电子信息工程专业</td>
 <td>2/150</td>
-<td>2013.12：国家奖学金；<br>2013.11：河南省三好学生；<br>2013.02：“清华大学-洛阳市省级示范高中联合创新学习计划”优秀答辩评委；<br>2012.12：郑州大学三好学生；<br>2012.12：郑州大学一等奖学金；<br>2011.12：郑州大学三好学生；<br>2011.10：国家励志奖学金；<br>2011.03：中国郑开国际马拉松赛郑州大学志愿者组组长、优秀志愿者；<br>证书：CET-6(492)，TOEFL(81)，计算机二级三级</td>
+<td>2013.12：国家奖学金；<br>2013.11：河南省三好学生；<br>2013.02：“清华大学-洛阳市省级示范高中联合创新学习计划”优秀答辩评委；<br>2012.12：郑州大学三好学生；<br>2012.12：郑州大学一等奖学金；<br>2011.12：郑州大学三好学生；<br>2011.10：国家励志奖学金；<br>2011.03：中国郑开国际马拉松赛郑州大学志愿者组组长、优秀志愿者；<br>证书：CET-6(492)，TOEFL(81)，计算机三级，全国信息技术应用培训教育工程工程师证书，驾驶证；</td>
 </tr>
 </tbody>
 </table>
@@ -595,7 +596,7 @@
 <tr>
 <td>2016.07-2016.10</td>
 <td>斯伦贝谢（北京地球科学中心）</td>
-<td><strong><em>工业油井实时数据传输系统日志记录模块</em></strong><br>- 使用ETW（Event Tracing for Windows）为部署在Microsoft Azure上的各种微服务（Azure Service Fabric）提供日志记录服务；<br>- 日志包括面相服务状态的日志、面向数据传输状态的日志、面向权限的日志等；<br>- 日志分为verbose、information、warning、error四个级别；<br>-日志全面记录各个Service之间以及Service和RabbitMQ、Service和微软物联网平台IoTHub之间的交互细节，并且可以通过kibana查看特定时间段、特定环境、特定服务的日志信息，为油井实时数据传输系统状态监控提供支持。<br><br><strong><em>工业油井实时数据传输系统熔断机制的设计和实现</em></strong><br>- 根据Microsoft circuit breaker机制编写c#代码；<br>- 创建包含circuit breaker机制的公司级library，其它项目可直接导入并引用；<br>- 在有数据交互的Service之间，或是Service和RabbitMQ、Service和MongoDB之间等有数据交互的场景下，设定熔断机制，即根据数据交互状态、抛出异常的种类和数量，使得双向数据连接状态在close、open、half open三种状态间转换，保证在网络中断或服务不可用时及时断开连接或将当前请求引导至其它备用服务上；<br>- 防止无限retry的情况发生、最大限度减少RabbitMQ队列中的数据积压，保证整个油井数据传输系统的可靠和稳定；<br>- 用c＃编写测试代码，保证特定事件能够准确触发circuit breaker状态转换。</td>
+<td><strong><em>工业油井实时数据传输系统日志记录模块</em></strong><br>- 使用ETW（Event Tracing for Windows）为部署在Microsoft Azure上的各种微服务（Azure Service Fabric）提供日志记录服务；<br>- 日志包括面相服务状态的日志、面向数据传输状态的日志、面向权限的日志等；<br>- 日志分为verbose、information、warning、error四个级别；<br>-日志全面记录各个Service之间以及Service和RabbitMQ、Service和微软物联网平台IoTHub之间的交互细节，并且可以通过kibana查看特定时间段、特定环境、特定服务的日志信息，为油井实时数据传输系统状态监控提供支持。<br><br><strong><em>工业油井实时数据传输系统熔断机制的设计和实现</em></strong><br>- 根据Microsoft circuit breaker机制编写c#代码；<br>- 创建包含circuit breaker机制的公司级library，其它项目可直接导入并引用；<br>- 在有数据交互的Service之间，或是Service和RabbitMQ、Service和MongoDB之间等有数据交互的场景下，设定熔断机制，即根据数据交互状态、抛出异常的种类和数量，使得双向数据连接状态在close、open、half open三种状态间转换，保证在网络中断或服务不可用时及时断开连接或将当前请求引导至其它备用服务上；<br>- 防止无限retry的情况发生、最大限度减少RabbitMQ队列中的数据积压，保证整个油井数据传输系统的可靠和稳定；<br>- 用c＃编写测试代码，保证特定事件能够准确触发circuit breaker状态转换。<br><br><strong><em>工业油井Witsml数据认证机制的设计与实现</em></strong><br>- 独立编写c#代码并完成公司级的Library的创建和部署，实现工业油井Witsml数据的认证；<br>- 用于认证的Witsml文件放置在Azure File Storage上，可供用户按需或定时下载；<br>- 编写全部单元测试和集成测试代码。</td>
 </tr>
 <tr>
 <td>2013.07</td>
@@ -623,6 +624,8 @@
 </tr>
 </tbody>
 </table>
+<hr>
+<h3 id="您可以用手机扫描二维码以进一步了解我或下载我的简历">您可以用手机扫描二维码以进一步了解我或下载我的简历</h3><p><img src="/images/me-qr-code.png" alt="我的二维码"></p>
 
       
     </div>
@@ -677,7 +680,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2016 Eric Chang
+    		&copy; 2017 Eric Chang
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
