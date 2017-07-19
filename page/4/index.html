@@ -898,250 +898,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/05/2015-12-5-css-position/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/05/2015-12-5-css-position/" itemprop="url">
-                  css元素位置相关属性解析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-05T00:00:00+08:00">
-                2015-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/05/2015-12-5-css-position/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/05/2015-12-5-css-position/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="元素浮动">元素浮动</h3><ul>
-<li>clear属性<ul>
-<li>语法：clear : none|left|right|both</li>
-<li>none : 允许两边都可以有浮动对象</li>
-<li>both : 不允许有浮动对象</li>
-<li>left : 不允许左边有浮动对象</li>
-<li>right : 不允许右边有浮动对象 </li>
-</ul>
-</li>
-<li>float属性<ul>
-<li>语法：float : none|left|right </li>
-<li>none : 对象不浮动</li>
-<li>left : 对象浮在左边</li>
-<li>right : 对象浮在右边</li>
-</ul>
-</li>
-<li>使用场景<ul>
-<li>float和clear属性一般配合使用；</li>
-<li>在需要文字环绕图片、段首大号文字环绕效果等情况下可使用float，请看下面的代码；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;style type=<span class="string">"text/css"</span>&gt;</span><br><span class="line">span</span><br><span class="line">&#123;</span><br><span class="line">	float:left;</span><br><span class="line">	width:<span class="number">0.7</span>em;</span><br><span class="line">	font-size:<span class="number">400</span>%;</span><br><span class="line">	font-family:algerian,courier;</span><br><span class="line">	line-height:<span class="number">80</span>%;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;span&gt;T&lt;/span&gt;his <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="/images/css-position/css-position1.png" alt="css-position1"></p>
-<ul>
-<li>float也可用于实现两栏布局（这种样式在bootstrap中很容易实现）</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.main</span><span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">float</span>:<span class="value"> left</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">600px</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="class">.sidebar</span><span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">float</span>:<span class="value"> right</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">300px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">margin-top</span>:<span class="value"> <span class="number">1.875em</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<p><img src="/images/css-position/css-position2.png" alt="css-position2"></p>
-<h3 id="元素定位（position属性）">元素定位（position属性）</h3><ul>
-<li>position属性的值：<ul>
-<li>absolute：生成绝对定位的元素，相对于static定位以外的第一个父元素进行定位；</li>
-<li>fixed：生成绝对定位的元素，相对于浏览器窗口进行定位；</li>
-<li>relative：生成相对定位的元素，相对于其正常位置进行定位；</li>
-<li>static：默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）；</li>
-<li>inherit：规定应该从父元素继承position属性的值；</li>
-</ul>
-</li>
-<li>position属性深入理解：<ul>
-<li>relative是相对于元素本来应该在的位置进行定位，元素本来的位置会留出空白（保留元素本来位置）；</li>
-<li>absolute是相对于页面进行绝对位置定位，元素本来的位置不会留出空白（不保留元素本来的位置），直接让元素浮于整个页面，相对于整个页面进行定位，如果要设定元素之间的重叠关系可使用z-index属性；</li>
-<li>z-index属性一般结合position:absolute一起使用；</li>
-<li>z-index的默认值为0，z-index值越大，这个元素就越在顶层显示，通过设置各个元素的z-index值，控制他们的页面层叠关系；</li>
-<li>如两个绝对定位对象的此属性具有同样的值，那么将依据它们在HTML文档中声明的顺序层叠；</li>
-</ul>
-</li>
-</ul>
-<h3 id="元素居中显示的几种方法">元素居中显示的几种方法</h3><ul>
-<li>使用margin属性（首选方法）：<ul>
-<li>将元素的margin-left和margin-right属性设置为auto即可，必须为该容器指定宽度；</li>
-<li>本方法只适用于&gt;=IE6.0浏览器；</li>
-</ul>
-</li>
-<li>示例：</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"margin-left:auto; margin-right:auto; width:200px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span>&gt;</span>按钮<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"margin:0 auto; width:200px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span>&gt;</span>按钮<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>使用text-align属性</p>
-<ul>
-<li>使用方法：<code>style=&quot;text-align: left | center | right&quot;</code></li>
-<li>这个属性一般用于文字，但也可以用于其他控件或元素；</li>
-<li>用于非文字的控件或元素时，这个控件以及他所有的孩子全部居中，这是不太好的一点；</li>
-</ul>
-</li>
-<li><p>利用负外边距</p>
-<ul>
-<li>首先创建一个包含居中元素的容器，然后将其绝对定位于相对页面左边边缘50%的位置；</li>
-<li>这样，该容器的左外边距将从页面50%宽度的位置开始算起；</li>
-<li>然后，将容器的左外边距值设置为负的容器宽度的一半，这样即可将该容器固定在页面水平方向的中点；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="id">#container</span><span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">50%</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">760px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">margin-left</span>:<span class="value"> -<span class="number">380px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<h3 id="元素显示">元素显示</h3><ul>
-<li>display属性：</li>
-</ul>
-<p><img src="/images/css-position/css-position3.png" alt="css-position3"></p>
-<ul>
-<li>visibility属性：</li>
-</ul>
-<p><img src="/images/css-position/css-position4.png" alt="css-position4"></p>
-<ul>
-<li><p>区别：</p>
-<ul>
-<li>display:none：元素不可见也不占用空间；</li>
-<li>visibility:hidden：元素不可见，但是占用空间，仍然会对页面布局产生影响；</li>
-</ul>
-</li>
-<li><p>使元素不可见还可以用opacity属性设置元素完全透明，即<code>opacity: 0;</code>，效果和<code>visibility:hidden；</code>完全相同；</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/05/2015-12-5-year-books/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1373,6 +1129,250 @@
 </li>
 </ul>
 <p><img src="/images/2015books/book13.jpg" alt="book13"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/05/2015-12-5-css-position/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/05/2015-12-5-css-position/" itemprop="url">
+                  css元素位置相关属性解析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-05T00:00:00+08:00">
+                2015-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/05/2015-12-5-css-position/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/05/2015-12-5-css-position/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="元素浮动">元素浮动</h3><ul>
+<li>clear属性<ul>
+<li>语法：clear : none|left|right|both</li>
+<li>none : 允许两边都可以有浮动对象</li>
+<li>both : 不允许有浮动对象</li>
+<li>left : 不允许左边有浮动对象</li>
+<li>right : 不允许右边有浮动对象 </li>
+</ul>
+</li>
+<li>float属性<ul>
+<li>语法：float : none|left|right </li>
+<li>none : 对象不浮动</li>
+<li>left : 对象浮在左边</li>
+<li>right : 对象浮在右边</li>
+</ul>
+</li>
+<li>使用场景<ul>
+<li>float和clear属性一般配合使用；</li>
+<li>在需要文字环绕图片、段首大号文字环绕效果等情况下可使用float，请看下面的代码；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;style type=<span class="string">"text/css"</span>&gt;</span><br><span class="line">span</span><br><span class="line">&#123;</span><br><span class="line">	float:left;</span><br><span class="line">	width:<span class="number">0.7</span>em;</span><br><span class="line">	font-size:<span class="number">400</span>%;</span><br><span class="line">	font-family:algerian,courier;</span><br><span class="line">	line-height:<span class="number">80</span>%;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;span&gt;T&lt;/span&gt;his <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/css-position/css-position1.png" alt="css-position1"></p>
+<ul>
+<li>float也可用于实现两栏布局（这种样式在bootstrap中很容易实现）</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.main</span><span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">float</span>:<span class="value"> left</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">600px</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="class">.sidebar</span><span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">float</span>:<span class="value"> right</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">300px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">margin-top</span>:<span class="value"> <span class="number">1.875em</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/css-position/css-position2.png" alt="css-position2"></p>
+<h3 id="元素定位（position属性）">元素定位（position属性）</h3><ul>
+<li>position属性的值：<ul>
+<li>absolute：生成绝对定位的元素，相对于static定位以外的第一个父元素进行定位；</li>
+<li>fixed：生成绝对定位的元素，相对于浏览器窗口进行定位；</li>
+<li>relative：生成相对定位的元素，相对于其正常位置进行定位；</li>
+<li>static：默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）；</li>
+<li>inherit：规定应该从父元素继承position属性的值；</li>
+</ul>
+</li>
+<li>position属性深入理解：<ul>
+<li>relative是相对于元素本来应该在的位置进行定位，元素本来的位置会留出空白（保留元素本来位置）；</li>
+<li>absolute是相对于页面进行绝对位置定位，元素本来的位置不会留出空白（不保留元素本来的位置），直接让元素浮于整个页面，相对于整个页面进行定位，如果要设定元素之间的重叠关系可使用z-index属性；</li>
+<li>z-index属性一般结合position:absolute一起使用；</li>
+<li>z-index的默认值为0，z-index值越大，这个元素就越在顶层显示，通过设置各个元素的z-index值，控制他们的页面层叠关系；</li>
+<li>如两个绝对定位对象的此属性具有同样的值，那么将依据它们在HTML文档中声明的顺序层叠；</li>
+</ul>
+</li>
+</ul>
+<h3 id="元素居中显示的几种方法">元素居中显示的几种方法</h3><ul>
+<li>使用margin属性（首选方法）：<ul>
+<li>将元素的margin-left和margin-right属性设置为auto即可，必须为该容器指定宽度；</li>
+<li>本方法只适用于&gt;=IE6.0浏览器；</li>
+</ul>
+</li>
+<li>示例：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"margin-left:auto; margin-right:auto; width:200px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span>&gt;</span>按钮<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"margin:0 auto; width:200px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span>&gt;</span>按钮<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>使用text-align属性</p>
+<ul>
+<li>使用方法：<code>style=&quot;text-align: left | center | right&quot;</code></li>
+<li>这个属性一般用于文字，但也可以用于其他控件或元素；</li>
+<li>用于非文字的控件或元素时，这个控件以及他所有的孩子全部居中，这是不太好的一点；</li>
+</ul>
+</li>
+<li><p>利用负外边距</p>
+<ul>
+<li>首先创建一个包含居中元素的容器，然后将其绝对定位于相对页面左边边缘50%的位置；</li>
+<li>这样，该容器的左外边距将从页面50%宽度的位置开始算起；</li>
+<li>然后，将容器的左外边距值设置为负的容器宽度的一半，这样即可将该容器固定在页面水平方向的中点；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="id">#container</span><span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">50%</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">760px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">margin-left</span>:<span class="value"> -<span class="number">380px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="元素显示">元素显示</h3><ul>
+<li>display属性：</li>
+</ul>
+<p><img src="/images/css-position/css-position3.png" alt="css-position3"></p>
+<ul>
+<li>visibility属性：</li>
+</ul>
+<p><img src="/images/css-position/css-position4.png" alt="css-position4"></p>
+<ul>
+<li><p>区别：</p>
+<ul>
+<li>display:none：元素不可见也不占用空间；</li>
+<li>visibility:hidden：元素不可见，但是占用空间，仍然会对页面布局产生影响；</li>
+</ul>
+</li>
+<li><p>使元素不可见还可以用opacity属性设置元素完全透明，即<code>opacity: 0;</code>，效果和<code>visibility:hidden；</code>完全相同；</p>
+</li>
+</ul>
 
           
         
