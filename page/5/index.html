@@ -320,6 +320,283 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/20/js-object/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/20/js-object/" itemprop="url">
+                  JavaScript 对象详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-20T00:00:00+08:00">
+                2015-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/11/20/js-object/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/20/js-object/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="创建对象">创建对象</h3><ul>
+<li>使用对象初始化器来创建对象</li>
+</ul>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;key<span class="number">_1</span>:<span class="keyword">value</span><span class="number">_1</span>,</span><br><span class="line">           key<span class="number">_2</span>:<span class="keyword">value</span><span class="number">_2</span>,...&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var myObj = &#123;<span class="string">color:</span> red, <span class="string">wheels:</span><span class="number">4</span>, <span class="string">engine:</span>&#123;<span class="string">cylinders:</span> <span class="number">4</span>, <span class="string">size:</span> <span class="number">2.2</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用Object.create()方法创建对象<ul>
+<li>语法是(属性描述符会在下面讲解)：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object.<span class="function"><span class="title">create</span><span class="params">(proto, [ propertiesObject ])</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">o = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.prototype, &#123;</span><br><span class="line">  <span class="comment">// foo会成为所创建对象的数据属性</span></span><br><span class="line">  foo: &#123; writable:<span class="literal">true</span>, configurable:<span class="literal">true</span>, value: <span class="string">"hello"</span> &#125;,</span><br><span class="line">  <span class="comment">// bar会成为所创建对象的访问器属性</span></span><br><span class="line">  bar: &#123;</span><br><span class="line">    configurable: <span class="literal">false</span>,</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="number">10</span> &#125;,</span><br><span class="line">    set: <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123; <span class="built_in">console</span>.log(<span class="string">"Setting `o.bar` to"</span>, value) &#125;</span><br><span class="line">&#125;&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>混合构造函数和原型方式创建对象</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">"Jack"</span>;</span><br><span class="line">    <span class="keyword">this</span>.age = <span class="number">22</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Parent.prototype.lev = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="keyword">new</span> Parent();</span><br><span class="line">alert(x.lev());  <span class="comment">//Jack</span></span><br></pre></td></tr></table></figure>
+<h3 id="对象属性的遍历">对象属性的遍历</h3><ul>
+<li>遍历属性</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;prop1: <span class="number">4</span>, prop2: <span class="number">5</span>, prop3: <span class="number">6</span>&#125;;</span><br><span class="line"><span class="keyword">for</span>(var i in obj)&#123;</span><br><span class="line">    console.<span class="built_in">log</span>(i);  <span class="comment">//prop1 prop2 prop3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>遍历属性值</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;prop1: <span class="number">4</span>, prop2: <span class="number">5</span>, prop3: <span class="number">6</span>&#125;;</span><br><span class="line"><span class="keyword">for</span>(var i in obj)&#123;</span><br><span class="line">    console.<span class="built_in">log</span>(obj[i]);  <span class="comment">//4 5 6</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="对象常用操作">对象常用操作</h3><ul>
+<li>对象的访问<ul>
+<li>obj.name和obj[“name”]效果一样；</li>
+</ul>
+</li>
+<li>获取key值组成的数组</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = <span class="built_in">Object</span>.keys(obj);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除对象或属性</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">delete</span> objectName;</span></span><br><span class="line"><span class="operator"><span class="keyword">delete</span> objectName.prop;</span></span><br><span class="line"><span class="operator"><span class="keyword">delete</span> prop;</span>  //仅仅在with语句中可以使用</span><br></pre></td></tr></table></figure>
+<h3 id="getter和setter">getter和setter</h3><ul>
+<li>getter和setter是对象属性的属性描述符的一种，可以在定义对象属性的时候指明；</li>
+<li>getter和setter用于获取或者修改对象的某个属性；</li>
+<li>通过对象初始化器在创建对象的时候指明：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(function () &#123;</span><br><span class="line">    var o = &#123;</span><br><span class="line">        a : <span class="number">7</span>,</span><br><span class="line">        <span class="function">get <span class="title">b</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>.a +<span class="number">1</span>;&#125;,  <span class="comment">//通过 get,set的 b,c方法间接性修改a属性</span></span><br><span class="line">        <span class="function"><span class="built_in">set</span> <span class="title">c</span><span class="params">(x)</span></span>&#123;<span class="keyword">this</span>.a = x/<span class="number">2</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    console.<span class="built_in">log</span>(o.a);  <span class="comment">//7</span></span><br><span class="line">    console.<span class="built_in">log</span>(o.b);  <span class="comment">//8</span></span><br><span class="line">    o.c = <span class="number">50</span>;</span><br><span class="line">    console.<span class="built_in">log</span>(o.a);  <span class="comment">//25</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 Object.create 方法指定：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> o = <span class="literal">null</span>;</span><br><span class="line">    o = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.prototype,<span class="comment">//指定原型为 Object.prototype</span></span><br><span class="line">            &#123;</span><br><span class="line">                bar:&#123;</span><br><span class="line">                    get :<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">this</span>.a;</span><br><span class="line">                    &#125;,</span><br><span class="line">                    set : <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">                        <span class="built_in">console</span>.log(<span class="string">"Setting `o.bar` to "</span>,val);</span><br><span class="line">                        <span class="keyword">this</span>.a = val;</span><br><span class="line">                    &#125;,</span><br><span class="line">                    configurable :<span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;   <span class="comment">//第二个参数</span></span><br><span class="line">        );</span><br><span class="line">    o.a = <span class="number">10</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(o.bar);  <span class="comment">//10</span></span><br><span class="line">    o.bar = <span class="number">12</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(o.bar);  <span class="comment">//12</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 Object.defineProperty 方法指定：<ul>
+<li>Object.defineProperty() 方法直接在一个对象上定义一个新属性，或者修改一个已经存在的属性，并返回这个对象;</li>
+<li>语法：<code>Object.defineProperty(obj, prop, descriptor)</code></li>
+<li>参数：obj 需要定义属性的对象；prop 需被定义或修改的属性名；descriptor 需被定义或修改的属性的描述符；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">    var o = <span class="collection">&#123; a : <span class="number">1</span>&#125;</span>  //声明一个对象,包含一个 a 属性,值为<span class="number">1</span></span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"b"</span>,<span class="collection">&#123;</span><br><span class="line">        get: function <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">            return this.a;</span><br><span class="line">        &#125;</span>,</span><br><span class="line">        set : function <span class="list">(<span class="keyword"><span class="built_in">val</span></span>)</span> <span class="collection">&#123;</span><br><span class="line">            this.a = val;</span><br><span class="line">        &#125;</span>,</span><br><span class="line">        configurable : <span class="literal">true</span></span><br><span class="line">    &#125;</span>)</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.b</span>)</span><span class="comment">;</span></span><br><span class="line">    o.b = <span class="number">2</span><span class="comment">;</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.b</span>)</span><span class="comment">;</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 Object.defineProperties方法指定：<ul>
+<li>概述：<code>Object.defineProperties()</code> 方法在一个对象上添加或修改一个或者多个自有属性，并返回该对象;</li>
+<li>语法：<code>Object.defineProperties(obj, props)</code></li>
+<li>参数：obj 将要被添加属性或修改属性的对象；props 该对象的一个或多个键值对定义了将要为对象添加或修改的属性的具体配置；</li>
+<li>用法与 Object.defineProperty 方法类似；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">    var obj = <span class="collection">&#123;a:1,b:<span class="string">"string"</span>&#125;</span><span class="comment">;</span></span><br><span class="line">    Object.defineProperties<span class="list">(<span class="keyword">obj</span>,<span class="collection">&#123;</span><br><span class="line">        <span class="string">"A"</span>:<span class="collection">&#123;</span><br><span class="line">            get:function<span class="list">()</span><span class="collection">&#123;return this.a+1;&#125;</span>,</span><br><span class="line">            set:function<span class="list">(<span class="keyword"><span class="built_in">val</span></span>)</span><span class="collection">&#123;this.a = val;&#125;</span></span><br><span class="line">        &#125;</span>,</span><br><span class="line">        <span class="string">"B"</span>:<span class="collection">&#123;</span><br><span class="line">            get:function<span class="list">()</span><span class="collection">&#123;return this.b+2;&#125;</span>,</span><br><span class="line">            set:function<span class="list">(<span class="keyword"><span class="built_in">val</span></span>)</span><span class="collection">&#123;this.b = val&#125;</span></span><br><span class="line">        &#125;</span></span><br><span class="line">    &#125;</span>)</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.A</span>)</span><span class="comment">;</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.B</span>)</span><span class="comment">;</span></span><br><span class="line">    obj.A = <span class="number">3</span><span class="comment">;</span></span><br><span class="line">    obj.B = <span class="string">"hello"</span><span class="comment">;</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.A</span>)</span><span class="comment">;</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.B</span>)</span><span class="comment">;</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 Object.prototype.<em>defineGetter</em>以及 Object.prototype.<em>defineSetter</em>方法指定：</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">    var o = <span class="collection">&#123;a:1&#125;</span><span class="comment">;</span></span><br><span class="line">    o.__defineGetter__<span class="list">(<span class="string">"giveMeA"</span>, function <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">        return this.a;</span><br><span class="line">    &#125;</span>)</span><span class="comment">;</span></span><br><span class="line">    o.__defineSetter__<span class="list">(<span class="string">"setMeNew"</span>, function <span class="list">(<span class="keyword"><span class="built_in">val</span></span>)</span> <span class="collection">&#123;</span><br><span class="line">        this.a  = val;</span><br><span class="line">    &#125;</span>)</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.giveMeA</span>)</span><span class="comment">;  //1</span></span><br><span class="line">    o.setMeNew = <span class="number">2</span><span class="comment">;</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.giveMeA</span>)</span><span class="comment">;  //2</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<h3 id="属性描述符">属性描述符</h3><ul>
+<li>说明：<ul>
+<li>对象里目前存在的属性描述符有两种主要形式：数据描述符和存取描述符。</li>
+<li>数据描述符是一个拥有可写或不可写值的属性。</li>
+<li>存取描述符是由一对 getter-setter 函数功能来描述的属性。</li>
+<li>描述符必须是两种形式之一；不能同时是两者。</li>
+</ul>
+</li>
+<li>数据描述符和存取描述符均具有以下可选键值：</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">configurable</span></span><br><span class="line">    当且仅当这个属性描述符值为 <span class="built_in">true</span> 时，该属性可能会改变，也可能会被从相应的对象删除。默认为 <span class="built_in">false</span>。</span><br><span class="line">enumerable  </span><br><span class="line">    <span class="built_in">true</span> 当且仅当该属性出现在相应的对象枚举属性中。默认为 <span class="built_in">false</span>。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数据描述符同时具有以下可选键值：</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">value </span><br><span class="line">    与属性相关的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 <span class="literal">undefined</span>。</span><br><span class="line">writable </span><br><span class="line">    <span class="literal">true</span> 当且仅当可能用 赋值运算符 改变与属性相关的值。默认为 <span class="literal">false</span>。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>存取描述符同时具有以下可选键值：</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">get</span> </span><br><span class="line">    一个给属性提供 getter 的方法，如果没有 getter 则为 <span class="literal">undefined</span>。方法将返回用作属性的值。默认为 <span class="literal">undefined</span>。</span><br><span class="line"><span class="keyword">set</span></span><br><span class="line">    一个给属性提供 setter 的方法，如果没有 setter 则为 <span class="literal">undefined</span>。该方法将收到作为唯一参数的新值分配给属性。默认为 <span class="literal">undefined</span>。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>上面键值的含义：</p>
+<ul>
+<li>数据描述符包括两个属性 : value 属性以及 writable属性，第一个属性用来声明当前欲修饰的属性的值，第二个属性用来声明当前对象是否可写即是否可以修改；</li>
+<li>存取描述符就包括 get 与 set 属性用来声明欲修饰的象属性的 getter 及 setter；</li>
+<li>属性描述符内部，数据描述符与存取描述符只能存在其中之一，但是不论使用哪个描述符都可以同时设置 configurable 属性以及enumerable 属性；</li>
+<li>configurable属性用来声明欲修饰的属性是否能够配置，仅有当其值为 true 时，被修饰的属性才有可能能够被删除，或者重新配置；</li>
+<li>enumerable 属性用来声明欲修饰属性是否可以被枚举，决定属性是否能被 for…in 循环或 Object.keys 方法遍历得到；</li>
+</ul>
+</li>
+<li><p>create方法为显示配置对象的属性和值，如不声明将按照属性描述符的默认值：</p>
+</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">    var obj = <span class="collection">&#123;&#125;</span><span class="comment">;</span></span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">obj</span>,<span class="string">"key"</span>,<span class="collection">&#123;</span><br><span class="line">    	value:<span class="string">"static"</span></span><br><span class="line">                        //没有设置 enumerable 使用默认值 <span class="literal">false</span></span><br><span class="line">                        //没有 configurable 使用默认值 <span class="literal">false</span></span><br><span class="line">                        //没有 writable 使用默认值 <span class="literal">false</span></span><br><span class="line">                    &#125;</span>)</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.key</span>)</span><span class="comment">;           // static</span></span><br><span class="line">    obj.key = <span class="string">"new"</span>                 //尝试修改其值,修改将失败,因为 writable 为 <span class="literal">false</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.key</span>)</span><span class="comment">;           // static</span></span><br><span class="line">    delete obj.key;                 //尝试删除属性,失败,因为 configurable 使用默认值 <span class="literal">false</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.key</span>)</span><span class="comment">;           // static</span></span><br><span class="line">    obj.a = <span class="number">1</span><span class="comment">;                      //动态添加一个属性</span></span><br><span class="line">    for<span class="list">(<span class="keyword"><span class="built_in">var</span></span> item in obj)</span><span class="collection">&#123;           //遍历所有 obj 的可枚举属性</span><br><span class="line">    	console.log<span class="list">(<span class="keyword">item</span>)</span><span class="comment">;</span></span><br><span class="line">    &#125;</span>                               //只输出一个 “a” 因为 “key”的 enumerable为 <span class="literal">false</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>defineProperty、defineProperties方法为显示配置对象的属性和值，如不声明将按照属性描述符的默认值：</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">    var obj = <span class="collection">&#123;&#125;</span><span class="comment">;</span></span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">obj</span>,<span class="string">"key"</span>,<span class="collection">&#123;</span><br><span class="line">    	value : <span class="string">"static"</span></span><br><span class="line">                         //没有设置 enumerable 使用默认值 <span class="literal">false</span></span><br><span class="line">                         //没有 configurable 使用默认值 <span class="literal">false</span></span><br><span class="line">                         //没有 writable 使用默认值 <span class="literal">false</span></span><br><span class="line">    &#125;</span>)</span></span><br><span class="line"></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.key</span>)</span><span class="comment">;           // static</span></span><br><span class="line">    obj.key = <span class="string">"new"</span>                 //尝试修改其值,修改将失败,因为 writable 为 <span class="literal">false</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.key</span>)</span><span class="comment">;           // static</span></span><br><span class="line">    delete obj.key;                 //尝试删除属性,失败,因为 configurable 使用默认值 <span class="literal">false</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">obj.key</span>)</span><span class="comment">;           // static</span></span><br><span class="line">    obj.a = <span class="number">1</span><span class="comment">;                      //动态添加一个属性</span></span><br><span class="line">    for<span class="list">(<span class="keyword"><span class="built_in">var</span></span> item in obj)</span><span class="collection">&#123;           //遍历所有 obj 的可枚举属性</span><br><span class="line">    	console.log<span class="list">(<span class="keyword">item</span>)</span><span class="comment">;</span></span><br><span class="line">    &#125;</span>                               //只输出一个 “a” 因为 “key”的 enumerable为 <span class="literal">false</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>var o = {};  o.a = 1;</code>这个语句却和上面不同，它的等价配置如下：</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">    var o = <span class="collection">&#123;&#125;</span><span class="comment">;</span></span><br><span class="line">    o.a = <span class="number">1</span><span class="comment">;</span></span><br><span class="line">    //等价于</span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;value : <span class="number">1</span>,</span><br><span class="line">                                writable : <span class="literal">true</span>,</span><br><span class="line">                                configurable : <span class="literal">true</span>,</span><br><span class="line">                                enumerable : <span class="literal">true</span>&#125;</span>)</span><span class="comment">;</span></span><br><span class="line">    </span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;value :<span class="number">1</span>&#125;</span>)</span><span class="comment">;</span></span><br><span class="line">    //等价于</span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;value : <span class="number">1</span>,</span><br><span class="line">                                writable : <span class="literal">false</span>,</span><br><span class="line">                                configurable : <span class="literal">false</span>,</span><br><span class="line">                                enumerable : <span class="literal">false</span>&#125;</span>)</span><span class="comment">;</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Enumerable属性专项研究：<ul>
+<li>属性特性 enumerable 决定属性是否能被 for…in 循环或 Object.keys 方法遍历得到；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">    var o = <span class="collection">&#123;&#125;</span><span class="comment">;</span></span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;value :<span class="number">1</span>,enumerable <span class="attribute">:true</span>&#125;</span>)</span><span class="comment">;</span></span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"b"</span>,<span class="collection">&#123;value :<span class="number">2</span>,enumerable <span class="attribute">:false</span>&#125;</span>)</span><span class="comment">;</span></span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"c"</span>,<span class="collection">&#123;value :<span class="number">2</span>&#125;</span>)</span><span class="comment">;   //enumerable default to false</span></span><br><span class="line">    o.d = <span class="number">4</span><span class="comment">;    //如果直接赋值的方式创建对象的属性,则这个属性的 enumerable 为 true</span></span><br><span class="line"></span><br><span class="line">    for<span class="list">(<span class="keyword"><span class="built_in">var</span></span> item in o)</span><span class="collection">&#123; //遍历所有可枚举属性包括继承的属性</span><br><span class="line">        console.log<span class="list">(<span class="keyword">item</span>)</span><span class="comment">;  //a d</span></span><br><span class="line">    &#125;</span></span><br><span class="line"></span><br><span class="line">    console.log<span class="list">(<span class="keyword">Object.keys</span><span class="list">(<span class="keyword">o</span>)</span>)</span><span class="comment">; //输出["a","d"],获取o对象的所有可遍历属性不包括继承的属性</span></span><br><span class="line"></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.propertyIsEnumerable</span><span class="list">(<span class="keyword">'a'</span>)</span>)</span><span class="comment">;   //true</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.propertyIsEnumerable</span><span class="list">(<span class="keyword">'b'</span>)</span>)</span><span class="comment">;   //false</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.propertyIsEnumerable</span><span class="list">(<span class="keyword">'c'</span>)</span>)</span><span class="comment">;   //false</span></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.propertyIsEnumerable</span><span class="list">(<span class="keyword">'d'</span>)</span>)</span><span class="comment">;   //true</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Configurable属性专项研究：<ul>
+<li>Configurable属性如果为false，表示对象的Configurable、Enumerable、value、writable、set、get属性一旦确定（包含默认确定的）就不能再更改，对象的这个属性也不能被删除；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> <span class="list">()</span> <span class="collection">&#123;</span><br><span class="line">    var o = <span class="collection">&#123;&#125;</span><span class="comment">;</span></span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;get: function <span class="list">()</span> <span class="collection">&#123;return <span class="number">1</span><span class="comment">;&#125;,</span></span><br><span class="line">                                configurable : <span class="literal">false</span>&#125;</span> )<span class="comment">;</span></span><br><span class="line">                                //enumerable 默认为 <span class="literal">false</span>,</span><br><span class="line">                                //value 默认为 undefined,</span><br><span class="line">                                //writable 默认为 <span class="literal">false</span>,</span><br><span class="line">                                //set 默认为 undefined</span><br><span class="line">                                  </span><br><span class="line">    //抛出异常,因为最开始定义了 configurable 为 <span class="literal">false</span>,故后期无法对其进行再配置</span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;configurable : <span class="literal">true</span>&#125;</span> )</span><span class="comment">;</span></span><br><span class="line">    //抛出异常,因为最开始定义了 configurable 为 <span class="literal">false</span>,故后期无法对其进行再配置,enumerable 的原值为 <span class="literal">false</span></span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;enumerable : <span class="literal">true</span>&#125;</span> )</span><span class="comment">;</span></span><br><span class="line">    //抛出异常,因为最开始定义了 configurable 为 <span class="literal">false</span>,set的原值为 undefined</span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;set : function<span class="list">(<span class="keyword"><span class="built_in">val</span></span>)</span><span class="collection">&#123;&#125;</span>&#125;</span> )</span><span class="comment">;</span></span><br><span class="line">    //抛出异常,因为最开始定义了 configurable 为 <span class="literal">false</span>,故无法进行覆盖,尽管想用一样的来覆盖</span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;get : function<span class="list">()</span><span class="collection">&#123;return <span class="number">1</span>&#125;</span>&#125;</span>)</span><span class="comment">;</span></span><br><span class="line">    //抛出异常，因为最开始定义了 configurable 为 <span class="literal">false</span>,故无法将其进行重新配置把属性描述符从存取描述符改为数据描述符</span><br><span class="line">    Object.defineProperty<span class="list">(<span class="keyword">o</span>,<span class="string">"a"</span>,<span class="collection">&#123;value : <span class="number">12</span>&#125;</span>)</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.a</span>)</span><span class="comment">;//输出1</span></span><br><span class="line">    delete o.a;      //想要删除属性,将失败</span><br><span class="line">    console.log<span class="list">(<span class="keyword">o.a</span>)</span><span class="comment">;//输出1</span></span><br><span class="line">    </span><br><span class="line">&#125;</span>)</span><span class="list">()</span><span class="comment">;</span></span></span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/11/js-var/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1963,171 +2240,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/04/2015-11-4-java-Stack/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/04/2015-11-4-java-Stack/" itemprop="url">
-                  Java Stack的实现
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-04T00:00:00+08:00">
-                2015-11-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/11/04/2015-11-4-java-Stack/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/04/2015-11-4-java-Stack/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>Stack是java中常用的数据结构；</li>
-<li>栈遵循先进后出，后进先出；</li>
-<li>本文实现了一个简单的栈；</li>
-</ul>
-<h3 id="栈的实现">栈的实现</h3><ul>
-<li>MyStack实现了栈的大部分方法</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">package test6;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> MyStack&lt;T&gt; &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> final <span class="keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">16</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> size = <span class="number">0</span>; <span class="comment">// 栈大小</span></span><br><span class="line">	<span class="keyword">protected</span> T[] <span class="built_in">stack</span> = (T[]) <span class="keyword">new</span> Object[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 清空栈</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="built_in">stack</span> = (T[]) <span class="keyword">new</span> Object[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">		size = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 判断容量</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCapacity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size &gt;= <span class="built_in">stack</span>.length) &#123;</span><br><span class="line">			T[] stack1 = (T[]) <span class="keyword">new</span> Object[<span class="built_in">stack</span>.length * <span class="number">2</span>];</span><br><span class="line">			System.arraycopy(<span class="built_in">stack</span>, <span class="number">0</span>, stack1, <span class="number">0</span>, <span class="built_in">stack</span>.length);</span><br><span class="line">			<span class="built_in">stack</span> = stack1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 判断是否为空</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Looks at the object at the top of this stack without removing it from the</span></span><br><span class="line">	<span class="comment">// stack</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">peek</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">stack</span>[size - <span class="number">1</span>];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 压入数据</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">		testCapacity();</span><br><span class="line">		<span class="built_in">stack</span>[size] = t;</span><br><span class="line">		size++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 弹出数据</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		T t = <span class="built_in">stack</span>[size - <span class="number">1</span>];</span><br><span class="line">		size--;</span><br><span class="line">		<span class="keyword">return</span> t;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//Returns the 1-based position where an object is on this stack</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i =size-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i--)&#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">stack</span>[i].equals(t))&#123;</span><br><span class="line">				<span class="keyword">return</span> size-i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//获取容量</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> size;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>TestMyStack测试类</li>
-</ul>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test6;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> TestMyStack &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">		MyStack&lt;String&gt; s = <span class="keyword">new</span> MyStack&lt;String&gt;();</span><br><span class="line">		s.<span class="keyword">push</span>(<span class="string">"111"</span>);</span><br><span class="line">		s.<span class="keyword">push</span>(<span class="string">"222"</span>);</span><br><span class="line">		System.out.<span class="keyword">println</span>(s.<span class="keyword">size</span>());  <span class="comment">//2</span></span><br><span class="line">		s.clear();</span><br><span class="line">		System.out.<span class="keyword">println</span>(s.<span class="keyword">size</span>());  <span class="comment">//0</span></span><br><span class="line">		System.out.<span class="keyword">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		s.<span class="keyword">push</span>(<span class="string">"aaa"</span>);</span><br><span class="line">		s.<span class="keyword">push</span>(<span class="string">"bbb"</span>);</span><br><span class="line">		s.<span class="keyword">push</span>(<span class="string">"ccc"</span>);</span><br><span class="line">		s.<span class="keyword">push</span>(<span class="string">"ddd"</span>);</span><br><span class="line">		System.out.<span class="keyword">println</span>(s.<span class="keyword">size</span>());  <span class="comment">//4</span></span><br><span class="line">		System.out.<span class="keyword">println</span>(s.isEmpty());  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="keyword">println</span>(s.search(<span class="string">"ccc"</span>));  <span class="comment">//2</span></span><br><span class="line">		System.out.<span class="keyword">println</span>(s.peek());  <span class="comment">//ddd</span></span><br><span class="line">		System.out.<span class="keyword">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		s.<span class="keyword">pop</span>();</span><br><span class="line">		System.out.<span class="keyword">println</span>(s.peek());  <span class="comment">//ccc</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2177,7 +2289,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">89</span>
+                <span class="site-state-item-count">90</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2188,7 +2300,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2199,7 +2311,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -1,0 +1,1180 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="feeling,investment," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="引言
+最近研究投资，看了肖星的一本书读懂财报，做了一些笔记；
+结合一些投资的资料，总结了一下投资中，特别是股票投资中，需要知道的一些研判公司经营情况的基础概念和公式，特在本篇博客中加以记录，共大家参考；
+这些概念和公式都是纸面上的，需要结合具体情况分析才有价值；
+投资活动中，不能偏信任何一个公式、概念或理论，需要结合具体情况，实事求是进行分析；
+非常感谢这篇公众号的总结：看过这份最全财务公式表的会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="企业财务报表分析方法">
+<meta property="og:url" content="http://yoursite.com/2017/05/01/2017-5-1-investment/index.html">
+<meta property="og:site_name" content="Eric Chang's Blog">
+<meta property="og:description" content="引言
+最近研究投资，看了肖星的一本书读懂财报，做了一些笔记；
+结合一些投资的资料，总结了一下投资中，特别是股票投资中，需要知道的一些研判公司经营情况的基础概念和公式，特在本篇博客中加以记录，共大家参考；
+这些概念和公式都是纸面上的，需要结合具体情况分析才有价值；
+投资活动中，不能偏信任何一个公式、概念或理论，需要结合具体情况，实事求是进行分析；
+非常感谢这篇公众号的总结：看过这份最全财务公式表的会">
+<meta property="og:image" content="http://yoursite.com/images/20170501-investment/three-financial-statement.png">
+<meta property="og:image" content="http://yoursite.com/images/20170501-investment/analysis.png">
+<meta property="og:updated_time" content="2017-07-23T12:56:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="企业财务报表分析方法">
+<meta name="twitter:description" content="引言
+最近研究投资，看了肖星的一本书读懂财报，做了一些笔记；
+结合一些投资的资料，总结了一下投资中，特别是股票投资中，需要知道的一些研判公司经营情况的基础概念和公式，特在本篇博客中加以记录，共大家参考；
+这些概念和公式都是纸面上的，需要结合具体情况分析才有价值；
+投资活动中，不能偏信任何一个公式、概念或理论，需要结合具体情况，实事求是进行分析；
+非常感谢这篇公众号的总结：看过这份最全财务公式表的会">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/01/2017-5-1-investment/"/>
+
+
+
+
+
+  <title> 企业财务报表分析方法 | Eric Chang's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1258423514&web_id=1258423514" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Eric Chang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-feeling">
+          <a href="/tags/feeling" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-coffee"></i> <br />
+            
+            感悟
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/tags/me" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/01/2017-5-1-investment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                企业财务报表分析方法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T00:00:00+08:00">
+                2017-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/feeling/" itemprop="url" rel="index">
+                    <span itemprop="name">feeling</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/01/2017-5-1-investment/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/01/2017-5-1-investment/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="引言">引言</h3><ul>
+<li>最近研究投资，看了肖星的<a href="https://book.douban.com/subject/25926542/" target="_blank" rel="external">一本书读懂财报</a>，做了一些笔记；</li>
+<li>结合一些投资的资料，总结了一下投资中，特别是股票投资中，需要知道的一些研判公司经营情况的基础概念和公式，特在本篇博客中加以记录，共大家参考；</li>
+<li>这些概念和公式都是纸面上的，需要结合具体情况分析才有价值；</li>
+<li>投资活动中，不能偏信任何一个公式、概念或理论，需要结合具体情况，实事求是进行分析；</li>
+<li>非常感谢这篇公众号的总结：<a href="http://mp.weixin.qq.com/s/jVtmTEgzfzRfX2Qz_EgXKQ" target="_blank" rel="external">看过这份最全财务公式表的会计人，月薪还怕破不了5w？</a></li>
+</ul>
+<h3 id="三张基础财务报表">三张基础财务报表</h3><h4 id="资产负债表">资产负债表</h4><p>资产负债表——所有表格的基础。从某种意义上说，一个公司的资产负债表才是根本。无论是现金流量表还是利润表都是对资产负债表的深入解释。在格雷厄姆的时代，会计准则并没有要求现金流量表。后来的会计准则进一步发展，现金流量表才成为必须。因此在格雷厄姆的《证券分析》一书中对资产负债表的论述与分析是最多的。</p>
+<h4 id="现金流量表——资产负债表的变化">现金流量表——资产负债表的变化</h4><p>现金流量表是对资产负债表变化的解释。现金的变化最终反映到资产负债表的现金及等价物一项。而现金的变化源泉则是净利润。净利润经过“经营”、“投资”、“筹资”三项重要的现金变动转变为最终的现金变化。</p>
+<p>首先，净利润经过营运资本的变化、摊销折旧等非现金项目、其他项目（财务支出或收入、投资收益等）的调整，最终转换为经营现金流。</p>
+<p>其次，投资的支出与收益的现金流量。其中买卖资产对资产负债表的资产项目有影响。</p>
+<p>最后，筹资的现金流量。其中，借债与还债会影响资产负债表的借款项目。分红与增发会影响资产负债表的股东权益项目。</p>
+<h4 id="利润表——净利润的来源">利润表——净利润的来源</h4><p>利润表是净利润的来源。而净利润则直接影响资产负债表中股东权益的变化。</p>
+<p>这三张表格是一个公司财务状况的精髓与总结。也是公司这个动态系统的简化模型。</p>
+<h4 id="财务报表汇总图">财务报表汇总图</h4><p><img src="/images/20170501-investment/three-financial-statement.png" alt="财务报表"></p>
+<h3 id="企业经营状况分析">企业经营状况分析</h3><p>企业经营状况主要从以下三个方面进行分析：</p>
+<ul>
+<li>企业偿债能力；</li>
+<li>企业营运能力；</li>
+<li>企业盈利能力；</li>
+</ul>
+<p><img src="/images/20170501-investment/analysis.png" alt="企业经营状况分析"></p>
+<h3 id="企业财务报表分析公式大全">企业财务报表分析公式大全</h3><h4 id="偿债能力分析">偿债能力分析</h4><p>1、流动比率=流动资产/流动负债*100%。指标越高，企业流动资产流转越快，偿还流动负债能力越强。国际公认200%，我国150%较好。</p>
+<p>2、速动比率=速动资产(流动资产-存货)/流动负债*100%。国际标志比率100%我国90%左右。</p>
+<p>3、资产负债率=负债总额/资产总额*100%。指标越高负债程度高，经营风险大，能以较低的资金成本进行生产经营。保守比率不高于50%，国际公认较好60%。</p>
+<p>4、长期资产适合率=(所有者权益+长期负债)/(固定资产+长期投资)*100%</p>
+<h4 id="资本状况分析">资本状况分析</h4><p>1、资本保值增值率=扣除客观因素后的年末所有者权益/年初所有者权益*100%，指标越高，资本保全情况越好，企业发展潜力越大，债权人利益越有保障。</p>
+<p>2、资本积累率=本年所有者权益增长额/年初所有者权益*100%，指标越高，所有者权益增长越快，资本积累能力越强，保全情况好，持续发展能力越大。</p>
+<h4 id="盈利能力分析">盈利能力分析</h4><p>1、主营业务毛利率=毛利(主营收入-主营成本)/主营业务收入*100%，介于20%-50%之间，一般相对合理稳定，流动性强的商品，毛利率低。设计新颖的特殊商品(时装)毛利率高。</p>
+<p>2、主营业务净利率=净利润/主营业务收入*100%，反映企业基本获利能力。</p>
+<p>3、主营业务成本率=主营业务成本/主营业务收入*100%</p>
+<p>4、 营业费用率=营业费用/主营业务收入*100%</p>
+<p>5、主营业务税金率=主营业务税金及附加/主营业务收入*100%</p>
+<p>6、资产净利率=税后净利/平均总资产<em>100%=主营业务净利率</em>总资产周转率。指标高低于企业资产结构，经验管理水平有密切关系。</p>
+<p>7、净资产收益率=净利润/平均所有者权益*100%。反映投资者投资回报率，股东期望平均年度净资产收益率能超过12%。</p>
+<p>8、不良资产比率=年末不良资总额/年末资产总额*100%</p>
+<p>9、资产损失比率=待处理资产损失净额/年末资产总额*100%</p>
+<p>10、固定资产成新率=平均固定资产净值/平均固定资产原值*100%</p>
+<p>11、 流动比率=流动资产/流动负债*100%</p>
+<p>12、 速动比率=速动资产/流动负债*100%</p>
+<p>13、 资产负债率=负债总额/资产总额*100%</p>
+<p>14、长期资产适合率=(所有者权益+长期负债)/(固定资产+长期投资)*100%</p>
+<p>15、资本保值增值率=扣除客观因素后的年末所有者权益/年初所有者权益*100%</p>
+<p>16、资本积累率=本年所有者权益增长额/年初所有者权益*100%</p>
+<p>17、 主营业务毛利率=毛利/主营业务收入*100%</p>
+<p>18、 主营业务净利率=净利润/主营业务收入*100%</p>
+<p>19、主营业务成本率=主营业务成本/主营业务收入*100%</p>
+<p>20、 营业费用率=营业费用/主营业务收入*100%</p>
+<p>21、主营业务税金率=主营业务税金及附加/主营业务收入*100%</p>
+<p>22、资产净利率=税后净利/平均总资产<em>100%=主营业务净利率</em>总资产周转率</p>
+<p>23、 净资产收益率=净利润/平均所有者权益*100%</p>
+<p>24、 管理费用率=管理费用/主营业务收入*100%</p>
+<p>25、 财务费用率=财务费用/主营业务收入*100%</p>
+<p>26、成本、费用利润率=利润总额/(主营业务成本+期间费用)*100%</p>
+<p>27、 销售收现比=销售收现/销售额</p>
+<p>28、 营运指数=经营现金净流量/经营所得现金</p>
+<p>29、 现金比率=现金余额/流动负债*100%</p>
+<p>30、现金流动负债比=经营活动净现金流量/流动负债*100%</p>
+<p>31、现金债务总额比=经营活动净现金流量/总负债*100%</p>
+<p>32、 销售现金比率=经营现金净流量/销售额*100%</p>
+<p>33、应收帐款周转率(次数)=赊销收入净额/应收帐款平均余额</p>
+<p>34、 应收帐款周转天数</p>
+<p>=天数/应收帐款周转次数</p>
+<p>=计算期天数*应收帐款平均余额/赊销收入净额</p>
+<p>销售收入净额=销售收入-现销收入-销售折扣与折让</p>
+<p>35、 存货周转率=销售成本/平均存货</p>
+<p>36、 存货周转天数=计算期天数/存货周转率</p>
+<p>37、流动资产周转次数(率)=销售收入净额/流动资产平均余额</p>
+<p>38、流动资产周转天数=计算期天数/流动资产周转次数</p>
+<p>39、总资产周转率=销售收入净额/平均资产总额</p>
+<p>40、总资产周转天数=计算期天数/总资产周转率</p>
+<p>41、已获利息倍数=(税前利润总额+利息支出)/利息支出</p>
+<p>42、总资产报酬率=(利润总额+利息支出)/平均资产总额</p>
+<h4 id="营运能力分析">营运能力分析</h4><p>1、应收帐款周转率(次数)=赊销收入净额/应收帐款平均余额，指标高说明收帐迅速，账龄期限短，减少企业收帐费用和坏账损失。</p>
+<p>2、 应收帐款周转天数</p>
+<p>=天数/应收帐款周转次数</p>
+<p>=计算期天数*应收帐款平均余额/赊销收入净额</p>
+<p>销售收入净额=销售收入-现销收入-销售折扣与折让</p>
+<p>3、存货周转率=销售成本/平均存货。一般情况周转速度越快，变现速度越快，占用存货资金少，占用相同数额的存货而实现的销货成本大。</p>
+<p>4、存货周转天数=计算期天数(年360天)/存货周转率</p>
+<p>5、流动资产周转次数(率)=销售收入净额/流动资产平均余额，指标高表明企业流动资产周转速度快，利用效果好。</p>
+<p>6、流动资产周转天数=计算期天数/流动资产周转次数</p>
+<p>7、总资产周转率=销售收入净额/平均资产总额。周转速度快，企业的营运能力强;指标低，说明收入不足，或资产闲置浪费。</p>
+<p>8、 总资产周转天数=计算期天数/总资产周转率</p>
+<p>9、已获利息倍数=(税前利润总额+利息支出)/利息支出</p>
+<p>10、总资产报酬率=(利润总额+利息支出)/平均资产总额</p>
+<h4 id="综合偿债能力">综合偿债能力</h4><p>已获利息倍数=(税前利润总额+利息支出)÷利息支出</p>
+<ul>
+<li>盈利能力：</li>
+</ul>
+<p>主营业务净利率=(净利润÷主营业务收入)×100%</p>
+<p>资产净利率=(净利润÷平均总资产)×100%=主营业务净利率*总资产周转率</p>
+<p>净资产收益率=(净利润÷平均净资产总额)×100%</p>
+<p>总资产报酬率=(利润总额+利息支出)÷平均资产总额</p>
+<ul>
+<li>营运能力：</li>
+</ul>
+<p>应收帐款周转率=主营业务收入÷应收帐款平均余额<br>(高表明企业收帐迅速，帐龄期限短，可减少收帐费用和坏帐损失，相对增加企业流动资产的投资收益，说明资产流动性大，变现快短期偿债能力强)</p>
+<p>存货周转率=主营业务成本÷平均存货余额<br>(高表明企业资产由于销售顺畅而具有较高的流动性存货转现速度快存货占用水平低，过高 存货不足，产品脱销)<br>(慢：必然占用在量的资金，造成资金浪费，营运困难)</p>
+<p>流动资产周转率=主营业务收入÷平均资产总额</p>
+<p>总资产周转率=主营业务收入÷平均资产总额<br>(过低：收入不足，资产闲置,浪费)</p>
+<ul>
+<li>发展能力：</li>
+</ul>
+<p>销售增长率=(本年主营业务收入-上年主营业务收入)÷上年主营业务收入</p>
+<p>资本积累率=[(年末所有者权益-年初所有者权益)÷年初所有者权益]×100%</p>
+<p>主营业务利润 = 主营业务收入 — 主营业务成本 — 主营业务税金及附加</p>
+<p>营业利润 = 主营业务利润 + 其他业务利润 — 期间费用</p>
+<p>利润总额 = 营业利润 + 投资收益 + 补贴收入 + 营业外收入 — 营业外支出</p>
+<p>净利润 = 利润总额 — 所得税</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/reward/wechat.png" alt="Eric Chang WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/reward/alipay.jpg" alt="Eric Chang Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/feeling/" rel="tag"># feeling</a>
+          
+            <a href="/tags/investment/" rel="tag"># investment</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/30/2017-4-30-travel-wuhan/" rel="next" title="武汉游记">
+                <i class="fa fa-chevron-left"></i> 武汉游记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/20/2017-5-20-flasgger/" rel="prev" title="Flasgger使用心得">
+                Flasgger使用心得 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/01/2017-5-1-investment/"
+           data-title="企业财务报表分析方法" data-url="http://yoursite.com/2017/05/01/2017-5-1-investment/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.png"
+               alt="Eric Chang" />
+          <p class="site-author-name" itemprop="name">Eric Chang</p>
+           
+              <p class="site-description motion-element" itemprop="description"><a href="http://www.yinshuisiyuan.net">www.yinshuisiyuan.net</a></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/changsiyuan" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2803286360" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.linkedin.com/profile/preview?locale=zh_CN&trk=prof-0-sb-preview-primary-button" target="_blank" title="linkedin">
+                  
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  
+                  linkedin
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:changsiyuan2011@126.com" target="_blank" title="mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  mail
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.ruanyifeng.com/home.html" title="阮一峰" target="_blank">阮一峰</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://azure.microsoft.com/en-us/?v=17.14" title="Azure" target="_blank">Azure</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" title="Python" target="_blank">Python</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000/001434501245426ad4b91f2b880464ba876a8e3043fc8ef000" title="Nodejs" target="_blank">Nodejs</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三张基础财务报表"><span class="nav-number">2.</span> <span class="nav-text">三张基础财务报表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#资产负债表"><span class="nav-number">2.1.</span> <span class="nav-text">资产负债表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现金流量表——资产负债表的变化"><span class="nav-number">2.2.</span> <span class="nav-text">现金流量表——资产负债表的变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利润表——净利润的来源"><span class="nav-number">2.3.</span> <span class="nav-text">利润表——净利润的来源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#财务报表汇总图"><span class="nav-number">2.4.</span> <span class="nav-text">财务报表汇总图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#企业经营状况分析"><span class="nav-number">3.</span> <span class="nav-text">企业经营状况分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#企业财务报表分析公式大全"><span class="nav-number">4.</span> <span class="nav-text">企业财务报表分析公式大全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#偿债能力分析"><span class="nav-number">4.1.</span> <span class="nav-text">偿债能力分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#资本状况分析"><span class="nav-number">4.2.</span> <span class="nav-text">资本状况分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#盈利能力分析"><span class="nav-number">4.3.</span> <span class="nav-text">盈利能力分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#营运能力分析"><span class="nav-number">4.4.</span> <span class="nav-text">营运能力分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#综合偿债能力"><span class="nav-number">4.5.</span> <span class="nav-text">综合偿债能力</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Chang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/cn/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by/3.0/cn/88x31.png" /></a><br />本作品采用<a rel="license" href="http://creativecommons.org/licenses/by/3.0/cn/">知识共享署名 3.0 中国大陆许可协议</a>进行许可。
+  
+  <script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v1/st.js','_st');
+
+  _st('install','1BK1VZMDEA-ktxiBz_9B');
+</script>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1258423514'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1258423514%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ericchang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
