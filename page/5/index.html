@@ -243,7 +243,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-coffee"></i> <br />
             
-            感悟
+            生活
           </a>
         </li>
       
@@ -1579,170 +1579,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/05/2015-11-5-java-queue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/05/2015-11-5-java-queue/" itemprop="url">
-                  Java 队列的实现
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-05T00:00:00+08:00">
-                2015-11-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/11/05/2015-11-5-java-queue/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/05/2015-11-5-java-queue/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>队列是java中重要的数据结构；</li>
-<li>本文用数组实现了简单的单端队列；</li>
-</ul>
-<h3 id="单端队列的实现">单端队列的实现</h3><ul>
-<li>MyQueue类实现了队列的大部分方法</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">package queuetest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> MyQueue&lt;T&gt; &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> size = <span class="number">0</span>; <span class="comment">// 当前队列长度</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> maxSize = <span class="number">8</span>; <span class="comment">// 队列容量，默认8</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">protected</span> T[] <span class="built_in">queue</span> = (T[]) <span class="keyword">new</span> Object[maxSize]; <span class="comment">// 队列用数组实现</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyQueue</span><span class="params">(<span class="keyword">int</span> maxSize)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.maxSize = maxSize;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 清空队列</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="built_in">queue</span> = (T[]) <span class="keyword">new</span> Object[maxSize];</span><br><span class="line">		size = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add,如果队列已满，则抛出异常</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T t)</span> throws Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size == maxSize) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"队列容量已满."</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">queue</span>[size] = t;</span><br><span class="line">			size++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// offer，添加一个元素并返回true，如果队列已满，则返回false</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">offer</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size &lt; maxSize) &#123;</span><br><span class="line">			<span class="built_in">queue</span>[size] = t;</span><br><span class="line">			size++;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// element,返回队列头部的元素,如果队列为空,则抛出异常</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">element</span><span class="params">()</span> throws Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"队列为空！"</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// peek,返回队列头部的元素,如果队列为空，则返回null</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">peek</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> null;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// remove,移除并返回队列头部的元素,如果队列为空则抛出异常</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">remove</span><span class="params">()</span> throws Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size != <span class="number">0</span>) &#123;</span><br><span class="line">			T t = <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				<span class="built_in">queue</span>[i] = <span class="built_in">queue</span>[i + <span class="number">1</span>];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">queue</span>[size - <span class="number">1</span>] = null;</span><br><span class="line">			size--;</span><br><span class="line">			<span class="keyword">return</span> t;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"队列为空！"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// poll,移除并返问队列头部的元素,如果队列为空则返回null</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">poll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size != <span class="number">0</span>) &#123;</span><br><span class="line">			T t = <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				<span class="built_in">queue</span>[i] = <span class="built_in">queue</span>[i + <span class="number">1</span>];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">queue</span>[size - <span class="number">1</span>] = null;</span><br><span class="line">			size--;</span><br><span class="line">			<span class="keyword">return</span> t;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> null;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 当前队列长度</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> size;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 是否为空</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 遍历队列元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">			System.out.println(<span class="built_in">queue</span>[i]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>MyQueueTest 测试类</li>
-</ul>
-<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> queuetest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class MyQueueTest &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">		MyQueue&lt;<span class="keyword">String</span>&gt; mq = <span class="keyword">new</span> MyQueue&lt;<span class="keyword">String</span>&gt;(<span class="number">4</span>);</span><br><span class="line">		mq.<span class="built_in">add</span>(<span class="string">"111"</span>);</span><br><span class="line">		mq.<span class="built_in">add</span>(<span class="string">"222"</span>);</span><br><span class="line">		mq.<span class="built_in">add</span>(<span class="string">"333"</span>);</span><br><span class="line">		mq.<span class="built_in">add</span>(<span class="string">"444"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());  <span class="comment">//4</span></span><br><span class="line"><span class="comment">//		mq.add("555");  //java.lang.Exception: 队列容量已满.</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());  <span class="comment">//4</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.offer(<span class="string">"666"</span>));  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());  <span class="comment">//4</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-----------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.element());  <span class="comment">//111</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.peek());  <span class="comment">//111</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-----------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.isEmpty());  <span class="comment">//false</span></span><br><span class="line">		mq.display();  <span class="comment">//111 222 333 444</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-----------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.remove());  <span class="comment">//111</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.remove());  <span class="comment">//222</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.remove());  <span class="comment">//333</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.remove());  <span class="comment">//444</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());    <span class="comment">//0</span></span><br><span class="line"><span class="comment">//		System.out.println(mq.remove());  //java.lang.Exception: 队列为空！</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.poll());  <span class="comment">//null</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());  <span class="comment">//0</span></span><br><span class="line"><span class="comment">//		System.out.println(mq.element());  //java.lang.Exception: 队列为空！</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.peek());  <span class="comment">//null</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/05/2015-11-5-java-deque/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1912,7 +1748,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/04/2015-11-4-HashMap-traverse/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/05/2015-11-5-java-queue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Chang">
@@ -1934,8 +1770,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/11/04/2015-11-4-HashMap-traverse/" itemprop="url">
-                  Java HashMap的遍历
+                <a class="post-title-link" href="/2015/11/05/2015-11-5-java-queue/" itemprop="url">
+                  Java 队列的实现
                 </a>
               
             
@@ -1951,8 +1787,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-04T00:00:00+08:00">
-                2015-11-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-05T00:00:00+08:00">
+                2015-11-05
               </time>
             
 
@@ -1992,8 +1828,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2015/11/04/2015-11-4-HashMap-traverse/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/04/2015-11-4-HashMap-traverse/" itemprop="commentCount"></span>
+                <a href="/2015/11/05/2015-11-5-java-queue/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/05/2015-11-5-java-queue/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -2022,14 +1858,17 @@
         
           
             <h3 id="引言">引言</h3><ul>
-<li>HashMap是java中非常重要的数据结构；</li>
-<li>本文提供了HashMap的若干种遍历方法，大体上分为两类：<ul>
-<li>通过Map.Entry遍历；</li>
-<li>通过keyset遍历；</li>
+<li>队列是java中重要的数据结构；</li>
+<li>本文用数组实现了简单的单端队列；</li>
 </ul>
-</li>
+<h3 id="单端队列的实现">单端队列的实现</h3><ul>
+<li>MyQueue类实现了队列的大部分方法</li>
 </ul>
-<h3 id="HashMap遍历方法汇总">HashMap遍历方法汇总</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test5;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.<span class="keyword">HashMap</span>;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Map.Entry;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class MapTest &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">		Map&lt;Integer, <span class="keyword">String</span>&gt; m = <span class="keyword">new</span> <span class="keyword">HashMap</span>&lt;Integer, <span class="keyword">String</span>&gt;();</span><br><span class="line">		m.put(<span class="number">1</span>, <span class="string">"aaa"</span>);</span><br><span class="line">		m.put(<span class="number">2</span>, <span class="string">"bbb"</span>);</span><br><span class="line">		m.put(<span class="number">3</span>, <span class="string">"ccc"</span>);</span><br><span class="line">		m.put(<span class="number">4</span>, <span class="string">"ddd"</span>);</span><br><span class="line">		m.put(<span class="number">5</span>, <span class="string">"eee"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法一</span></span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;Integer, <span class="keyword">String</span>&gt; entry : m.entrySet()) &#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + entry.getKey() + <span class="string">" value:"</span></span><br><span class="line">					+ entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法二</span></span><br><span class="line">		Iterator&lt;Entry&lt;Integer, <span class="keyword">String</span>&gt;&gt; it = m.entrySet().iterator();</span><br><span class="line">		<span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">			Map.Entry&lt;Integer, <span class="keyword">String</span>&gt; entry = it.next();</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + entry.getKey() + <span class="string">" value:"</span></span><br><span class="line">					+ entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法三</span></span><br><span class="line">		Set&lt;Integer&gt; s = m.keySet();</span><br><span class="line">		Iterator&lt;Integer&gt; it1 = s.iterator();</span><br><span class="line">		<span class="keyword">while</span> (it1.hasNext()) &#123;</span><br><span class="line">			<span class="built_in">int</span> i = it1.next();</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + i + <span class="string">" value:"</span></span><br><span class="line">					+ m.<span class="built_in">get</span>(i));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//遍历方法四</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="built_in">int</span> i : m.keySet())&#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span>+i+<span class="string">" value:"</span>+m.<span class="built_in">get</span>(i));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//遍历方法五  遍历所有的值  不能读取key</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">String</span> value:m.values())&#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"value:"</span>+value);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">package queuetest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> MyQueue&lt;T&gt; &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> size = <span class="number">0</span>; <span class="comment">// 当前队列长度</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> maxSize = <span class="number">8</span>; <span class="comment">// 队列容量，默认8</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">protected</span> T[] <span class="built_in">queue</span> = (T[]) <span class="keyword">new</span> Object[maxSize]; <span class="comment">// 队列用数组实现</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyQueue</span><span class="params">(<span class="keyword">int</span> maxSize)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.maxSize = maxSize;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 清空队列</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="built_in">queue</span> = (T[]) <span class="keyword">new</span> Object[maxSize];</span><br><span class="line">		size = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add,如果队列已满，则抛出异常</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T t)</span> throws Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size == maxSize) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"队列容量已满."</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">queue</span>[size] = t;</span><br><span class="line">			size++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// offer，添加一个元素并返回true，如果队列已满，则返回false</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">offer</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size &lt; maxSize) &#123;</span><br><span class="line">			<span class="built_in">queue</span>[size] = t;</span><br><span class="line">			size++;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// element,返回队列头部的元素,如果队列为空,则抛出异常</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">element</span><span class="params">()</span> throws Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"队列为空！"</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// peek,返回队列头部的元素,如果队列为空，则返回null</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">peek</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> null;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// remove,移除并返回队列头部的元素,如果队列为空则抛出异常</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">remove</span><span class="params">()</span> throws Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size != <span class="number">0</span>) &#123;</span><br><span class="line">			T t = <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				<span class="built_in">queue</span>[i] = <span class="built_in">queue</span>[i + <span class="number">1</span>];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">queue</span>[size - <span class="number">1</span>] = null;</span><br><span class="line">			size--;</span><br><span class="line">			<span class="keyword">return</span> t;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"队列为空！"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// poll,移除并返问队列头部的元素,如果队列为空则返回null</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">poll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size != <span class="number">0</span>) &#123;</span><br><span class="line">			T t = <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				<span class="built_in">queue</span>[i] = <span class="built_in">queue</span>[i + <span class="number">1</span>];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">queue</span>[size - <span class="number">1</span>] = null;</span><br><span class="line">			size--;</span><br><span class="line">			<span class="keyword">return</span> t;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> null;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 当前队列长度</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> size;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 是否为空</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 遍历队列元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">			System.out.println(<span class="built_in">queue</span>[i]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>MyQueueTest 测试类</li>
+</ul>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> queuetest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class MyQueueTest &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">		MyQueue&lt;<span class="keyword">String</span>&gt; mq = <span class="keyword">new</span> MyQueue&lt;<span class="keyword">String</span>&gt;(<span class="number">4</span>);</span><br><span class="line">		mq.<span class="built_in">add</span>(<span class="string">"111"</span>);</span><br><span class="line">		mq.<span class="built_in">add</span>(<span class="string">"222"</span>);</span><br><span class="line">		mq.<span class="built_in">add</span>(<span class="string">"333"</span>);</span><br><span class="line">		mq.<span class="built_in">add</span>(<span class="string">"444"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());  <span class="comment">//4</span></span><br><span class="line"><span class="comment">//		mq.add("555");  //java.lang.Exception: 队列容量已满.</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());  <span class="comment">//4</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.offer(<span class="string">"666"</span>));  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());  <span class="comment">//4</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-----------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.element());  <span class="comment">//111</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.peek());  <span class="comment">//111</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-----------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.isEmpty());  <span class="comment">//false</span></span><br><span class="line">		mq.display();  <span class="comment">//111 222 333 444</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-----------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.remove());  <span class="comment">//111</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.remove());  <span class="comment">//222</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.remove());  <span class="comment">//333</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.remove());  <span class="comment">//444</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());    <span class="comment">//0</span></span><br><span class="line"><span class="comment">//		System.out.println(mq.remove());  //java.lang.Exception: 队列为空！</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.poll());  <span class="comment">//null</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.<span class="built_in">size</span>());  <span class="comment">//0</span></span><br><span class="line"><span class="comment">//		System.out.println(mq.element());  //java.lang.Exception: 队列为空！</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mq.peek());  <span class="comment">//null</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -2206,6 +2045,167 @@
 <li>TestMyHashMap测试类</li>
 </ul>
 <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> MyHashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class TestMyHashMap &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">		MyHashMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; mhm = <span class="keyword">new</span> MyHashMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt;();</span><br><span class="line">		mhm.put(<span class="string">"1"</span>, <span class="string">"111"</span>);</span><br><span class="line">		mhm.put(<span class="string">"2"</span>, <span class="string">"222"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">size</span>());  <span class="comment">//2</span></span><br><span class="line">		mhm.<span class="built_in">clear</span>();</span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.isEmpty());  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mhm.put(<span class="string">"1"</span>, <span class="string">"aaa"</span>);</span><br><span class="line">		mhm.put(<span class="string">"6"</span>, <span class="string">"fff"</span>);</span><br><span class="line">		mhm.put(<span class="string">"2"</span>, <span class="string">"bbb"</span>);</span><br><span class="line">		mhm.put(<span class="string">"5"</span>, <span class="string">"eee"</span>);</span><br><span class="line">		mhm.put(<span class="string">"4"</span>, <span class="string">"ddd"</span>);</span><br><span class="line">		mhm.put(<span class="string">"3"</span>, <span class="string">"ccc"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">size</span>());  <span class="comment">//6</span></span><br><span class="line">		mhm.remove(<span class="string">"2"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">size</span>());  <span class="comment">//5</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsKey(<span class="string">"5"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsKey(<span class="string">"2"</span>));  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsKey(<span class="string">"3"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsValue(<span class="string">"ccc"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsValue(<span class="string">"ggg"</span>));  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">get</span>(<span class="string">"6"</span>));  <span class="comment">//fff </span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">get</span>(<span class="string">"5"</span>));  <span class="comment">//eee</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">get</span>(<span class="string">"2"</span>));  <span class="comment">//null</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.isEmpty());  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mhm.diaplayAll();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/04/2015-11-4-HashMap-traverse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/04/2015-11-4-HashMap-traverse/" itemprop="url">
+                  Java HashMap的遍历
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-04T00:00:00+08:00">
+                2015-11-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/11/04/2015-11-4-HashMap-traverse/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/04/2015-11-4-HashMap-traverse/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>HashMap是java中非常重要的数据结构；</li>
+<li>本文提供了HashMap的若干种遍历方法，大体上分为两类：<ul>
+<li>通过Map.Entry遍历；</li>
+<li>通过keyset遍历；</li>
+</ul>
+</li>
+</ul>
+<h3 id="HashMap遍历方法汇总">HashMap遍历方法汇总</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test5;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.<span class="keyword">HashMap</span>;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Map.Entry;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class MapTest &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">		Map&lt;Integer, <span class="keyword">String</span>&gt; m = <span class="keyword">new</span> <span class="keyword">HashMap</span>&lt;Integer, <span class="keyword">String</span>&gt;();</span><br><span class="line">		m.put(<span class="number">1</span>, <span class="string">"aaa"</span>);</span><br><span class="line">		m.put(<span class="number">2</span>, <span class="string">"bbb"</span>);</span><br><span class="line">		m.put(<span class="number">3</span>, <span class="string">"ccc"</span>);</span><br><span class="line">		m.put(<span class="number">4</span>, <span class="string">"ddd"</span>);</span><br><span class="line">		m.put(<span class="number">5</span>, <span class="string">"eee"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法一</span></span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;Integer, <span class="keyword">String</span>&gt; entry : m.entrySet()) &#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + entry.getKey() + <span class="string">" value:"</span></span><br><span class="line">					+ entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法二</span></span><br><span class="line">		Iterator&lt;Entry&lt;Integer, <span class="keyword">String</span>&gt;&gt; it = m.entrySet().iterator();</span><br><span class="line">		<span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">			Map.Entry&lt;Integer, <span class="keyword">String</span>&gt; entry = it.next();</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + entry.getKey() + <span class="string">" value:"</span></span><br><span class="line">					+ entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法三</span></span><br><span class="line">		Set&lt;Integer&gt; s = m.keySet();</span><br><span class="line">		Iterator&lt;Integer&gt; it1 = s.iterator();</span><br><span class="line">		<span class="keyword">while</span> (it1.hasNext()) &#123;</span><br><span class="line">			<span class="built_in">int</span> i = it1.next();</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + i + <span class="string">" value:"</span></span><br><span class="line">					+ m.<span class="built_in">get</span>(i));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//遍历方法四</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="built_in">int</span> i : m.keySet())&#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span>+i+<span class="string">" value:"</span>+m.<span class="built_in">get</span>(i));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//遍历方法五  遍历所有的值  不能读取key</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">String</span> value:m.values())&#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"value:"</span>+value);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
