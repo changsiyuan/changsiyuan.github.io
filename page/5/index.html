@@ -320,6 +320,254 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/23/js-prototype/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/23/js-prototype/" itemprop="url">
+                  JavaScript 原型和原型链的理解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-23T00:00:00+08:00">
+                2015-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/11/23/js-prototype/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/23/js-prototype/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>原型和原型链是js中比较重要但也是比较难的内容；</li>
+<li>正是因为有了原型链的概念，js中的继承才成为可能；</li>
+<li>本文结合js内置的数据类型，说说我对js原型和原型链的理解；</li>
+</ul>
+<h3 id="Javascript和Java语言设计思想的区别">Javascript和Java语言设计思想的区别</h3><ul>
+<li>java<ul>
+<li>java是完全OOP的语言，对Java的认知是从类与对象开始的；</li>
+<li>class是一类具有共同特点的物体的抽象，object（对象）是某个class下具体的一个实现，Object类是所有类的顶层父类；</li>
+</ul>
+</li>
+<li>js<ul>
+<li>javascript是基于原型（而不是基于类的，尽管ES6新增了class关键字）的面向对象的语言，没有类的概念（ES6新增的类是语法糖）；</li>
+<li>javascript中的class本质上是一个函数对象，和java中的类的概念有本质区别；</li>
+<li>javascript存在类似面相对象的特性，这就是原型和原型链，从而派生出了类似于父类子类和继承的概念；</li>
+</ul>
+</li>
+<li>本图来自<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Details_of_the_Object_Model" target="_blank" rel="external">这里</a></li>
+</ul>
+<p><img src="/images/prototype/java-js-diff.png" alt="java-js-diff"></p>
+<h3 id="对象和数据类型">对象和数据类型</h3><ul>
+<li>js中的数据类型:<ul>
+<li>数据类型：string、number、boolean、object（数组、对象、null）、undefined、function；</li>
+<li>数组、对象、null是不精确的数据类型，在用typeof判断时均返回object；</li>
+<li>typeof关键字只能返回非精确的数据类型；</li>
+<li>用Object.prototype.toString判断精确的数据类型；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/prototype/type1.png" alt="type1"></p>
+<p><img src="/images/prototype/type2.png" alt="type2"></p>
+<ul>
+<li>首字母大小写的区别：<ul>
+<li>小写（string、number、boolean、object、null、undefined、function）表示数据类型；</li>
+<li>大写（String、Number、Boolean、Object、Array）表示js的内置对象（全部是function类型）；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/prototype/typeof.png" alt="typeof"></p>
+<ul>
+<li>js中对象的含义：<ul>
+<li>广义的对象（js一切皆为对象、包括window和document对象、也包括String、Number、Boolean、Object、Array、Math、Date等内置对象）；</li>
+<li>狭义的数据类型（数组、对象、null类型均为object，即被typeof关键字判断为object类型）;</li>
+<li>“对象”这种数据类型（请参考我的<a href="http://changsiyuan.github.io/2015/11/20/js-object/" target="_blank" rel="external">另一篇博客</a>）；</li>
+</ul>
+</li>
+</ul>
+<h3 id="原型链概述">原型链概述</h3><ul>
+<li>JavaScript中的每个对象都有一个内部的链接指向另一个对象，这个对象就是原对象的原型，这个原型对象也有自己的原型，直到对象的原型为 null 为止（也就是没有原型）；</li>
+<li>这种一级一级的链结构就称为原型链（prototype chain）；</li>
+<li>每个对象都有一个隐形的属性<strong>proto</strong>（两边都是双下划线），这个属性的值为一个地址，指向这个属性的原型对象，原型对象是每个对象都有指向的隐形对象；</li>
+<li>new出来的普通对象没有构造器，就没有prototype属性；</li>
+<li><strong>proto</strong>属性也可用someObject.[[Prototype]] 表示；</li>
+<li>如果一个对象是object类型，它的<strong>proto</strong>属性总是指向Object.prototype； </li>
+<li>如果一个对象是function类型，它的<strong>proto</strong>属性总是指向Function.prototype；</li>
+<li>继承属性：JavaScritp引擎在访问对象的属性时，如果在对象本身中没有找到，则会去原型链中查找，如果找到，直接返回值，如果整个链都遍历且没有找到属性，则返回undefined； </li>
+</ul>
+<h3 id="各种对象原型链的图示">各种对象原型链的图示</h3><ul>
+<li>String对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/string.png" alt="string"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> s = <span class="string">"sss"</span>;</span><br><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">String</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s); <span class="comment">//string</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.prototype.constructor); <span class="comment">// function String()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(s1);  <span class="comment">//String &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(s1.__proto__);  <span class="comment">//String &#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(s);  <span class="comment">//sss</span></span><br><span class="line"><span class="built_in">console</span>.log(s.__proto__);  <span class="comment">//String &#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Number对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/number.png" alt="number"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> n = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> n1 = <span class="keyword">new</span> <span class="built_in">Number</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n); <span class="comment">//number</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.prototype.constructor); <span class="comment">// function Number()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(n1);  <span class="comment">//Number &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(n1.__proto__);  <span class="comment">//Number &#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(n);  <span class="comment">//1</span></span><br><span class="line"><span class="built_in">console</span>.log(n.__proto__);  <span class="comment">//Number &#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Boolean对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/boolean.png" alt="boolean"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> b = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> b1 = <span class="keyword">new</span> <span class="built_in">Boolean</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Boolean</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b); <span class="comment">//boolean</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.prototype.constructor); <span class="comment">// function Boolean()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Boolean</span>.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(b1);  <span class="comment">//Boolean &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b1.__proto__);  <span class="comment">//Boolean &#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(b.__proto__);  <span class="comment">//Boolean &#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Array对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/array.png" alt="array"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> a =[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> <span class="built_in">Array</span>(); </span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Array</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.prototype.constructor); <span class="comment">// function Array()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(a1);  <span class="comment">//[]</span></span><br><span class="line"><span class="built_in">console</span>.log(a1.__proto__);  <span class="comment">//包含Array的各种方法</span></span><br><span class="line"><span class="built_in">console</span>.log(a);  <span class="comment">//[1,2,3]</span></span><br><span class="line"><span class="built_in">console</span>.log(a.__proto__);  <span class="comment">//包含Array的各种方法</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Function对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/function.png" alt="function"></p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   var f = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">var f1 = new <span class="function"><span class="keyword">Function</span><span class="params">()</span></span>; </span><br><span class="line"></span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span></span>);  //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>);  //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.constructor);  //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.__proto__);  //object</span><br><span class="line">console.<span class="built_in">log</span>(typeof <span class="function"><span class="keyword">Function</span>.<span class="title">__proto__</span></span>);  //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof f1); //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof f); //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof f1.__proto__); //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(typeof f.__proto__); //<span class="function"><span class="keyword">function</span></span></span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.constructor); // <span class="function"><span class="keyword">function</span></span> <span class="function"><span class="keyword">Function</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.__proto__);  //Object &#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">__proto__</span></span>);  //<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">__proto__</span></span> == <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>);  //true</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.constructor.__proto__ == <span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>);  //true</span><br><span class="line">console.<span class="built_in">log</span>(<span class="function"><span class="keyword">Function</span>.<span class="title">prototype</span></span>.__proto__ == Object.prototype);  //true</span><br><span class="line">console.<span class="built_in">log</span>(f1);  //<span class="function"><span class="keyword">function</span></span> anonymous()&#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(f1.__proto__);  //<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(f);  //<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">console.<span class="built_in">log</span>(f.__proto__);  //<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Object对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/object.png" alt="object"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> o1 = <span class="keyword">new</span> <span class="built_in">Object</span>(); </span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> o1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> o); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> o1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> o.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.constructor); <span class="comment">// function Object()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.__proto__);  <span class="comment">//null</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.__proto__ == <span class="literal">null</span>);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(o1);  <span class="comment">//Object&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o1.__proto__);  <span class="comment">//Object&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o);  <span class="comment">//Object&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o.__proto__);  <span class="comment">//Object&#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>自定义对象的原型链</li>
+</ul>
+<p><img src="/images/prototype/myobject.png" alt="myobject"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name;</span><br><span class="line">	<span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">"Jack"</span>,<span class="number">22</span>);</span><br><span class="line"><span class="keyword">var</span> p = &#123;<span class="string">"Jack"</span>:<span class="number">22</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person.prototype);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person.prototype.constructor);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person.prototype.__proto__);  <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> Person.__proto__);  <span class="comment">//function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> p1); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> p); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> p1.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> p.__proto__); <span class="comment">//object</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.constructor); <span class="comment">// function Person()&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.__proto__);  <span class="comment">//Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.__proto__);  <span class="comment">//function()&#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.constructor.__proto__ == <span class="built_in">Function</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.__proto__ == <span class="built_in">Object</span>.prototype);  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(p1);  <span class="comment">//Person &#123;name: "Jack", age: 22&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(p1.__proto__);  <span class="comment">//Person&#123;...&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(p);  <span class="comment">//Object &#123;Jack: 22&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(p.__proto__);  <span class="comment">//Object&#123;...&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>最后附上一张知乎上面大神画的图，清楚地表示了Object和Function的继承关系</li>
+</ul>
+<p><img src="/images/prototype/prototype.png" alt="prototype"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/20/js-object/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1013,210 +1261,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/06/2015-11-6-safer-JSONP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/06/2015-11-6-safer-JSONP/" itemprop="url">
-                  定义更安全的JSONP
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-06T00:00:00+08:00">
-                2015-11-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/translation/" itemprop="url" rel="index">
-                    <span itemprop="name">translation</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/11/06/2015-11-6-safer-JSONP/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/06/2015-11-6-safer-JSONP/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="说明">说明</h3><ul>
-<li>本文翻译自<a href="http://json-p.org/" target="_blank" rel="external">这篇文章</a></li>
-<li>文中并未就JSOPN提出更加安全的一个定义，但是为跨域访问策略的发展指明了一个方向；</li>
-</ul>
-<h3 id="引言">引言</h3><ul>
-<li>JSON是一种轻量级的数据交换格式。它是由Douglas Crockford正式提出的规范。JSON作为在两个实体间进行数据传输的强大工具的代表，无论发收数据的实体采用的是什么计算机语言，JSON已经被越来越多的接受和使用。</li>
-</ul>
-<h3 id="跨域访问的AJAX–简介">跨域访问的AJAX–简介</h3><ul>
-<li>浏览器的同源策略决定了，在数据传输时，如果目标资源所在的域等同于发出请求的页面，这样的传输行为才被允许。这一措施被所有的现代浏览器所采用，以防止不必要的或不安全的恶意JavaScript的用户行为。</li>
-<li>跨域Ajax是指突破同源策略的限制，使得跨域请求成为可能的想法。事实上，跨域的Ajax不是绝对的不安全或邪恶的，它实际上是许多世界上最流行和实用的应用中必不可少的。但是，由于种种原因，跨域Ajax始终和同源策略格格不入。</li>
-</ul>
-<h3 id="JSON-P_(JSONP)">JSON-P (JSONP)</h3><ul>
-<li>JSONP是这样的一个机制，它可以通过<code>&lt;script&gt;</code>标签请求不同域的内容。 2005年12月，Bob Ippolito正式提出JSONP（后来被称为JSON-P或JSON-with-padding），以此来充分利用的<code>&lt;script&gt;</code>标签的属性，实现跨域请求JSON格式的数据。JSON-P的工作原理是使一个<code>&lt;script&gt;</code>元素（HTML标签或通过JavaScript插入到DOM中），它请求服务器端的数据服务。HTTP请求的响应（装“的JavaScript”的实体内容）的内容是在请求中预先定义的，它通过参数传递给服务器端，提供被请求的JSON格式的数据的名称。当脚本执行时，相应的函数被调用，回传JSON格式的数据，从而使请求页面接收和处理这些数据。例子如下：</li>
-</ul>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle_data</span><span class="params">(data)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// `data` is now the object representation of the JSON data</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http:</span><span class="comment">//some.tld/web/service?callback=handle_data:</span></span><br><span class="line"></span><br><span class="line">handle_data(&#123;<span class="string">"data_1"</span>: <span class="string">"hello world"</span>, <span class="string">"data_2"</span>: [<span class="string">"the"</span>,<span class="string">"sun"</span>,<span class="string">"is"</span>,<span class="string">"shining"</span>]&#125;);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>正如你所看到的，远端Web服务通过请求URL中的参数知道调用的函数的名称。只要该函数是在请求页面实际定义的，它会在收到数据后被调用。</li>
-</ul>
-<h3 id="问题">问题</h3><ul>
-<li>迄今，JSON-P基本上已经被会议非正式的定义，事实上，浏览器可以接受任意的JavaScript响应。这意味着，任何依靠JSON-P的实现跨域访问的策略其实都将带来同源策略试图避免的危害。例如，一个恶意的Web服务可以通过调用函数发送JSONP请求，黑客可以通过返回的JavaScript信息窃取用户的隐私数据等。</li>
-<li>出于这个原因，很多人将JSON-P视为一种不安全和易被黑客利用的跨域Ajax策略，这似乎理由非常充分。所以，程序员们必须足够用心，在调用远程Web服务之前必须确认对方是受控或受信任的，这样才能避免他们的用户受到伤害。</li>
-</ul>
-<h3 id="替代方案">替代方案</h3><ul>
-<li>有很多替代JSON-P实现跨域请求的办法，但每种方案都有自己的缺点和面临的挑战。这些技术将不会在这里详细介绍，除了这个：CORS（跨域资源共享）。 这是最近最流行的的JavaScript跨域Ajax调用方案之一。简单地说，CORS是一种扩展的XMLHttpRequest（又名“XHR”）对象，它可以让浏览器进行跨域调用（尽管存在同源策略的限制）。它会首先“预检测”目标服务器，确认服务器允许它这样做。</li>
-<li>换句话说，远程服务器能够选择加入或退出此类通信，基于它认为是否是合适的。例如，一台服务器可以应答用户端的Ajax请求，并从唯一认可的网站域名的一个预先定义的列表中获取一些内容回传客户端，而且拒绝任何其他页面中的所有其他请求。或者，如果服务器认为适合这样做，它可以开放其内容被任何其它域进行检索。</li>
-<li>乍一看，CORS可能看起来像是跨域Ajax请求的理想解决方案，使“黑客”无从下手。Nicholas Zakas最近写了一篇关于CORS的跨域Ajax请求方案，并指出它是浏览器跨域Ajax请求的解决方案中最有希望的一个。</li>
-<li>CORS是否将最终成为浏览器跨域访问解决方案的标准，我们将拭目以待。当然它也有一些缺点，很可能存在一些细节问题（devil is always in the details）。</li>
-<li>首先，CORS需要实现一个Web服务，以实现拦截HTTP请求头中特殊的“预检”的授权请求，并根据服务器相关的策略，决定响应的格式。如果一个基于JSON格式的网络服务需要JSON-P跨域请求的支持，这相当简单，只需在一个函数调用中包装JSON数据块即可。</li>
-<li>在所有的互联网Web服务实现回传自定义数据更加值得期待，当然这取决于Web服务器软件的权限设置。这种技术可能需要若干年才能流行开来，并实现大部分的网络服务供应商兼容CORS。截至目前，这是非常新的技术，很少Web服务已经这样做了。</li>
-<li>此外，CORS仅在IE8浏览器开始实施（尽管有一些轻微的语法上的不同），尚未兼容Opera。因此，不支持CORS的情况时有发生，这意味着替代跨域Ajax的备选方案也许在1-3年后才可能推广开来。</li>
-</ul>
-<h3 id="可能的解决方案">可能的解决方案</h3><ul>
-<li>现在，JSON-P是跨域Ajax一个可行的解决方案。CORS可以减少黑客攻击的可能性，它可能应该在JSON-P技术串联部署，从而在不支持CORS的浏览器推广开来。然而，JSON-P的安全问题应当认真考虑并加以解决。</li>
-<li>所以，JSON-P严格的子集的定义是非常必要的。下面我们将介绍什么应视为有效、安全、可被允许的JSON-P。</li>
-</ul>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">functionName(&#123;JSON&#125;);</span><br><span class="line"></span><br><span class="line">obj.functionName(&#123;JSON&#125;);</span><br><span class="line"></span><br><span class="line">obj[<span class="link_label">"function-name"</span>](<span class="link_url">&#123;JSON&#125;</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>其含义是，只能有一个函数表达式（函数的引用，或对象属性的引用）可用于作为该函数的JSON-P的响应，在这个单一的()中一定是严格有效的、可解析JSON对象。函数调用可以选择性地跟着一个分号。</li>
-<li>该提案的最关键的部分是浏览器厂商必须开始强制将这条规则应用于接收JSON-P回传数据的的<code>&lt;script&gt;</code>脚本上，并对任何不符合JSONP内容的错误抛出异常（或至少停止处理）。</li>
-<li>为了使浏览器能够知道什么时候应该过滤内容，或是看作是常规的JavaScript内容，MIME类型为“application / JSON-P”和/或“text/ JSON-P”的必须请求<code>&lt;script&gt;</code>标签中声明。</li>
-</ul>
-<h3 id="缺点">缺点</h3><ul>
-<li>不支持CORS的浏览器以及将来也不支持CORS的浏览器将不会拥有JSON-P的严格保护，这意味着，使用这些浏览器的用户将不会得到保护。但是，目前所有的浏览器都可以增加这个内容过滤功能，这对于使用尚未兼容CORS的浏览器的用户是一种安全支持。</li>
-</ul>
-<h3 id="注解">注解</h3><ul>
-<li>一个可能的帮助老的浏览器用户安全的利用JSON-P技术的方案是提前检测浏览器没有这样的支持，并只对那些在不安全的浏览器中的、有条件的连接发出的请求启用本地服务器代理，它可以作为一个网关，并根据上面提到的逻辑进行内容过滤。</li>
-</ul>
-<h3 id="前瞻">前瞻</h3><ul>
-<li>这是第一次讨论安全的JSON-P。在此，我主张在社区开放讨论，共同寻找可以向W3C，WHATWG和浏览器厂商宣传的一个可行的定义。</li>
-<li>最好方法是回复本文，或从本讨论建立链接。此外，本网站代码已经托管在GitHub上，你可以fork或修改以便继续讨论，然后通过pull操作更新讨论。最后，你可以在下面的评论表中作简短评论，但请保持简短，以便他人跟踪讨论进度。</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/06/2015-11-6-java-binary-tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1536,6 +1580,210 @@
 <li>TestMyHeap为测试类</li>
 </ul>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">package heap;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">class</span> TestMyHeap &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] <span class="keyword">args</span>) &#123;</span><br><span class="line">		MyHeap&lt;Integer&gt; <span class="keyword">h</span> = new MyHeap&lt;Integer&gt;(Integer.<span class="keyword">class</span>); </span><br><span class="line">		<span class="keyword">h</span>.insert(10);</span><br><span class="line">		<span class="keyword">h</span>.insert(11);</span><br><span class="line">		<span class="keyword">h</span>.insert(9);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.size());  <span class="comment">//3 </span></span><br><span class="line">		<span class="keyword">h</span>.getPreOrder();  <span class="comment">//9 11 10</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">h</span>.<span class="keyword">clear</span>();</span><br><span class="line">		<span class="keyword">h</span>.insert(10);</span><br><span class="line">		<span class="keyword">h</span>.insert(11);</span><br><span class="line">		<span class="keyword">h</span>.insert(8);</span><br><span class="line">		<span class="keyword">h</span>.insert(9);</span><br><span class="line">		<span class="keyword">h</span>.insert(10);</span><br><span class="line">		<span class="keyword">h</span>.insert(12);</span><br><span class="line">		<span class="keyword">h</span>.insert(6);</span><br><span class="line">		<span class="keyword">h</span>.insert(13);</span><br><span class="line">		<span class="keyword">h</span>.insert(4);</span><br><span class="line">		<span class="keyword">h</span>.insert(7);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.size());  <span class="comment">//10</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.minEle());  <span class="comment">//4</span></span><br><span class="line">		<span class="keyword">h</span>.getPreOrder();  <span class="comment">//4 6 8 9 7 12 10 13 11 10</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getParentEle(4));  <span class="comment">//4</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getParentEle(6));  <span class="comment">//4</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getParentEle(12)); <span class="comment">//8</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getParentEle(13)); <span class="comment">//9</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getParentEle(14)); <span class="comment">//null</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getLeftChildEle(4));  <span class="comment">//6</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getLeftChildEle(13)); <span class="comment">//null</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getLeftChildEle(7));  <span class="comment">//10</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getLeftChildEle(14)); <span class="comment">//null</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getRightChildEle(4));  <span class="comment">//8</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getRightChildEle(8));  <span class="comment">//10</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getRightChildEle(7));  <span class="comment">//null</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">h</span>.getRightChildEle(11)); <span class="comment">//null</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/06/2015-11-6-safer-JSONP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/06/2015-11-6-safer-JSONP/" itemprop="url">
+                  定义更安全的JSONP
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-06T00:00:00+08:00">
+                2015-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index">
+                    <span itemprop="name">translation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/11/06/2015-11-6-safer-JSONP/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/06/2015-11-6-safer-JSONP/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="说明">说明</h3><ul>
+<li>本文翻译自<a href="http://json-p.org/" target="_blank" rel="external">这篇文章</a></li>
+<li>文中并未就JSOPN提出更加安全的一个定义，但是为跨域访问策略的发展指明了一个方向；</li>
+</ul>
+<h3 id="引言">引言</h3><ul>
+<li>JSON是一种轻量级的数据交换格式。它是由Douglas Crockford正式提出的规范。JSON作为在两个实体间进行数据传输的强大工具的代表，无论发收数据的实体采用的是什么计算机语言，JSON已经被越来越多的接受和使用。</li>
+</ul>
+<h3 id="跨域访问的AJAX–简介">跨域访问的AJAX–简介</h3><ul>
+<li>浏览器的同源策略决定了，在数据传输时，如果目标资源所在的域等同于发出请求的页面，这样的传输行为才被允许。这一措施被所有的现代浏览器所采用，以防止不必要的或不安全的恶意JavaScript的用户行为。</li>
+<li>跨域Ajax是指突破同源策略的限制，使得跨域请求成为可能的想法。事实上，跨域的Ajax不是绝对的不安全或邪恶的，它实际上是许多世界上最流行和实用的应用中必不可少的。但是，由于种种原因，跨域Ajax始终和同源策略格格不入。</li>
+</ul>
+<h3 id="JSON-P_(JSONP)">JSON-P (JSONP)</h3><ul>
+<li>JSONP是这样的一个机制，它可以通过<code>&lt;script&gt;</code>标签请求不同域的内容。 2005年12月，Bob Ippolito正式提出JSONP（后来被称为JSON-P或JSON-with-padding），以此来充分利用的<code>&lt;script&gt;</code>标签的属性，实现跨域请求JSON格式的数据。JSON-P的工作原理是使一个<code>&lt;script&gt;</code>元素（HTML标签或通过JavaScript插入到DOM中），它请求服务器端的数据服务。HTTP请求的响应（装“的JavaScript”的实体内容）的内容是在请求中预先定义的，它通过参数传递给服务器端，提供被请求的JSON格式的数据的名称。当脚本执行时，相应的函数被调用，回传JSON格式的数据，从而使请求页面接收和处理这些数据。例子如下：</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle_data</span><span class="params">(data)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// `data` is now the object representation of the JSON data</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http:</span><span class="comment">//some.tld/web/service?callback=handle_data:</span></span><br><span class="line"></span><br><span class="line">handle_data(&#123;<span class="string">"data_1"</span>: <span class="string">"hello world"</span>, <span class="string">"data_2"</span>: [<span class="string">"the"</span>,<span class="string">"sun"</span>,<span class="string">"is"</span>,<span class="string">"shining"</span>]&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>正如你所看到的，远端Web服务通过请求URL中的参数知道调用的函数的名称。只要该函数是在请求页面实际定义的，它会在收到数据后被调用。</li>
+</ul>
+<h3 id="问题">问题</h3><ul>
+<li>迄今，JSON-P基本上已经被会议非正式的定义，事实上，浏览器可以接受任意的JavaScript响应。这意味着，任何依靠JSON-P的实现跨域访问的策略其实都将带来同源策略试图避免的危害。例如，一个恶意的Web服务可以通过调用函数发送JSONP请求，黑客可以通过返回的JavaScript信息窃取用户的隐私数据等。</li>
+<li>出于这个原因，很多人将JSON-P视为一种不安全和易被黑客利用的跨域Ajax策略，这似乎理由非常充分。所以，程序员们必须足够用心，在调用远程Web服务之前必须确认对方是受控或受信任的，这样才能避免他们的用户受到伤害。</li>
+</ul>
+<h3 id="替代方案">替代方案</h3><ul>
+<li>有很多替代JSON-P实现跨域请求的办法，但每种方案都有自己的缺点和面临的挑战。这些技术将不会在这里详细介绍，除了这个：CORS（跨域资源共享）。 这是最近最流行的的JavaScript跨域Ajax调用方案之一。简单地说，CORS是一种扩展的XMLHttpRequest（又名“XHR”）对象，它可以让浏览器进行跨域调用（尽管存在同源策略的限制）。它会首先“预检测”目标服务器，确认服务器允许它这样做。</li>
+<li>换句话说，远程服务器能够选择加入或退出此类通信，基于它认为是否是合适的。例如，一台服务器可以应答用户端的Ajax请求，并从唯一认可的网站域名的一个预先定义的列表中获取一些内容回传客户端，而且拒绝任何其他页面中的所有其他请求。或者，如果服务器认为适合这样做，它可以开放其内容被任何其它域进行检索。</li>
+<li>乍一看，CORS可能看起来像是跨域Ajax请求的理想解决方案，使“黑客”无从下手。Nicholas Zakas最近写了一篇关于CORS的跨域Ajax请求方案，并指出它是浏览器跨域Ajax请求的解决方案中最有希望的一个。</li>
+<li>CORS是否将最终成为浏览器跨域访问解决方案的标准，我们将拭目以待。当然它也有一些缺点，很可能存在一些细节问题（devil is always in the details）。</li>
+<li>首先，CORS需要实现一个Web服务，以实现拦截HTTP请求头中特殊的“预检”的授权请求，并根据服务器相关的策略，决定响应的格式。如果一个基于JSON格式的网络服务需要JSON-P跨域请求的支持，这相当简单，只需在一个函数调用中包装JSON数据块即可。</li>
+<li>在所有的互联网Web服务实现回传自定义数据更加值得期待，当然这取决于Web服务器软件的权限设置。这种技术可能需要若干年才能流行开来，并实现大部分的网络服务供应商兼容CORS。截至目前，这是非常新的技术，很少Web服务已经这样做了。</li>
+<li>此外，CORS仅在IE8浏览器开始实施（尽管有一些轻微的语法上的不同），尚未兼容Opera。因此，不支持CORS的情况时有发生，这意味着替代跨域Ajax的备选方案也许在1-3年后才可能推广开来。</li>
+</ul>
+<h3 id="可能的解决方案">可能的解决方案</h3><ul>
+<li>现在，JSON-P是跨域Ajax一个可行的解决方案。CORS可以减少黑客攻击的可能性，它可能应该在JSON-P技术串联部署，从而在不支持CORS的浏览器推广开来。然而，JSON-P的安全问题应当认真考虑并加以解决。</li>
+<li>所以，JSON-P严格的子集的定义是非常必要的。下面我们将介绍什么应视为有效、安全、可被允许的JSON-P。</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">functionName(&#123;JSON&#125;);</span><br><span class="line"></span><br><span class="line">obj.functionName(&#123;JSON&#125;);</span><br><span class="line"></span><br><span class="line">obj[<span class="link_label">"function-name"</span>](<span class="link_url">&#123;JSON&#125;</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其含义是，只能有一个函数表达式（函数的引用，或对象属性的引用）可用于作为该函数的JSON-P的响应，在这个单一的()中一定是严格有效的、可解析JSON对象。函数调用可以选择性地跟着一个分号。</li>
+<li>该提案的最关键的部分是浏览器厂商必须开始强制将这条规则应用于接收JSON-P回传数据的的<code>&lt;script&gt;</code>脚本上，并对任何不符合JSONP内容的错误抛出异常（或至少停止处理）。</li>
+<li>为了使浏览器能够知道什么时候应该过滤内容，或是看作是常规的JavaScript内容，MIME类型为“application / JSON-P”和/或“text/ JSON-P”的必须请求<code>&lt;script&gt;</code>标签中声明。</li>
+</ul>
+<h3 id="缺点">缺点</h3><ul>
+<li>不支持CORS的浏览器以及将来也不支持CORS的浏览器将不会拥有JSON-P的严格保护，这意味着，使用这些浏览器的用户将不会得到保护。但是，目前所有的浏览器都可以增加这个内容过滤功能，这对于使用尚未兼容CORS的浏览器的用户是一种安全支持。</li>
+</ul>
+<h3 id="注解">注解</h3><ul>
+<li>一个可能的帮助老的浏览器用户安全的利用JSON-P技术的方案是提前检测浏览器没有这样的支持，并只对那些在不安全的浏览器中的、有条件的连接发出的请求启用本地服务器代理，它可以作为一个网关，并根据上面提到的逻辑进行内容过滤。</li>
+</ul>
+<h3 id="前瞻">前瞻</h3><ul>
+<li>这是第一次讨论安全的JSON-P。在此，我主张在社区开放讨论，共同寻找可以向W3C，WHATWG和浏览器厂商宣传的一个可行的定义。</li>
+<li>最好方法是回复本文，或从本讨论建立链接。此外，本网站代码已经托管在GitHub上，你可以fork或修改以便继续讨论，然后通过pull操作更新讨论。最后，你可以在下面的评论表中作简短评论，但请保持简短，以便他人跟踪讨论进度。</li>
+</ul>
 
           
         
@@ -2079,172 +2327,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/04/2015-11-4-HashMap-traverse/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/04/2015-11-4-HashMap-traverse/" itemprop="url">
-                  Java HashMap的遍历
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-04T00:00:00+08:00">
-                2015-11-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/11/04/2015-11-4-HashMap-traverse/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/04/2015-11-4-HashMap-traverse/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>HashMap是java中非常重要的数据结构；</li>
-<li>本文提供了HashMap的若干种遍历方法，大体上分为两类：<ul>
-<li>通过Map.Entry遍历；</li>
-<li>通过keyset遍历；</li>
-</ul>
-</li>
-</ul>
-<h3 id="HashMap遍历方法汇总">HashMap遍历方法汇总</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test5;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.<span class="keyword">HashMap</span>;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Map.Entry;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class MapTest &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">		Map&lt;Integer, <span class="keyword">String</span>&gt; m = <span class="keyword">new</span> <span class="keyword">HashMap</span>&lt;Integer, <span class="keyword">String</span>&gt;();</span><br><span class="line">		m.put(<span class="number">1</span>, <span class="string">"aaa"</span>);</span><br><span class="line">		m.put(<span class="number">2</span>, <span class="string">"bbb"</span>);</span><br><span class="line">		m.put(<span class="number">3</span>, <span class="string">"ccc"</span>);</span><br><span class="line">		m.put(<span class="number">4</span>, <span class="string">"ddd"</span>);</span><br><span class="line">		m.put(<span class="number">5</span>, <span class="string">"eee"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法一</span></span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;Integer, <span class="keyword">String</span>&gt; entry : m.entrySet()) &#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + entry.getKey() + <span class="string">" value:"</span></span><br><span class="line">					+ entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法二</span></span><br><span class="line">		Iterator&lt;Entry&lt;Integer, <span class="keyword">String</span>&gt;&gt; it = m.entrySet().iterator();</span><br><span class="line">		<span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">			Map.Entry&lt;Integer, <span class="keyword">String</span>&gt; entry = it.next();</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + entry.getKey() + <span class="string">" value:"</span></span><br><span class="line">					+ entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法三</span></span><br><span class="line">		Set&lt;Integer&gt; s = m.keySet();</span><br><span class="line">		Iterator&lt;Integer&gt; it1 = s.iterator();</span><br><span class="line">		<span class="keyword">while</span> (it1.hasNext()) &#123;</span><br><span class="line">			<span class="built_in">int</span> i = it1.next();</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + i + <span class="string">" value:"</span></span><br><span class="line">					+ m.<span class="built_in">get</span>(i));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//遍历方法四</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="built_in">int</span> i : m.keySet())&#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span>+i+<span class="string">" value:"</span>+m.<span class="built_in">get</span>(i));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//遍历方法五  遍历所有的值  不能读取key</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">String</span> value:m.values())&#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"value:"</span>+value);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2289,7 +2376,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">91</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

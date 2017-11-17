@@ -320,6 +320,190 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/26/js-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/26/js-function/" itemprop="url">
+                  javascript 函数解析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-26T00:00:00+08:00">
+                2015-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/10/26/js-function/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/26/js-function/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>javascript中，函数是重要的机制，可以避免页面载入时执行该脚本，这些代码只能被事件激活，或者在函数被调用时才会执行；</li>
+<li>本文总结了javascript函数的定义和调用方法，以供参考；</li>
+</ul>
+<h3 id="javascript函数的定义">javascript函数的定义</h3><ul>
+<li>直接定义函数：</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span></span>&#123;   </span><br><span class="line">	alert(<span class="string">"..."</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过函数字面量定义</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> func = <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span>&#123;  </span><br><span class="line">    alert(x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过构造函数定义：</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> func2 = <span class="keyword">new</span> <span class="function"><span class="keyword">Function</span><span class="params">(x,alert<span class="params">(x)</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="javascript函数的调用">javascript函数的调用</h3><ul>
+<li>直接通过函数名调用：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;   </span><br><span class="line">    alert(<span class="string">"..."</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test();          </span><br><span class="line"><span class="built_in">window</span>.onload = test();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过变量调用：</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function test()&#123;   </span><br><span class="line">    alert(<span class="string">"..."</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable"><span class="keyword">var</span> fun</span> = test;  </span><br><span class="line"><span class="function"><span class="title">fun</span><span class="params">()</span>;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>下面两种方法可让函数自动执行</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> test<span class="list">()</span><span class="collection">&#123;   </span><br><span class="line">    alert<span class="list">(<span class="string">"..."</span>)</span><span class="comment">;</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span></span><br><span class="line"></span><br><span class="line"><span class="list">(<span class="keyword">function</span> test<span class="list">()</span><span class="collection">&#123;   </span><br><span class="line">    alert<span class="list">(<span class="string">"..."</span>)</span><span class="comment">;</span></span><br><span class="line">&#125;</span><span class="list">()</span>)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>下面的代码会发生错误，请注意括号</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span></span>&#123;   <span class="comment">//error</span></span><br><span class="line">	alert(<span class="string">"..."</span>);</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/26/js-Closure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2465,186 +2649,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/31/2015-7-31-git-command/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/07/31/2015-7-31-git-command/" itemprop="url">
-                  git常用命令
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-31T00:00:00+08:00">
-                2015-07-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/07/31/2015-7-31-git-command/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/31/2015-7-31-git-command/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="引言">引言</h2><ul>
-<li>git是常用的版本管理工具</li>
-<li>本文总结了git最常用的命令，应当熟记于心</li>
-<li>使用git应当尽量使用命令行，这样可以帮助熟悉git的流程</li>
-</ul>
-<h2 id="配置和状态：">配置和状态：</h2><p>git status        git现在状态</p>
-<p>git init         初始化git，生成 .git 文件；</p>
-<h2 id="常用动作：">常用动作：</h2><p>git clone (url)        将工程的master分支clone下来；</p>
-<p>git clone (url) (空格) (目录)        仅仅将repository某个目录clone到本地；</p>
-<p>git clone (url) (空格) /(目录)        将git这个目录下的所有文件下载到本地这个目录下；</p>
-<p>git  clone  -b  branchName  (url)        将一个分支clone到本地；</p>
-<p>git  checkout  -b   csy_ui   origin/csy_ui_m     clone另一个分支到本地的新建分支中；</p>
-<p>git checkout  branchName        切换到某个分支，在checkout前需保证当前分支已经commit，否则会报错；</p>
-<p>git  merge  (被合并分支名称)      将被合并分支合并到当前分支，执行此命令后，没有冲突的都已经merge到当前分支，有冲突的会提示，用编辑器解决完冲突后，直接add以及commit即可完成整个merge过程，不用重新merge；</p>
-<p>git branch test        新建名为test的分支；</p>
-<p>git checkout -b test        新建名为test的分支，并checkout到该分支；</p>
-<p>git add .        add改动到暂存区域；</p>
-<p>git commit -a  -m “….”        commit改动到repository；</p>
-<p>git push origin master        push到名字为origin的远端的master分支中；</p>
-<p>git diff        对比当前分支在当前状态下和刚刚写换到这个分支的时候有什么不同，列出改动的文件和具体改动哪些内容；</p>
-<p>git  mv  old_name new_name        重命名文件</p>
-<h2 id="历史和记录：">历史和记录：</h2><p>git log/git log –graph        查看git历史动作</p>
-<p>history        查看git命令历史记录</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2689,7 +2698,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">91</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
