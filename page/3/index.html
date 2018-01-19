@@ -320,6 +320,317 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/10/2016-3-10-jQuery3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/10/2016-3-10-jQuery3/" itemprop="url">
+                  jQuery3新特性
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-10T00:00:00+08:00">
+                2016-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index">
+                    <span itemprop="name">translation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/03/10/2016-3-10-jQuery3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/10/2016-3-10-jQuery3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="说明">说明</h3><ul>
+<li>本文为翻译文章，原文<a href="http://developer.telerik.com/featured/whats-new-in-jquery-3/?utm_source=javascriptweekly&amp;utm_medium=email" target="_blank" rel="external">在这里</a></li>
+<li>本文作者：Aurelio De Rosa</li>
+<li>本文总结了jQuery3新特性，作为jQuery开发者的参考</li>
+</ul>
+<h3 id="引言">引言</h3><ul>
+<li>jQuery影响网页开发已经有十年的时间，它一路走来源于它的诸多优势。 jQuery为用户提供了一个易于使用的与DOM交互方式，比如：执行Ajax请求，创建动画，等等。此外，不同于纯DOM的API，jQuery实现了复合模式。正因为如此，你在不用知道元素数量的前提下，可以方便调用一个jQuery集合或是一个jQuery方法。</li>
+<li>在未来的几个星期，一个重要的时间节点将要到来，jQuery将发布版本3，其中修复了很多的bug，增加了新的方法，弃用并删除了一些功能，改变了一些功能的行为。在这篇文章中，我将讲解jQuery3引入的最重要的变化。</li>
+</ul>
+<h3 id="新特性">新特性</h3><blockquote>
+<ul>
+<li>在下面的章节，我将讨论jQuery3中添加的最重要的特性。</li>
+</ul>
+</blockquote>
+<h4 id="FOR…OF_LOOP">FOR…OF LOOP</h4><ul>
+<li>jQuery3将提供for…of 循环来遍历一个jQuery集合的DOM元素。这种新的迭代器是ECMAScript 2015（又名的ECMAScript6）规范的一部分。它可以让你方便的迭代对象（包括阵列，地图，设置，等等）。</li>
+<li>当使用这种新的迭代方式的时候，您会收到一个不是jQuery的集合，从中仅可以在同一时间访问一个DOM元素。这个迭代器将使你可以在一个jQuery集合执行操作的方式略有提升。</li>
+<li>为了理解这个迭代器是如何工作的，我们举个例子。比如你想分配一个ID给页面的每个输入元素。 jQuery的3之前你可以这样写：</li>
+</ul>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var <span class="variable">$inputs</span> = $(<span class="string">'input'</span>);</span><br><span class="line"><span class="keyword">for</span>(var i = <span class="number">0</span>; i &lt; <span class="variable">$inputs</span>.length; i++) &#123;</span><br><span class="line">   <span class="variable">$inputs</span>[i].id = <span class="string">'input-'</span> + i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在jQuery3中可以这样写：</li>
+</ul>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var <span class="variable">$inputs</span> = $(<span class="string">'input'</span>);var i = <span class="number">0</span>; </span><br><span class="line"><span class="keyword">for</span>(var input <span class="keyword">of</span> <span class="variable">$inputs</span>) &#123;</span><br><span class="line">  input.id = <span class="string">'input-'</span> + i++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="$-GET()_AND_$-POST()的新属性"><code>$.GET()</code> AND <code>$.POST()</code>的新属性</h4><ul>
+<li>jQuery3增加了<code>$.get()</code>和<code>$.post()</code>的新属性，他们是ajax的具体实现。添加新的属性是：</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="function"><span class="title">get</span><span class="params">([settings])</span></span></span><br><span class="line">$.<span class="function"><span class="title">post</span><span class="params">([settings])</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>setting是一个对象，可以拥有许多属性。你可以给$.ajax()提供相同的对象。要了解更多内容，请参阅<a href="http://api.jquery.com/jquery.ajax/#jQuery-ajax-settings" target="_blank" rel="external">$.ajax()</a>。</li>
+<li>在给<code>$.get()</code>、<code>$.post()</code>传送对象和给<code>$.ajax()</code>传送对象的最大的区别是方法的属性始终被忽略掉。产生这种情况的原因是<code>$.get()</code>、<code>$.post()</code>对象有一个预设的HTTP方法来执行Ajax请求（GET方法对应<code>$.get()</code>、POST方法对应<code>$.post()</code>）。最基本的一个原则是，你不能尝试通过<code>$.get()</code>去发送POST请求。</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$.get(&#123;</span><br><span class="line">   url: 'https://www.audero.it',</span><br><span class="line">   <span class="keyword">method</span>: '<span class="type">POST</span>' // <span class="type">This</span> property <span class="keyword">is</span> ignored</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>尽管显式设置了请求的方法为POST，这段代码仍将发出GET而非POST请求。</li>
+</ul>
+<h4 id="使用REQUESTANIMATIONFRAME()播放动画">使用REQUESTANIMATIONFRAME()播放动画</h4><ul>
+<li>所有现代浏览器，包括Internet Explorer10及以上，都支持requestAnimationFrame。在实际操作中，jQuery3播放动画时，使用这个API将使得动画的播放更加平滑，而且消耗更少的CPU资源。</li>
+</ul>
+<h4 id="UNWRAP()">UNWRAP()</h4><ul>
+<li>jQuery3对于unwrap()函数增加了一个可选的选择参数。该方法现在可以这么使用：</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">unwrap</span><span class="params">([selector])</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>由于这种变化，你可以在unwrap函数中添加选择器。如果选择器存在匹配的DOM对象，则匹配的子元素是展开；否则，不进行操作。</li>
+</ul>
+<h3 id="未来的变化">未来的变化</h3><blockquote>
+<ul>
+<li>jQuery3还修改了它的一些功能的行为。</li>
+</ul>
+</blockquote>
+<h4 id="VISIBLE_和_:HIDDEN">VISIBLE 和 :HIDDEN</h4><ul>
+<li>新版的jQuery更改了:visible 和:hidden的含义，如果元素存在盒模型（包括那些宽度和高度为零的盒模型），这样的元素将被认为是:visible的。例如，<br>元素和一些没有内容的行内元素在jQuery3中就会被:visible选择器选中。所以，如果您页面上结构如下：</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;div&gt;</span><span class="tag">&lt;/div&gt;</span></span><br><span class="line"><span class="tag">&lt;br /&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>而且您写了如下的代码：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log($(<span class="string">'body :visible'</span>).length);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在jQuery1和jQuery2中，您将获取0，在jQuery3中，您将获得2.</li>
+</ul>
+<h4 id="DATA()">DATA()</h4><ul>
+<li>另一个重要变化是关于data()方法的。它已被更改为符合 Dataset API specifications的方法。 jQuery3将所有属性的key值变更为camel case。要理解这种变化，请考虑以下代码：</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="property">id</span>=<span class="string">"container"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果您使用的是jQuery3之前的版本，你可以这么写：</li>
+</ul>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var <span class="variable">$elem</span> = $(<span class="string">'#container'</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$elem</span>.data(&#123;</span><br><span class="line">   <span class="string">'my-property'</span>: <span class="string">'hello'</span>&#125;);</span><br><span class="line"></span><br><span class="line">console.log(<span class="variable">$elem</span>.data());</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在控制台你将得到如下输出：</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="rules">&#123;<span class="rule"><span class="attribute">my-property</span>:<span class="value"> <span class="string">"hello"</span></span></span></span>&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>但是如果您使用jQuery3，将得到：</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="rules">&#123;<span class="rule"><span class="attribute">myProperty</span>:<span class="value"> <span class="string">"hello"</span></span></span></span>&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意，jQuery3属性的名称是camel case的，没有“-”符号，而以前的版本则有。</li>
+</ul>
+<h4 id="THE_DEFERRED_OBJECT">THE DEFERRED OBJECT</h4><ul>
+<li>jQuery3改变了递延对象的行为，是Promise对象的先驱，以提高其与promise/ A+对象的兼容性。这个对象和它的历史是很有趣的。为了更多地了解它，你可以阅读<a href="https://api.jquery.com/category/deferred-object/" target="_blank" rel="external">官方文档</a>或阅读<a href="https://www.manning.com/books/jquery-in-action-third-edition" target="_blank" rel="external">我的书</a>,涵盖jQuery3的知识点。</li>
+<li>在jQuery1.x和2.x中，回调函数中的未捕获异常被传递给一个异常中止程序的执行。不同于原生的Promise 对象，它会一层一层抛出异常，直到它达到window.onerror对象。如果你还没有为此函数定义事件（这是一种罕见的情况），异常消息会显示出来，程序流被终止。</li>
+<li>jQuery3遵循和原生的Promise对象相同的模式。因此，引发的异常被转换成一个rejection 对象并且执行失败情况下的回调函数。一旦完成，该过程继续，并且随后执行成功情况下的回调函数。</li>
+<li>为了帮助您了解这种差异，让我们看一个小例子。考虑下面的代码：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> deferred = $.Deferred();</span><br><span class="line"></span><br><span class="line">deferred</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'An error'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'Success 1'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'Failure 1'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">  .then(</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'Success 2'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'Failure 2'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">deferred.resolve();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在jQuery1和jQuery2中，只有第一个函数（抛出异常的那个函数）被执行。另外，因为我们没有定义任何window.onerror的处理函数，控制台消息将输出“Uncaught Error: An error”，程序执行将中止。</li>
+<li>在jQuery3中，程序的行为是完全不同的。你会看到控制台消息显示“Failure 1”和“Success 2”。该异常由第一个失败处理函数来处理，一旦它已经被处理，接下来成功的函数可以被执行。</li>
+</ul>
+<h4 id="SVG_文件">SVG 文件</h4><ul>
+<li>没有jQuery版本，包括jQuery3，正式支持SVG文件。然而事实是，许多方法都可以工作，比如那些操纵类名称的函数，已在jQuery3中被更新。因此，在这个即将到来的jQuery版本，你就可以使用SVG文档的方法，如addClass()和hasClass()方法。</li>
+</ul>
+<h3 id="方法和属性已过时或删除">方法和属性已过时或删除</h3><blockquote>
+<ul>
+<li>到目前我们介绍了jQuery3新增的功能，同时它也移除和弃用的几个功能。</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>弃用 BIND(), UNBIND(), DELEGATE() UNDELEGATE()方法</p>
+<ul>
+<li>on()方法以前曾经介绍过，是用来为提供一个统一的接口来代替jQuery的bind()、delegate()和 live()方法。同时，jQuery建议用off()提供的统一的接口来代替unbind(),undelegated()和die()方法。</li>
+<li>jQuery3弃用了所有的这些方法，将来的版本也不会重新使用。请在你的项目中专注于使用on() 和off()。</li>
+</ul>
+</li>
+<li><p>弃用LOAD(), UNLOAD() 和 ERROR()方法</p>
+<ul>
+<li>jQuery3弃用了LOAD(), UNLOAD() 和 ERROR()方法。这些方法其实早在jQuery1.8中就被弃用了，但并未被绝对禁止使用。如果你正在使用依赖于一个或一个以上的这些方法，升级到jQuery3则会破坏你的代码的可用性。因此，在决定升级前要注意。</li>
+</ul>
+</li>
+<li><p>弃用CONTEXT, SUPPORT 和 SELECTOR属性</p>
+<ul>
+<li>jQuery3 弃用了context, support和 selector属性。正如我在上一节中提到的，如果你还在项目中使用它们，升级到jQuery3会破坏你的代码的可用性。</li>
+</ul>
+</li>
+<li><p>Bug的修正</p>
+<ul>
+<li>jQuery3修复了以前版本中的一些重要的错误。在下面的部分，我将重点讲解两方面，这将使您的工作方式的巨大变化。</li>
+</ul>
+</li>
+<li><p>对于 width() 和height()函数不会有更多的四舍五入</p>
+<ul>
+<li>jQuery3修复了包括width()和height()等相关函数的bug。这些方法将不再舍入到最近的像素，这使得它在某些情况下难以定位。</li>
+<li>要理解这个问题，举例来说，你有一个有100像素宽的容器元素，分成三等份，每一份为宽度为整体的三分之一（即33.333333％）,在jQuery历史版本中，如果你要按照下面的代码获取每一份的宽度,你将会得到四舍五入后的宽度33像素。jQuery3中修复了这个bug，你将会得到一个浮点数。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">div</span> <span class="type">class</span>=<span class="string">"container"</span>&gt;</span><br><span class="line">   &lt;<span class="keyword">div</span>&gt;My <span class="property">name</span>&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">   &lt;<span class="keyword">div</span>&gt;<span class="keyword">is</span>&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">   &lt;<span class="keyword">div</span>&gt;Aurelio De Rosa&lt;/<span class="keyword">div</span>&gt;</span><br><span class="line">&lt;/<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(</span><span class="string">'.container div'</span>).width();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>WRAPALL()函数<ul>
+<li>jQuery的新版本修复了一个wrapAll()方法的错误。在jQuery3之前的版本中，当向wrapAll()传递函数时，它独立包装jQuery的集合中的元素。换句话说，它的行为和向wrap()传递函数作用相同。</li>
+<li>为了解决这个问题，因为函数被在jQuery3中仅仅被调用了1次，它没有通过jQuery的集合传递元素的索引。最后，函数上下文（this对象）将引用jQuery集合中的第一个元素。</li>
+</ul>
+</li>
+</ul>
+<h3 id="下载jQuery3测试版本1">下载jQuery3测试版本1</h3><ul>
+<li><p>可通过如下URL下载</p>
+<blockquote>
+<ul>
+<li>非压缩版本: <a href="https://code.jquery.com/jquery-3.0.0-beta1.js" target="_blank" rel="external">https://code.jquery.com/jquery-3.0.0-beta1.js</a></li>
+<li>压缩版本: <a href="https://code.jquery.com/jquery-3.0.0-beta1.min.js" target="_blank" rel="external">https://code.jquery.com/jquery-3.0.0-beta1.min.js</a></li>
+</ul>
+</blockquote>
+</li>
+<li><p>也可用npm下载：</p>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install jquery@<span class="number">3.0</span><span class="number">.0</span>-beta1</span><br></pre></td></tr></table></figure>
+<h3 id="结论">结论</h3><ul>
+<li>很多人说，jQuery已死，现代Web开发不会用到jQuery了。然而，它的发展仍在继续，但其78.5％的使用率的统计结果违背了这些说法。</li>
+<li>在这篇文章中，我已经带您领略了jQuery3的新特性。正如您可能已经注意到，这个版本不会打破任何现有的项目，因为它不会引入许多重大更改。尽管如此，有一些更改在升级前需要牢记。第三方的依赖升级前，该项目的审查会帮助你发现任何异常行为或损坏的功能。</li>
+</ul>
+<h3 id="再次声明">再次声明</h3><ul>
+<li>本文是<a href="http://developer.telerik.com/featured/whats-new-in-jquery-3/?utm_source=javascriptweekly&amp;utm_medium=email" target="_blank" rel="external">这篇文章</a>的翻译，作者是Aurelio De Rosa，译者是饮水思源。</li>
+<li>非常感谢作者分享jQuery3新特性，让我们对jQuery有了全新的认识和体验。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/09/2016-3-9-sudoku/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2416,303 +2727,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/11/jQuery-selector/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/11/jQuery-selector/" itemprop="url">
-                  jQuery选择器
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-11T00:00:00+08:00">
-                2015-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/11/jQuery-selector/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/11/jQuery-selector/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>jQuery是一个javascript库，最为重要的作用就是动态的、灵活的操纵DOM对象；</li>
-<li>jQuery选择器多种多样，满足了不同的筛选DOM对象的需求；</li>
-<li>jQuery选择器和css选择器在很大程度上相似，但是jQuery选择器以及jQuery对于选择结果的处理上更加丰富和充实（比如使用回调函数处理选择结果）；</li>
-<li>本文总结了各种类型的jQuery选择器，当然这还不全面，在工作中如果用到其他类型的、效率更高的选择器我会及时补充；</li>
-</ul>
-<h3 id="jQuery选择器基本语法">jQuery选择器基本语法</h3><ul>
-<li>jQuery选择器的语法相当简单：</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="actionscript"></span><br><span class="line">    $(<span class="string">"selector"</span>).<span class="keyword">function</span>()&#123;</span><br><span class="line">		...</span><br><span class="line">    &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>可以对比下css选择器的语法：</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css"></span><br><span class="line">    <span class="tag">selector1</span>,</span><br><span class="line">    <span class="tag">selector2</span> <span class="rules">&#123;</span><br><span class="line">		...</span><br><span class="line">    &#125;</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="最小粒度选择器">最小粒度选择器</h3><table>
-<thead>
-<tr>
-<th>选择器</th>
-<th>选择对象</th>
-<th>实例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>*</td>
-<td>任意元素</td>
-<td></td>
-</tr>
-<tr>
-<td>tag name</td>
-<td>选择<tag></tag></td>
-<td>h1</td>
-</tr>
-<tr>
-<td>#id</td>
-<td>选择id名称（单一元素）</td>
-<td>#test</td>
-</tr>
-<tr>
-<td>.class</td>
-<td>选择class（一类元素）</td>
-<td>.test</td>
-</tr>
-<tr>
-<td>selector(空格):伪类/伪元素</td>
-<td>加入伪类伪元素,相当于对selector的筛选结果再做逻辑筛选</td>
-<td>$(“#form1 :text”)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="属性选择器">属性选择器</h3><table>
-<thead>
-<tr>
-<th>选择器</th>
-<th>实例</th>
-<th>选取</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>[attribute]</td>
-<td>$(“[href]”)</td>
-<td>所有带有 href 属性的元素</td>
-</tr>
-<tr>
-<td>[attribute=value]</td>
-<td>$(“[href=’#’]”)</td>
-<td>所有 href 属性的值等于 “#” 的元素</td>
-</tr>
-<tr>
-<td>[attribute!=value]</td>
-<td>$(“[href!=’#’]”)</td>
-<td>所有 href 属性的值不等于 “#” 的元素</td>
-</tr>
-<tr>
-<td>[attribute$=value]</td>
-<td>$(“[href$=’.jpg’]”)</td>
-<td>所有 href 属性的值包含以 “.jpg” 结尾的元素</td>
-</tr>
-</tbody>
-</table>
-<h3 id="选择器级联">选择器级联</h3><table>
-<thead>
-<tr>
-<th>选择器</th>
-<th>选择对象</th>
-<th>实例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>selector1, selector2</td>
-<td>不同的选择器用逗号隔开(css),不同选择器直接相连</td>
-<td>$(“.main”).$(“.test”)</td>
-</tr>
-<tr>
-<td>selector1selector2selector3</td>
-<td>元素必须满足所有选择器的条件才能被选中</td>
-<td>$(“.main.btn”)</td>
-</tr>
-<tr>
-<td>selector1&gt;selector2</td>
-<td>筛选出符合selector1的元素的符合selector2的所有直接后代元素</td>
-<td>$(“.main&gt;p”)</td>
-</tr>
-<tr>
-<td>selector1(空格)selector2</td>
-<td>筛选出符合selector1的元素的符合selector2的所有后代元素</td>
-<td>$(“.main p”)</td>
-</tr>
-<tr>
-<td>selector1+selector2</td>
-<td>筛选出符合selector1的元素的紧挨着它的后面的同级（兄弟）元素，这个兄弟元素必须符合selector2</td>
-<td>$(“#test3+#test4”)</td>
-</tr>
-<tr>
-<td>selector1~selector2</td>
-<td>筛选出符合selector1的元素后面的所有的同级（兄弟）元素，这个兄弟元素必须符合selector2</td>
-<td>$(“#test3~#test4”)</td>
-</tr>
-<tr>
-<td>$(“selector1”).filter(“selector2”)</td>
-<td>用selector2的筛选条件去过滤selector1的筛选结果</td>
-<td>$(“.main”).filter($(“p”))</td>
-</tr>
-</tbody>
-</table>
-<h3 id="伪类和伪元素">伪类和伪元素</h3><ul>
-<li>这里借用书上的和w3cschool的几张图片加以说明；</li>
-<li>普通伪类选择器</li>
-</ul>
-<p><img src="/images/jQuerySelector/putong.png" alt="putong"></p>
-<ul>
-<li>文本相关</li>
-</ul>
-<p><img src="/images/jQuerySelector/text.png" alt="text"></p>
-<ul>
-<li>子元素相关</li>
-</ul>
-<p><img src="/images/jQuerySelector/children.png" alt="children"></p>
-<ul>
-<li>表单相关</li>
-</ul>
-<p><img src="/images/jQuerySelector/form1.png" alt="form1"></p>
-<p><img src="/images/jQuerySelector/form2.png" alt="form2"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2762,7 +2776,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-count">92</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2784,7 +2798,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2890,7 +2904,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

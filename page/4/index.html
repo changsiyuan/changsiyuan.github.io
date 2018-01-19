@@ -320,6 +320,303 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/11/jQuery-selector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/11/jQuery-selector/" itemprop="url">
+                  jQuery选择器
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-11T00:00:00+08:00">
+                2015-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/11/jQuery-selector/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/11/jQuery-selector/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>jQuery是一个javascript库，最为重要的作用就是动态的、灵活的操纵DOM对象；</li>
+<li>jQuery选择器多种多样，满足了不同的筛选DOM对象的需求；</li>
+<li>jQuery选择器和css选择器在很大程度上相似，但是jQuery选择器以及jQuery对于选择结果的处理上更加丰富和充实（比如使用回调函数处理选择结果）；</li>
+<li>本文总结了各种类型的jQuery选择器，当然这还不全面，在工作中如果用到其他类型的、效率更高的选择器我会及时补充；</li>
+</ul>
+<h3 id="jQuery选择器基本语法">jQuery选择器基本语法</h3><ul>
+<li>jQuery选择器的语法相当简单：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="actionscript"></span><br><span class="line">    $(<span class="string">"selector"</span>).<span class="keyword">function</span>()&#123;</span><br><span class="line">		...</span><br><span class="line">    &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以对比下css选择器的语法：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css"></span><br><span class="line">    <span class="tag">selector1</span>,</span><br><span class="line">    <span class="tag">selector2</span> <span class="rules">&#123;</span><br><span class="line">		...</span><br><span class="line">    &#125;</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="最小粒度选择器">最小粒度选择器</h3><table>
+<thead>
+<tr>
+<th>选择器</th>
+<th>选择对象</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>任意元素</td>
+<td></td>
+</tr>
+<tr>
+<td>tag name</td>
+<td>选择<tag></tag></td>
+<td>h1</td>
+</tr>
+<tr>
+<td>#id</td>
+<td>选择id名称（单一元素）</td>
+<td>#test</td>
+</tr>
+<tr>
+<td>.class</td>
+<td>选择class（一类元素）</td>
+<td>.test</td>
+</tr>
+<tr>
+<td>selector(空格):伪类/伪元素</td>
+<td>加入伪类伪元素,相当于对selector的筛选结果再做逻辑筛选</td>
+<td>$(“#form1 :text”)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="属性选择器">属性选择器</h3><table>
+<thead>
+<tr>
+<th>选择器</th>
+<th>实例</th>
+<th>选取</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[attribute]</td>
+<td>$(“[href]”)</td>
+<td>所有带有 href 属性的元素</td>
+</tr>
+<tr>
+<td>[attribute=value]</td>
+<td>$(“[href=’#’]”)</td>
+<td>所有 href 属性的值等于 “#” 的元素</td>
+</tr>
+<tr>
+<td>[attribute!=value]</td>
+<td>$(“[href!=’#’]”)</td>
+<td>所有 href 属性的值不等于 “#” 的元素</td>
+</tr>
+<tr>
+<td>[attribute$=value]</td>
+<td>$(“[href$=’.jpg’]”)</td>
+<td>所有 href 属性的值包含以 “.jpg” 结尾的元素</td>
+</tr>
+</tbody>
+</table>
+<h3 id="选择器级联">选择器级联</h3><table>
+<thead>
+<tr>
+<th>选择器</th>
+<th>选择对象</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>selector1, selector2</td>
+<td>不同的选择器用逗号隔开(css),不同选择器直接相连</td>
+<td>$(“.main”).$(“.test”)</td>
+</tr>
+<tr>
+<td>selector1selector2selector3</td>
+<td>元素必须满足所有选择器的条件才能被选中</td>
+<td>$(“.main.btn”)</td>
+</tr>
+<tr>
+<td>selector1&gt;selector2</td>
+<td>筛选出符合selector1的元素的符合selector2的所有直接后代元素</td>
+<td>$(“.main&gt;p”)</td>
+</tr>
+<tr>
+<td>selector1(空格)selector2</td>
+<td>筛选出符合selector1的元素的符合selector2的所有后代元素</td>
+<td>$(“.main p”)</td>
+</tr>
+<tr>
+<td>selector1+selector2</td>
+<td>筛选出符合selector1的元素的紧挨着它的后面的同级（兄弟）元素，这个兄弟元素必须符合selector2</td>
+<td>$(“#test3+#test4”)</td>
+</tr>
+<tr>
+<td>selector1~selector2</td>
+<td>筛选出符合selector1的元素后面的所有的同级（兄弟）元素，这个兄弟元素必须符合selector2</td>
+<td>$(“#test3~#test4”)</td>
+</tr>
+<tr>
+<td>$(“selector1”).filter(“selector2”)</td>
+<td>用selector2的筛选条件去过滤selector1的筛选结果</td>
+<td>$(“.main”).filter($(“p”))</td>
+</tr>
+</tbody>
+</table>
+<h3 id="伪类和伪元素">伪类和伪元素</h3><ul>
+<li>这里借用书上的和w3cschool的几张图片加以说明；</li>
+<li>普通伪类选择器</li>
+</ul>
+<p><img src="/images/jQuerySelector/putong.png" alt="putong"></p>
+<ul>
+<li>文本相关</li>
+</ul>
+<p><img src="/images/jQuerySelector/text.png" alt="text"></p>
+<ul>
+<li>子元素相关</li>
+</ul>
+<p><img src="/images/jQuerySelector/children.png" alt="children"></p>
+<ul>
+<li>表单相关</li>
+</ul>
+<p><img src="/images/jQuerySelector/form1.png" alt="form1"></p>
+<p><img src="/images/jQuerySelector/form2.png" alt="form2"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/10/jQuery-$/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1246,6 +1543,250 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/05/2015-12-5-css-position/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/05/2015-12-5-css-position/" itemprop="url">
+                  css元素位置相关属性解析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-05T00:00:00+08:00">
+                2015-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/05/2015-12-5-css-position/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/05/2015-12-5-css-position/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="元素浮动">元素浮动</h3><ul>
+<li>clear属性<ul>
+<li>语法：clear : none|left|right|both</li>
+<li>none : 允许两边都可以有浮动对象</li>
+<li>both : 不允许有浮动对象</li>
+<li>left : 不允许左边有浮动对象</li>
+<li>right : 不允许右边有浮动对象 </li>
+</ul>
+</li>
+<li>float属性<ul>
+<li>语法：float : none|left|right </li>
+<li>none : 对象不浮动</li>
+<li>left : 对象浮在左边</li>
+<li>right : 对象浮在右边</li>
+</ul>
+</li>
+<li>使用场景<ul>
+<li>float和clear属性一般配合使用；</li>
+<li>在需要文字环绕图片、段首大号文字环绕效果等情况下可使用float，请看下面的代码；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;style type=<span class="string">"text/css"</span>&gt;</span><br><span class="line">span</span><br><span class="line">&#123;</span><br><span class="line">	float:left;</span><br><span class="line">	width:<span class="number">0.7</span>em;</span><br><span class="line">	font-size:<span class="number">400</span>%;</span><br><span class="line">	font-family:algerian,courier;</span><br><span class="line">	line-height:<span class="number">80</span>%;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;span&gt;T&lt;/span&gt;his <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/css-position/css-position1.png" alt="css-position1"></p>
+<ul>
+<li>float也可用于实现两栏布局（这种样式在bootstrap中很容易实现）</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.main</span><span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">float</span>:<span class="value"> left</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">600px</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="class">.sidebar</span><span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">float</span>:<span class="value"> right</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">300px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">margin-top</span>:<span class="value"> <span class="number">1.875em</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/css-position/css-position2.png" alt="css-position2"></p>
+<h3 id="元素定位（position属性）">元素定位（position属性）</h3><ul>
+<li>position属性的值：<ul>
+<li>absolute：生成绝对定位的元素，相对于static定位以外的第一个父元素进行定位；</li>
+<li>fixed：生成绝对定位的元素，相对于浏览器窗口进行定位；</li>
+<li>relative：生成相对定位的元素，相对于其正常位置进行定位；</li>
+<li>static：默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）；</li>
+<li>inherit：规定应该从父元素继承position属性的值；</li>
+</ul>
+</li>
+<li>position属性深入理解：<ul>
+<li>relative是相对于元素本来应该在的位置进行定位，元素本来的位置会留出空白（保留元素本来位置）；</li>
+<li>absolute是相对于页面进行绝对位置定位，元素本来的位置不会留出空白（不保留元素本来的位置），直接让元素浮于整个页面，相对于整个页面进行定位，如果要设定元素之间的重叠关系可使用z-index属性；</li>
+<li>z-index属性一般结合position:absolute一起使用；</li>
+<li>z-index的默认值为0，z-index值越大，这个元素就越在顶层显示，通过设置各个元素的z-index值，控制他们的页面层叠关系；</li>
+<li>如两个绝对定位对象的此属性具有同样的值，那么将依据它们在HTML文档中声明的顺序层叠；</li>
+</ul>
+</li>
+</ul>
+<h3 id="元素居中显示的几种方法">元素居中显示的几种方法</h3><ul>
+<li>使用margin属性（首选方法）：<ul>
+<li>将元素的margin-left和margin-right属性设置为auto即可，必须为该容器指定宽度；</li>
+<li>本方法只适用于&gt;=IE6.0浏览器；</li>
+</ul>
+</li>
+<li>示例：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"margin-left:auto; margin-right:auto; width:200px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span>&gt;</span>按钮<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"margin:0 auto; width:200px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span>&gt;</span>按钮<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>使用text-align属性</p>
+<ul>
+<li>使用方法：<code>style=&quot;text-align: left | center | right&quot;</code></li>
+<li>这个属性一般用于文字，但也可以用于其他控件或元素；</li>
+<li>用于非文字的控件或元素时，这个控件以及他所有的孩子全部居中，这是不太好的一点；</li>
+</ul>
+</li>
+<li><p>利用负外边距</p>
+<ul>
+<li>首先创建一个包含居中元素的容器，然后将其绝对定位于相对页面左边边缘50%的位置；</li>
+<li>这样，该容器的左外边距将从页面50%宽度的位置开始算起；</li>
+<li>然后，将容器的左外边距值设置为负的容器宽度的一半，这样即可将该容器固定在页面水平方向的中点；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="id">#container</span><span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">50%</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">760px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">margin-left</span>:<span class="value"> -<span class="number">380px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="元素显示">元素显示</h3><ul>
+<li>display属性：</li>
+</ul>
+<p><img src="/images/css-position/css-position3.png" alt="css-position3"></p>
+<ul>
+<li>visibility属性：</li>
+</ul>
+<p><img src="/images/css-position/css-position4.png" alt="css-position4"></p>
+<ul>
+<li><p>区别：</p>
+<ul>
+<li>display:none：元素不可见也不占用空间；</li>
+<li>visibility:hidden：元素不可见，但是占用空间，仍然会对页面布局产生影响；</li>
+</ul>
+</li>
+<li><p>使元素不可见还可以用opacity属性设置元素完全透明，即<code>opacity: 0;</code>，效果和<code>visibility:hidden；</code>完全相同；</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/05/2015-12-5-year-books/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1477,250 +2018,6 @@
 </li>
 </ul>
 <p><img src="/images/2015books/book13.jpg" alt="book13"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/05/2015-12-5-css-position/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/05/2015-12-5-css-position/" itemprop="url">
-                  css元素位置相关属性解析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-05T00:00:00+08:00">
-                2015-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/05/2015-12-5-css-position/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/05/2015-12-5-css-position/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="元素浮动">元素浮动</h3><ul>
-<li>clear属性<ul>
-<li>语法：clear : none|left|right|both</li>
-<li>none : 允许两边都可以有浮动对象</li>
-<li>both : 不允许有浮动对象</li>
-<li>left : 不允许左边有浮动对象</li>
-<li>right : 不允许右边有浮动对象 </li>
-</ul>
-</li>
-<li>float属性<ul>
-<li>语法：float : none|left|right </li>
-<li>none : 对象不浮动</li>
-<li>left : 对象浮在左边</li>
-<li>right : 对象浮在右边</li>
-</ul>
-</li>
-<li>使用场景<ul>
-<li>float和clear属性一般配合使用；</li>
-<li>在需要文字环绕图片、段首大号文字环绕效果等情况下可使用float，请看下面的代码；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;style type=<span class="string">"text/css"</span>&gt;</span><br><span class="line">span</span><br><span class="line">&#123;</span><br><span class="line">	float:left;</span><br><span class="line">	width:<span class="number">0.7</span>em;</span><br><span class="line">	font-size:<span class="number">400</span>%;</span><br><span class="line">	font-family:algerian,courier;</span><br><span class="line">	line-height:<span class="number">80</span>%;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;span&gt;T&lt;/span&gt;his <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>. This <span class="keyword">is</span> <span class="keyword">some</span> <span class="type">text</span>.</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="/images/css-position/css-position1.png" alt="css-position1"></p>
-<ul>
-<li>float也可用于实现两栏布局（这种样式在bootstrap中很容易实现）</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.main</span><span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">float</span>:<span class="value"> left</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">600px</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="class">.sidebar</span><span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">float</span>:<span class="value"> right</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">300px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">margin-top</span>:<span class="value"> <span class="number">1.875em</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<p><img src="/images/css-position/css-position2.png" alt="css-position2"></p>
-<h3 id="元素定位（position属性）">元素定位（position属性）</h3><ul>
-<li>position属性的值：<ul>
-<li>absolute：生成绝对定位的元素，相对于static定位以外的第一个父元素进行定位；</li>
-<li>fixed：生成绝对定位的元素，相对于浏览器窗口进行定位；</li>
-<li>relative：生成相对定位的元素，相对于其正常位置进行定位；</li>
-<li>static：默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）；</li>
-<li>inherit：规定应该从父元素继承position属性的值；</li>
-</ul>
-</li>
-<li>position属性深入理解：<ul>
-<li>relative是相对于元素本来应该在的位置进行定位，元素本来的位置会留出空白（保留元素本来位置）；</li>
-<li>absolute是相对于页面进行绝对位置定位，元素本来的位置不会留出空白（不保留元素本来的位置），直接让元素浮于整个页面，相对于整个页面进行定位，如果要设定元素之间的重叠关系可使用z-index属性；</li>
-<li>z-index属性一般结合position:absolute一起使用；</li>
-<li>z-index的默认值为0，z-index值越大，这个元素就越在顶层显示，通过设置各个元素的z-index值，控制他们的页面层叠关系；</li>
-<li>如两个绝对定位对象的此属性具有同样的值，那么将依据它们在HTML文档中声明的顺序层叠；</li>
-</ul>
-</li>
-</ul>
-<h3 id="元素居中显示的几种方法">元素居中显示的几种方法</h3><ul>
-<li>使用margin属性（首选方法）：<ul>
-<li>将元素的margin-left和margin-right属性设置为auto即可，必须为该容器指定宽度；</li>
-<li>本方法只适用于&gt;=IE6.0浏览器；</li>
-</ul>
-</li>
-<li>示例：</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"margin-left:auto; margin-right:auto; width:200px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span>&gt;</span>按钮<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"margin:0 auto; width:200px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span>&gt;</span>按钮<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>使用text-align属性</p>
-<ul>
-<li>使用方法：<code>style=&quot;text-align: left | center | right&quot;</code></li>
-<li>这个属性一般用于文字，但也可以用于其他控件或元素；</li>
-<li>用于非文字的控件或元素时，这个控件以及他所有的孩子全部居中，这是不太好的一点；</li>
-</ul>
-</li>
-<li><p>利用负外边距</p>
-<ul>
-<li>首先创建一个包含居中元素的容器，然后将其绝对定位于相对页面左边边缘50%的位置；</li>
-<li>这样，该容器的左外边距将从页面50%宽度的位置开始算起；</li>
-<li>然后，将容器的左外边距值设置为负的容器宽度的一半，这样即可将该容器固定在页面水平方向的中点；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="id">#container</span><span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">50%</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">760px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">margin-left</span>:<span class="value"> -<span class="number">380px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
-<h3 id="元素显示">元素显示</h3><ul>
-<li>display属性：</li>
-</ul>
-<p><img src="/images/css-position/css-position3.png" alt="css-position3"></p>
-<ul>
-<li>visibility属性：</li>
-</ul>
-<p><img src="/images/css-position/css-position4.png" alt="css-position4"></p>
-<ul>
-<li><p>区别：</p>
-<ul>
-<li>display:none：元素不可见也不占用空间；</li>
-<li>visibility:hidden：元素不可见，但是占用空间，仍然会对页面布局产生影响；</li>
-</ul>
-</li>
-<li><p>使元素不可见还可以用opacity属性设置元素完全透明，即<code>opacity: 0;</code>，效果和<code>visibility:hidden；</code>完全相同；</p>
-</li>
-</ul>
 
           
         
@@ -2349,178 +2646,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/24/glassfish-error/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/24/glassfish-error/" itemprop="url">
-                  glassfish 数据库连接报错的解决
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-24T00:00:00+08:00">
-                2015-11-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/11/24/glassfish-error/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/24/glassfish-error/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>最近实验室有人来参观，由于集群重装了，需要重新部署各个应用；</li>
-<li>在部署过程中发现数据库连接失败的问题，加以总结；</li>
-</ul>
-<h3 id="问题描述">问题描述</h3><ul>
-<li>glassfish报错：</li>
-</ul>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invalid <span class="string">resource :</span> traffic__pm</span><br></pre></td></tr></table></figure>
-<ul>
-<li>解决方法：<ul>
-<li>根据错误提示，应该是persistence manager出错了</li>
-<li>应当运行数据库注册信息，即相关resource的xml文件</li>
-<li>运行后，将数据库添加到glassfish注册信息中，删除原来部署失败的war包，重启glassfish后添加新的war包即可部署成功</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/glassfish4/glassfish/bin/asadmin<span class="instruction"> add-resources </span>glassfish-resources.xml</span><br></pre></td></tr></table></figure>
-<ul>
-<li>如果问题还未得到解决，那说明resource配置信息出了问题，需要检查<code>glassfish-resources.xml</code>中的<code>jndi-name</code>和<code>persistence.xml</code>中的<code>&lt;jta-data-source&gt;</code>是否相同；</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2570,7 +2695,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-count">92</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2592,7 +2717,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2698,7 +2823,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

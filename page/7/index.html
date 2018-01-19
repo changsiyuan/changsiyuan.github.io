@@ -320,6 +320,284 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/27/js-array/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/27/js-array/" itemprop="url">
+                  javascript 数组操作总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-27T00:00:00+08:00">
+                2015-10-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/10/27/js-array/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/27/js-array/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>数组是javascript中的重要数据结构，可以存储各种数据类型，有很多重要的操作必须牢记；</li>
+<li>本文系统总结了javascript数组的各种常见操作，欢迎补充！</li>
+</ul>
+<h3 id="javascript数组需要掌握的方法">javascript数组需要掌握的方法</h3><ul>
+<li>push、pop </li>
+<li>shift、unshift </li>
+<li>splice、slice </li>
+<li>concat、join、sort、reverse</li>
+<li>这些方法在下面会详细介绍</li>
+</ul>
+<h3 id="数组的定义">数组的定义</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法一，定义后赋值</span></span><br><span class="line">var arr = <span class="keyword">new</span> Array();</span><br><span class="line">arr[<span class="number">0</span>] = <span class="number">123</span></span><br><span class="line">arr[<span class="number">1</span>] = <span class="string">"abc"</span></span><br><span class="line">arr[<span class="number">5</span>] = <span class="function"><span class="literal">false</span></span><br><span class="line"><span class="title">alert</span><span class="params">(arr[<span class="number">3</span>])</span> <span class="comment">//undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//方法二，定义数组长度</span></span><br><span class="line">var arr2 </span>= <span class="keyword">new</span> Array(<span class="number">2</span>);</span><br><span class="line">arr2[<span class="number">0</span>] = <span class="string">"ddd"</span>;</span><br><span class="line">arr2[<span class="number">1</span>] = <span class="number">123</span>;</span><br><span class="line">arr2[<span class="number">4</span>] = <span class="literal">false</span>;  <span class="comment">//数组长度自动扩展</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//方法三，定义时赋值</span></span><br><span class="line">var arr3 = <span class="keyword">new</span> Array(<span class="literal">true</span>,<span class="number">123</span>,<span class="string">"aaa"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法四，直接赋值</span></span><br><span class="line">var arr4 = [<span class="string">"aaa"</span>,<span class="number">111</span>,<span class="literal">false</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="数组的判断">数组的判断</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">Array</span>.isArray(arr);  <span class="comment">//true</span></span><br><span class="line">arr <span class="keyword">instanceof</span> <span class="built_in">Array</span>;  <span class="comment">//true</span></span><br><span class="line">arr.constructor === <span class="built_in">Array</span>;  <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<h3 id="数组元素的合并">数组元素的合并</h3><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var arr = [<span class="string">'c'</span>,<span class="string">'b'</span>,<span class="string">'d'</span>];</span><br><span class="line">document.<span class="keyword">write</span>(arr.<span class="keyword">join</span>());  <span class="comment">//c,b,d</span></span><br><span class="line">document.<span class="keyword">write</span>(arr.<span class="keyword">join</span>(<span class="string">"."</span>));  <span class="comment">//c.b.d</span></span><br></pre></td></tr></table></figure>
+<h3 id="数组的属性">数组的属性</h3><ul>
+<li>length属性</li>
+</ul>
+<figure class="highlight rsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var arr = [<span class="string">'c'</span>,<span class="string">'b'</span>,<span class="string">'d'</span>];</span><br><span class="line">alert(arr.<span class="built_in">length</span>);  <span class="comment">//3</span></span><br><span class="line">arr.<span class="built_in">length</span> = <span class="number">10</span>;  <span class="comment">// 数组自动扩展</span></span><br><span class="line">arr.<span class="built_in">length</span> = <span class="number">2</span>;  <span class="comment">//arr[2]丢失</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>prototype属性</li>
+</ul>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function <span class="built_in">max</span>()&#123;</span><br><span class="line">	var i,</span><br><span class="line">	<span class="built_in">max</span> = <span class="keyword">this</span>[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;<span class="keyword">this</span>.length; i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">max</span>&lt;<span class="keyword">this</span>[i])&#123;</span><br><span class="line">			<span class="built_in">max</span> = <span class="keyword">this</span>[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">max</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">Array</span>.prototype.<span class="built_in">max</span> = <span class="built_in">max</span>;</span><br><span class="line">var x = <span class="keyword">new</span> <span class="keyword">Array</span>(<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">5</span>);</span><br><span class="line">alert(x.<span class="built_in">max</span>());  <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+<h3 id="数组常见操作">数组常见操作</h3><ul>
+<li>添加元素</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="string">"aaa"</span>,<span class="literal">false</span>];</span><br><span class="line">arr.push(<span class="number">3</span>);  <span class="comment">//添加到末尾</span></span><br><span class="line">arr.unshift(<span class="string">'c'</span>);  <span class="comment">//添加到开头，其余元素后移</span></span><br><span class="line">arr.splice(<span class="number">1</span>,<span class="number">0</span>,<span class="string">'d'</span>);  <span class="comment">//插入到数组下表为1的位置，并且有0个元素被吃掉</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除元素</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="string">"aaa"</span>,<span class="literal">false</span>];</span><br><span class="line">arr.pop();  <span class="comment">//移除最后一个元素</span></span><br><span class="line">arr.shift();  <span class="comment">//移除最前面的元素并返回该元素的值</span></span><br><span class="line">arr.splice(<span class="number">1</span>,<span class="number">1</span>);  <span class="comment">//移除下标为1开始的1个元素</span></span><br><span class="line"><span class="keyword">delete</span> arr[<span class="number">2</span>];  <span class="comment">//移除下标为2的元素</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>移除特定元素</li>
+</ul>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>];</span><br><span class="line"><span class="keyword">var</span> <span class="keyword">index</span> = null;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i =<span class="number">0</span>; i&lt;arr.length; i++)<span class="comment">&#123;</span><br><span class="line">	if(arr[i]=='c')&#123;</span><br><span class="line">		index = i;</span><br><span class="line">	&#125;</span></span><br><span class="line">&#125;</span><br><span class="line">arr.splice(<span class="keyword">index</span>,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>截取数组</li>
+</ul>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="atom">var</span> <span class="atom">arr</span> = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>];</span><br><span class="line"><span class="atom">arr</span>.<span class="atom">slice</span>(<span class="number">1</span>,<span class="number">3</span>);  // [<span class="string">'b'</span>,<span class="string">'c'</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>连接数组</li>
+</ul>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="atom">var</span> <span class="atom">arr</span> = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>];</span><br><span class="line"><span class="atom">var</span> <span class="atom">arr2</span> = [<span class="string">'f'</span>,<span class="string">'g'</span>];</span><br><span class="line"><span class="atom">arr</span>.<span class="atom">concat</span>(<span class="atom">arr2</span>);  // [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>,<span class="string">'f'</span>,<span class="string">'g'</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>拷贝数组</li>
+</ul>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>];</span><br><span class="line"><span class="keyword">var</span> arr2 = arr.<span class="keyword">concat</span>();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组排序</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'e'</span>,<span class="string">'b'</span>,<span class="string">'a'</span>,<span class="string">'d'</span>,<span class="string">'c'</span>];</span><br><span class="line">alert(arr.sort());  <span class="comment">// a b c d e</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组倒序</li>
+</ul>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'e'</span>,<span class="string">'b'</span>,<span class="string">'a'</span>,<span class="string">'d'</span>,<span class="string">'c'</span>];</span><br><span class="line">alert(arr.<span class="keyword">reverse</span>());  <span class="comment">// e d c b a</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>判断数组是否包含特定值</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'e'</span>,<span class="string">'b'</span>,<span class="string">'a'</span>,<span class="string">'d'</span>,<span class="string">'c'</span>];</span><br><span class="line">alert(arr.indexOf(<span class="string">'d'</span>));  <span class="comment">// 3</span></span><br><span class="line">alert(arr.indexOf(<span class="string">'g'</span>));  <span class="comment">// -1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>求number数组最大最小值</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">math</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = [<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">6</span>];</span><br><span class="line">    <span class="keyword">var</span> max = <span class="built_in">Math</span>.max.apply(<span class="built_in">Math</span>,a);</span><br><span class="line">    <span class="keyword">var</span> min = <span class="built_in">Math</span>.min.apply(<span class="built_in">Math</span>,a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="数组去重">数组去重</h3><ul>
+<li>方法一：<ul>
+<li>利用数组的indexOf方法</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function unique (arr) &#123;</span><br><span class="line"> <span class="keyword">var</span> <span class="literal">result</span> = []; </span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length; i++)</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="keyword">if</span> (<span class="literal">result</span>.indexOf(arr[i]) == -<span class="number">1</span>) <span class="literal">result</span>.push(arr[i]);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> <span class="literal">result</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>方法二：<ul>
+<li>利用hash表</li>
+<li>可能会出现字符串和数字一样的话出错，如var a = [1, 2, 3, 4, ‘3’, 5],会返回[1, 2, 3, 4, 5]</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function unique (arr)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">var</span> hash = &#123;&#125;,<span class="literal">result</span> = []; </span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length; i++)</span><br><span class="line">  &#123;</span><br><span class="line">     <span class="keyword">if</span> (!hash[arr[i]]) </span><br><span class="line">     &#123;</span><br><span class="line">         hash[arr[i]] = <span class="literal">true</span>; </span><br><span class="line">         <span class="literal">result</span>.push(arr[i]); </span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">result</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>方法三：<ul>
+<li>排序后比较相邻，如果一样则放弃，否则加入到result</li>
+<li>会出现与方法2一样的问题，如果数组中存在1,1,’1’这样的情况，则会排错</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function unique (arr) &#123;</span><br><span class="line">  arr.sort();</span><br><span class="line">  <span class="keyword">var</span> <span class="literal">result</span>=[arr[<span class="number">0</span>]];</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; arr.length; i++)&#123;</span><br><span class="line">      <span class="keyword">if</span>( arr[i] !== arr[i-<span class="number">1</span>]) &#123;</span><br><span class="line">          <span class="literal">result</span>.push(arr[i]);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">result</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>方法四：<ul>
+<li>最简单但是效率最低的算法,也不会出现方法2和方法3出现的bug</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function unique (arr) &#123;</span><br><span class="line">  <span class="keyword">if</span>(arr.length == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">var</span> <span class="literal">result</span> = [arr[<span class="number">0</span>]], isRepeate;</span><br><span class="line">  <span class="keyword">for</span>( <span class="keyword">var</span> i = <span class="number">0</span>, j = arr.length; i &lt; j; i++ )&#123;</span><br><span class="line">    isRepeate = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">var</span> k = <span class="number">0</span>, h = <span class="literal">result</span>.length; k &lt; h; k++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="literal">result</span>[k] === arr[i])&#123;</span><br><span class="line">            isRepeate = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(k == h) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>( !isRepeate ) <span class="literal">result</span>.push(arr[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">result</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="数组随机扰乱">数组随机扰乱</h3><ul>
+<li>方法一：<ul>
+<li>每次随机抽一个数并移动到新数组中</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">shuffle</span><span class="params">(<span class="built_in">array</span>)</span> </span>&#123;</span><br><span class="line">  var copy = [],</span><br><span class="line">       n = <span class="built_in">array</span>.length,</span><br><span class="line">       i;</span><br><span class="line">  <span class="comment">// 如果还剩有元素则继续。。。</span></span><br><span class="line">  <span class="keyword">while</span> (n) &#123;</span><br><span class="line">     <span class="comment">// 随机抽取一个元素</span></span><br><span class="line">     i = Math.<span class="built_in">floor</span>(Math.random() * <span class="built_in">array</span>.length);</span><br><span class="line">     <span class="comment">// 如果这个元素之前没有被选中过。。</span></span><br><span class="line">     <span class="keyword">if</span> (i in <span class="built_in">array</span>) &#123;</span><br><span class="line">        copy.push(<span class="built_in">array</span>[i]);</span><br><span class="line">        <span class="keyword">delete</span> <span class="built_in">array</span>[i];</span><br><span class="line">        n--;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>方法二：<ul>
+<li>跟方法1类似，只不过通过splice来去掉原数组已选项</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function shuffle(array) &#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="keyword">copy</span> = [],</span><br><span class="line">       <span class="keyword">n</span> = array.length,</span><br><span class="line">       i;</span><br><span class="line">  <span class="comment">// 如果还剩有元素。。</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="keyword">n</span>) &#123;</span><br><span class="line">     <span class="comment">// 随机选取一个元素</span></span><br><span class="line">     i = Math.<span class="literal">floor</span>(Math.random() * <span class="keyword">n</span>--);</span><br><span class="line">     <span class="comment">// 移动到新数组中</span></span><br><span class="line">     <span class="keyword">copy</span>.push(array.splice(i, 1)[0]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">copy</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>方法三：<ul>
+<li>前面随机抽数依次跟末尾的数交换，后面依次前移</li>
+<li>即：第一次前n个数随机抽一个跟第n个交换，第二次前n-1个数跟第n-1个交换，依次类推</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shuffle</span><span class="params">(array)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> m = <span class="keyword">array</span>.length,</span><br><span class="line">     t, i;</span><br><span class="line">  <span class="comment">// 如果还剩有元素…</span></span><br><span class="line">  <span class="keyword">while</span> (m) &#123;</span><br><span class="line">    <span class="comment">// 随机选取一个元素…</span></span><br><span class="line">    i = Math.floor(Math.random() * m--);</span><br><span class="line">    <span class="comment">// 与当前元素进行交换</span></span><br><span class="line">    t = <span class="keyword">array</span>[m];</span><br><span class="line">    <span class="keyword">array</span>[m] = <span class="keyword">array</span>[i];</span><br><span class="line">    <span class="keyword">array</span>[i] = t;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">array</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="数组间操作">数组间操作</h3><ul>
+<li>数组求交集</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//利用filter和数组自带的indexOf方法</span></span><br><span class="line">array1.filter(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> array2.indexOf(n) != -<span class="number">1</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组求并集</li>
+</ul>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法原理：连接两个数组并去重</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">arrayUnique</span><span class="params">(<span class="keyword">array</span>)</span> <span class="comment">&#123;</span><br><span class="line">  var a = array.concat();</span><br><span class="line">  for(var i=0; i&lt;a.length; ++i) &#123;</span><br><span class="line">    for(var j=i+1; j&lt;a.length; ++j) &#123;</span><br><span class="line">       if(a[i] === a[j])</span><br><span class="line">          a.splice(j--, 1);</span><br><span class="line">    &#125;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title">return</span> <span class="title">a</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组求差集</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//利用filter和indexOf方法</span></span><br><span class="line"><span class="built_in">Array</span>.prototype.diff = <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.filter(<span class="function"><span class="keyword">function</span>(<span class="params">i</span>) </span>&#123;<span class="keyword">return</span> a.indexOf(i) &lt; <span class="number">0</span>;&#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/26/js-function/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2428,227 +2706,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/11/2015-9-11-css-use/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/11/2015-9-11-css-use/" itemprop="url">
-                  CSS技巧汇总
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-11T00:00:00+08:00">
-                2015-09-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/09/11/2015-9-11-css-use/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/11/2015-9-11-css-use/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>使用CSS渲染页面是当今网页常用的技术。</li>
-<li>本文汇总了CSS使用时的注意事项和技巧。</li>
-</ul>
-<h3 id="浏览器支持">浏览器支持</h3><ul>
-<li>webkit/safari/chrome：-webkit-；</li>
-<li>firefox：-moz-；</li>
-<li>IE：-ms-；</li>
-<li>opera：-o-；</li>
-<li>一般来说，对于下面介绍的一些较新的css3特性，为了兼容旧版浏览器，需要添加-webkit-前缀；</li>
-</ul>
-<h3 id="技巧汇总">技巧汇总</h3><table>
-<thead>
-<tr>
-<th>描述</th>
-<th>方法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>改变控件的四个角的弧度</td>
-<td>border-radius属性，另有border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius等扩展属性</td>
-</tr>
-<tr>
-<td>改变input标签中placeholder的样式</td>
-<td>使用伪类 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder</td>
-</tr>
-<tr>
-<td>使元素自由浮动</td>
-<td>使用float属性</td>
-</tr>
-<tr>
-<td>使元素从他自己的位置偏移</td>
-<td>使用position:relative属性,配合left、right等属性使用</td>
-</tr>
-<tr>
-<td>使元素固定位置</td>
-<td>使用position:fixed属性，并配合z-index属性设置元素的层叠顺序</td>
-</tr>
-<tr>
-<td>设置元素绝对位置</td>
-<td>使用position:absolute属性</td>
-</tr>
-<tr>
-<td>设置文字的位置</td>
-<td>使用text-align属性</td>
-</tr>
-<tr>
-<td>设置元素是否显示</td>
-<td>使用display属性</td>
-</tr>
-<tr>
-<td>设置元素溢出后样式</td>
-<td>使用overflow属性</td>
-</tr>
-<tr>
-<td>设置鼠标悬停样式</td>
-<td>使用cursor属性</td>
-</tr>
-<tr>
-<td>设置文本阴影</td>
-<td>使用text-shadow属性，此属性为CSS3增强特性</td>
-</tr>
-<tr>
-<td>设置元素透明度</td>
-<td>使用opacity属性</td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2698,7 +2755,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-count">92</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2720,7 +2777,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2826,7 +2883,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

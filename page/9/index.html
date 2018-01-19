@@ -320,7 +320,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/04/01/2015-4-1-mapreduce-name-explain/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/04/15/2015-4-15-names-in-web-technology/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Chang">
@@ -342,8 +342,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/04/01/2015-4-1-mapreduce-name-explain/" itemprop="url">
-                  MapReduce过程名词解释
+                <a class="post-title-link" href="/2015/04/15/2015-4-15-names-in-web-technology/" itemprop="url">
+                  Web技术名词解释
                 </a>
               
             
@@ -359,8 +359,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-01T00:00:00+08:00">
-                2015-04-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-15T00:00:00+08:00">
+                2015-04-15
               </time>
             
 
@@ -382,8 +382,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hadoop/" itemprop="url" rel="index">
-                    <span itemprop="name">hadoop</span>
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
                   </a>
                 </span>
 
@@ -400,8 +400,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2015/04/01/2015-4-1-mapreduce-name-explain/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/01/2015-4-1-mapreduce-name-explain/" itemprop="commentCount"></span>
+                <a href="/2015/04/15/2015-4-15-names-in-web-technology/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/15/2015-4-15-names-in-web-technology/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -429,44 +429,174 @@
       
         
           
-            <h3 id="引言">引言</h3><ul>
-<li>在mapreduce的运行过程中，有很多精巧的机制保证整个作业运行在高效率、相对公平和高容错性的环境下。</li>
-<li>mapreduce运行过程中（特别是shuffle过程中）有很多容易混淆的名词。本文通过罗列这些名词的含义来对这些过程加以解释说明。</li>
+            <h2 id="引言">引言</h2><ul>
+<li>web开发框架中有很多技术，这些技术支撑着web开发向前发展。我们今天看到的各种各样的漂亮的网页也是在这些技术下得以实现的。本文梳理了web开发中的常用技术，作为参考。</li>
 </ul>
-<h3 id="名词解释">名词解释</h3><table>
+<h2 id="浏览器端">浏览器端</h2><h3 id="基础语言框架">基础语言框架</h3><ul>
+<li>html：页面显示语言，浏览器识别并解析；</li>
+<li>javascript：前端开发用的轻量级脚本语言，用于页面的控制和内容获取；</li>
+<li>E4X：javascript的扩展，向JavaScript添加了对 XML 的直接支持，是正式的javascript标准之一；</li>
+</ul>
+<h3 id="页面渲染技术">页面渲染技术</h3><ul>
+<li>css（Cascading Style Sheets）：层叠样式表技术，用于新框架下的页面渲染；</li>
+<li>less：一种动态的css语言，在浏览器端解析；</li>
+<li>sass：一种动态的css语言，在服务器端解析；</li>
+<li>bootstrap（twitter支持）：由less编写的一套页面渲染框架（样式库），栅格系统和屏幕适配性是它的优势所在；</li>
+</ul>
+<h3 id="Javascript常用IDE">Javascript常用IDE</h3><ul>
+<li>Sublime Text ；</li>
+<li>WebStorm ；</li>
+<li>netbeans；</li>
+<li>Brackets ；</li>
+<li>Atom；</li>
+</ul>
+<h3 id="常用Javascript辅助工具">常用Javascript辅助工具</h3><ul>
+<li>grunt：自动完成js代码合并压缩等，支持自动化测试；</li>
+<li>node.js：充当浏览器的js解析器的功能，还可以外加很多插件，方便调试；</li>
+<li>bower：基于node.js，依赖管理工具，自动下载、管理、监测package的依赖关系；</li>
+<li>HTTP-server：基于node.js，轻量级的服务器，用于通过http协议访问本机文件夹；</li>
+<li>KARMA/Jasmine：基于node.js，前端代码单元测试工具（相当于java的JUnit），KARMA提供测试工具驱动，Jasmine提供测试语法；</li>
+<li>protractor：针对angularjs的自动化测试工具，不能用于其他js库；</li>
+<li>selenium：Web应用程序测试的工具，自动完成用户操作以便测试网站，可用于轮播系统的制作；</li>
+</ul>
+<h3 id="前端网页开发框架">前端网页开发框架</h3><table>
 <thead>
 <tr>
-<th>名词</th>
-<th>含义</th>
+<th>框架名称</th>
+<th>描述</th>
+<th>优缺点</th>
+<th>依赖</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>shuffle</td>
-<td>将map的输出作为输入传给reducer的过程的总称；</td>
+<td>angularjs</td>
+<td>免费，google支持；辅助JavaScript的网页开发框架；和ExtJS处于竞争地位；</td>
+<td>灵活性高但是完备性中等；UI控件库不如ExtJS全面，但是可定制性强；不直接支持移动端；</td>
+<td>由于没有全面的UI控件，一般用angularUI或者bootstrap进行页面布局和渲染；</td>
 </tr>
 <tr>
-<td>spill</td>
-<td>map的结果从内存往磁盘写数据的过程；中文译为“溢写”，但并不一定是当内存溢出后才写入磁盘；</td>
+<td>ExtJS</td>
+<td>收费；辅助JavaScript的网页开发框架；和angularjs处于竞争地位；</td>
+<td>完备性高但是灵活性中等；拥有非常全面的UI控件库，浏览器间可移植性极强，但是用户定制性稍差；直接支持移动端；</td>
+<td></td>
 </tr>
 <tr>
-<td>partitioner</td>
-<td>指partitioner接口，作用是根据key或value及reduce的数量决定当前的这对输出数据<key value="">应交给哪个reduce task处理；</key></td>
+<td>jQueryUI</td>
+<td>免费；</td>
+<td>UI控件较为混乱；可定制性强；直接支持移动端；</td>
+<td></td>
 </tr>
 <tr>
-<td>sort</td>
-<td>指快速排序；当map内存占用达到一定比例时，需对于内存中的key做sort，以便combiner过程；</td>
-</tr>
-<tr>
-<td>combiner</td>
-<td>将一个map内存中具有相同<key,value>对的value加起来，以减少spill到磁盘的数据量；将已经写到磁盘的文件进行上述动作也称为combiner；</key,value></td>
-</tr>
-<tr>
-<td>merge</td>
-<td>若map产生的数据量较大，一个map会有多个spill过程从而在磁盘中产生多个spill文件。将磁盘中多个spill文件合并成一个的过程称为spill；merge的本质是合并文件的过程，具有相同key的value并没有在merge过程中相加，而是在combiner中实现；</td>
+<td>NEJ(Nice Easy Javascript)</td>
+<td>网易前端开发框架；辅助JavaScript的网页开发框架；</td>
+<td></td>
 </tr>
 </tbody>
 </table>
+<h3 id="前端框架支持库">前端框架支持库</h3><table>
+<thead>
+<tr>
+<th>支持库名称</th>
+<th>描述</th>
+<th>优缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jQuery</td>
+<td>纯粹的JavaScript代码库，目的是简化DOM操作</td>
+<td>和prototype做的事情相同，方法不同，jQuery火了，prototype没有火起来；</td>
+</tr>
+<tr>
+<td>prototype</td>
+<td>纯粹的JavaScript代码库，目的是简化DOM操作</td>
+<td>没有jQuery火</td>
+</tr>
+<tr>
+<td>YUI(Yahoo! UI Library)</td>
+<td>开放源代码的 JavaScript 函数库；</td>
+</tr>
+</tbody>
+</table>
+<h3 id="异步请求技术">异步请求技术</h3><p>ajax（asynchronous javascript and xml）：此技术破除了旧的web框架“只能请求一次”的限制，使得程序员可以指定浏览器什么时候发出请求、发出什么请求、请求内容是什么，ajax已经封装在前端框架中（诸如angularjs等框架），无需人为添加库；</p>
+<h2 id="服务器端">服务器端</h2><h3 id="基础语言">基础语言</h3><ul>
+<li>php：开源脚本语言，用于小型web开发，服务器端语言，比java的学习成本和复杂度低得多，但是功能有限，比较简陋；</li>
+<li>java：后台可以用java去写；</li>
+<li>jsp（Java Server Pages）：动态网页技术标准，用于大型web开发，语言是在html中插入java；</li>
+<li>servlet：是一种面向底层的jsp；</li>
+<li>asp：动态服务器页面（Active Server Page），是一种后台编程脚本语言，可以与数据库交互；</li>
+<li>python：知乎和豆瓣在python写后台；</li>
+<li>.net：是Microsoft面向XML Web服务的平台，支持的原生语言是c#，.net目前只能运行在windows上；</li>
+</ul>
+<h3 id="SSH框架">SSH框架</h3><ul>
+<li>Struts2（view）：对浏览器请求处理的一整套框架；</li>
+<li>Spring（control）：提供了依赖注入的思想，提供了大量模板类，配合和支持Struts2完成对用户请求的页面响应；</li>
+<li>Hibernate（model）：面向java环境的对象/关系数据库映射工具，封装了和数据库的连接部分；</li>
+<li>这种老框架的劣势：框架太多、太复杂；</li>
+</ul>
+<h3 id="RESTful框架">RESTful框架</h3><ul>
+<li>RESTful（用java实现的话叫做JAX-RS）：<ul>
+<li>基于HTTP协议的（get put post等方法），一种分层的目录型的设计风格（任何资源可被唯一的URI访问到），支持JSON和XML格式的数据，在javaEE中具体表现为REST.java文件；</li>
+<li>它之所以叫做RESTful指的是server端不用承担全部的页面内容传递和逻辑的全部任务，显示逻辑交由client端，剩下的（rest）交给server端；</li>
+</ul>
+</li>
+<li>ORM（Object Relational Mapping，用java实现的话叫做JPA）：<ul>
+<li>一种在面向对象语言和数据库等数据源之间传递数据的桥梁，作用是数据映射，在javaEE中具体表现为entity.java文件；</li>
+</ul>
+</li>
+<li>JAX-RS（Java API for RESTful Web Services）：RESTful设计风格在java中的具体表现，在java中具体表现为REST.java文件；</li>
+<li>JPA（java persistence API）：ORM标准在java中的具体表现，在java中具体表现为entity.java文件；</li>
+</ul>
+<h3 id="服务器软件">服务器软件</h3><ul>
+<li>apache：跨平台，安全性高；</li>
+<li>tomcat：典型的jsp容器，由apache开源组织开发，免费的开放源代码的Web应用服务器，属于轻量级应用服务器，适合中小企业；</li>
+<li>jetty：典型的jsp容器，由eclipse基金会开发维护；</li>
+<li>glassfish：一款强健的商业兼容应用服务器，达到产品级质量，可免费用于开发、部署和重新分发；</li>
+</ul>
+<h3 id="数据格式">数据格式</h3><table>
+<thead>
+<tr>
+<th>数据格式名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JOSN</td>
+<td>一种数据格式，新版框架下浏览器请求数据时，服务器会返回这种格式的数据，可用javascript解析，可用ajax技术传输；</td>
+</tr>
+<tr>
+<td>XML</td>
+<td>一种数据格式，比JOSN重，面向数据传输；</td>
+</tr>
+</tbody>
+</table>
+<h3 id="设计思想">设计思想</h3><table>
+<thead>
+<tr>
+<th>设计思想</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DOM框架</td>
+<td>是一种页面元素控制的设计思想，他的树形结构便于获取页面元素；</td>
+</tr>
+<tr>
+<td>MVC框架</td>
+<td>是一种前端到后端的设计思想，model、view、controller三者分离，要什么请求什么，更加灵活，易于扩展和测试；</td>
+</tr>
+<tr>
+<td>同源策略</td>
+<td>网景公司（Netscape）提出的著名的安全策略，禁止服务器跨域读取数据；</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组织团体">组织团体</h3><ul>
+<li>W3C（World Wide Web Consortium）：万维网联盟的缩写，是对网络标准制定的一个非赢利组织，致力在万维网发展方向上达成共识；</li>
+</ul>
 
           
         
@@ -690,6 +820,196 @@
 <li><strong>集群黑名单</strong>：如果一个TaskTracker进入job黑名单的次数过多，或者这个TaskTracker进入job黑名单的次数明显超过平均进入次数，则将其加入集群黑名单，以后不再向其分配任务；</li>
 <li><strong>检错机制</strong>：如果JobTracker发现某个TaskTracker不正常或者完成任务速度明天低于平均水平，JobTracker会将这个任务另外交由另外一个TaskTracker去完成，如果这个TaskTracker完成的非常快，则JobTracker认为原来的TaskTracker有问题，遂kill原TaskTracker进程，并且判断是否将其加入黑名单；</li>
 </ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/04/01/2015-4-1-mapreduce-name-explain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/04/01/2015-4-1-mapreduce-name-explain/" itemprop="url">
+                  MapReduce过程名词解释
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-01T00:00:00+08:00">
+                2015-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">hadoop</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/04/01/2015-4-1-mapreduce-name-explain/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/01/2015-4-1-mapreduce-name-explain/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>在mapreduce的运行过程中，有很多精巧的机制保证整个作业运行在高效率、相对公平和高容错性的环境下。</li>
+<li>mapreduce运行过程中（特别是shuffle过程中）有很多容易混淆的名词。本文通过罗列这些名词的含义来对这些过程加以解释说明。</li>
+</ul>
+<h3 id="名词解释">名词解释</h3><table>
+<thead>
+<tr>
+<th>名词</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shuffle</td>
+<td>将map的输出作为输入传给reducer的过程的总称；</td>
+</tr>
+<tr>
+<td>spill</td>
+<td>map的结果从内存往磁盘写数据的过程；中文译为“溢写”，但并不一定是当内存溢出后才写入磁盘；</td>
+</tr>
+<tr>
+<td>partitioner</td>
+<td>指partitioner接口，作用是根据key或value及reduce的数量决定当前的这对输出数据<key value="">应交给哪个reduce task处理；</key></td>
+</tr>
+<tr>
+<td>sort</td>
+<td>指快速排序；当map内存占用达到一定比例时，需对于内存中的key做sort，以便combiner过程；</td>
+</tr>
+<tr>
+<td>combiner</td>
+<td>将一个map内存中具有相同<key,value>对的value加起来，以减少spill到磁盘的数据量；将已经写到磁盘的文件进行上述动作也称为combiner；</key,value></td>
+</tr>
+<tr>
+<td>merge</td>
+<td>若map产生的数据量较大，一个map会有多个spill过程从而在磁盘中产生多个spill文件。将磁盘中多个spill文件合并成一个的过程称为spill；merge的本质是合并文件的过程，具有相同key的value并没有在merge过程中相加，而是在combiner中实现；</td>
+</tr>
+</tbody>
+</table>
 
           
         
@@ -2004,223 +2324,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/02/2015-1-2-front-end-feelings/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/01/02/2015-1-2-front-end-feelings/" itemprop="url">
-                  关于前端开发的几点感悟
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-02T00:00:00+08:00">
-                2015-01-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/01/02/2015-1-2-front-end-feelings/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/02/2015-1-2-front-end-feelings/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>做前端开发时间不算长，虽然在很多方面仍是小白，但是毕竟也悟出了一些东西，借此平台分享，也算是自己成长道路上的一点积累；</li>
-</ul>
-<h3 id="广度还是深度">广度还是深度</h3><ul>
-<li>自己对这个问题纠结了好久，最后得出的结论是：不用纠结，just do it！下面引用实验室一位牛人的看法，以此告诫自己just do it才是最重要的！</li>
-<li>在一无所知的时候，当然是广度重要，需要先知道、后深入；</li>
-<li>在知道了一些后，当然是深度更加重要，不同的框架、语言、知识都是相通的，如果真正将一门技术、一门语言学深入、甚至达到了精通，并且能够抽象出来一种适合自己的学习方法，那么学习其他技术也会触类旁通；</li>
-</ul>
-<h3 id="学习一门新技术的方法">学习一门新技术的方法</h3><ul>
-<li>了解技术的应用状况和应用前景：<ul>
-<li>在知乎、博客上搜索；</li>
-<li>这项技术多少人在用、哪些公司在用；</li>
-<li>这项技术处于上升还是下降阶段，是否会一直流行；</li>
-<li>确定深入学习的路线图：</li>
-<li>了解业内评价较好的专业书籍导论、目录；</li>
-</ul>
-</li>
-<li>进行第一遍普及性学习，此阶段的目标不是深入理解，而是会用、上手、基础性代码跑通：<ul>
-<li>官方文档、W3Cschool总结性文档；</li>
-<li>公开课（比如极客学院）；</li>
-<li>入门博客；</li>
-<li>入门书籍；</li>
-</ul>
-</li>
-<li>在学习深入到一定程度后，会发现一个瓶颈，那就是会用、但是不明白原理。此时应当进行第二遍研究性学习，此阶段目标不是广度，而是对某一技术点的深入挖掘，要达到看懂源码、完全了解内部运作机制的程度：<ul>
-<li>确定需要深入挖掘的几个技术点；</li>
-<li>专业性书籍；</li>
-<li>专业性博客；</li>
-<li>官方文档细节；</li>
-<li>在github上搜索别人的代码，阅读优秀代码；</li>
-<li>自己实践一个小项目；</li>
-</ul>
-</li>
-<li>分享和提升：<ul>
-<li>在研究过程中产出自己的理解，试着写github和blog等，分享自己的思想；</li>
-<li>回过头看看在”第一遍普及性学习”中的疑问是否解决；</li>
-</ul>
-</li>
-</ul>
-<h3 id="Web系统开发流程">Web系统开发流程</h3><ul>
-<li>我还没有真正步入职场，但是根据在实验室的项目经历，也能悟出一些在web应用开发过程中的团队合作技巧和注意点；</li>
-<li>首次讨论，不考虑技术细节：<ul>
-<li>系统的逻辑架构；</li>
-<li>系统的物理架构；</li>
-<li>系统需要哪些页面，之间怎样跳转，大概设计什么页面功能；</li>
-<li>讨论后写wiki文档，让大家再想想细节，确定可行的方案；</li>
-</ul>
-</li>
-<li>第二次讨论，确定主要技术点的具体方案：<ul>
-<li>用户需求定稿；</li>
-<li>页面样式设计图定稿；</li>
-<li>数据库设计定稿；</li>
-<li>系统主要技术点定稿，确实困难的技术点要确定几个备用技术；</li>
-<li>讨论后将系统总体任务分解成小任务，提issue分配到人，确定时间进度；</li>
-<li>原则：同一个页面交给同一个人去做和维护；</li>
-</ul>
-</li>
-<li>开发过程：<ul>
-<li>原则：只考虑把东西做出来，暂不考虑性能问题；</li>
-<li>每个点：新建分支、写代码、commit和push、备份代码和数据库到本地、及时合并代码到master；</li>
-<li>及时和用户、产品经理沟通（如果有双重管理更应如此），沟通好再开工，避免用户需求的更改导致重复劳动；</li>
-<li>开发文档写在wiki；</li>
-<li>issue完成及时关闭；</li>
-</ul>
-</li>
-<li>整体完成后上线测试：<ul>
-<li>考虑性能问题；</li>
-<li>考虑代码优化；</li>
-<li>考虑测试中遇到的各种实际问题；</li>
-</ul>
-</li>
-</ul>
-<h3 id="搜索技巧">搜索技巧</h3><ul>
-<li>刚开始用google的时候总是搜不到自己想要的东西，原本以为是自己英语太渣，现在看来是没有掌握住“关键词”，下面就把我总结的常用的搜索技巧分享给大家；</li>
-<li>js官方文档：MDN</li>
-<li>扩展内容：cuntomized</li>
-<li>实例内容：example</li>
-<li>搜教程：tutorial doc </li>
-<li>搜下载：download </li>
-<li>代码测试器：plunker </li>
-<li>同级概念：… vs …</li>
-<li>搜快捷键：<ul>
-<li>代码补全：code/hint/completion/assist </li>
-<li>代码格式化：code format </li>
-</ul>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2270,7 +2373,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-count">92</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2292,7 +2395,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2398,7 +2501,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -320,6 +320,352 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/2018-1-18-ElasticSearch-Intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/01/18/2018-1-18-ElasticSearch-Intro/" itemprop="url">
+                  ElasticSearch原理简介
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T00:00:00+08:00">
+                2018-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/18/2018-1-18-ElasticSearch-Intro/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/18/2018-1-18-ElasticSearch-Intro/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>ELK是重要的日志分析系统，在开源的日志分析系统中独占鳌头，最近公司业务用ELK分析告警日志，故系统研究了Elasticsearch的工作原理。</li>
+<li>本文是转载的<a href="http://www.shaheng.me/blog/2015/06/elasticsearch--.html" target="_blank" rel="external">一篇文章</a>加上我自己的整理和分析，某些内容和ELK官网重复，在此感谢作者的整理。</li>
+</ul>
+<h3 id="基本概念">基本概念</h3><ul>
+<li>简介：<ul>
+<li>ElasticSearch(以下简称ES)是一个基于Lucene构建的开源(open-source)，分布式(distributed)，RESTful，实时(real-time)的搜索与分析(analytics)引擎。</li>
+<li>它可以让你在浏览数据时具备非常快的速度和优秀的可扩展性。它用于全文索引、结构化数据索引、数据分析以及三者的结合。</li>
+<li>它可以运行在你的笔记本上，或者扩展至数百台的服务器节点上来处理PB级的数据。 ES建立在Lucene的基础之上，但是Lucene仅仅是一个库，如果要发挥它的优势，你必须使用它然后再结合自己的开发来构造一个具体的应用。</li>
+<li>更坏的是你必须了解Lucene才能更好的使用它，但是Lucene本身就很复杂。所以ES意在取Lucene的优点，隐蔽其复杂性来构造一个简洁易用的RESTful风格的全文搜索引擎。</li>
+</ul>
+</li>
+<li>与关系型数据库的名词对照</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>SQL database</th>
+<th>No-sql database</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>database</td>
+<td>database</td>
+</tr>
+<tr>
+<td>table</td>
+<td>collection</td>
+</tr>
+<tr>
+<td>row</td>
+<td>document</td>
+</tr>
+<tr>
+<td>column</td>
+<td>field</td>
+</tr>
+<tr>
+<td>primary key</td>
+<td>primary key</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>ElasticSearch专用名词解释：</p>
+<ul>
+<li>document：一行数据；</li>
+<li>index：一个database，是多个document的集合（和sql数据库的索引的概念不同），在kibana上显示为一组日志；</li>
+<li>shard：ELK的底层存储是file，shared包含一个或多个file，是数据最小存储单元，一个index被划分为若干shared分片，一个shared可以备份到其他节点上（备份的份数可以自定义）；</li>
+<li>node：物理节点；</li>
+<li>cluster：集群；</li>
+</ul>
+</li>
+<li><p>面向文档(Document Oriented)</p>
+<ul>
+<li>在应用程序中的对象(Objects)，不仅仅是keys和values的罗列，更多的是，他们是由更为复杂的数据结构组成的数据构成的。迟早你会将这些对象存储到DataBases(这里指更广义的持久层)。如果你要将这些已经通过复杂的结构体组织好的对象存储到传统的ROWS-COLUMNS的关系型数据库里无疑等于压榨你的财富：因为你必须将这些已经组织好了的复杂结构扁平化来适应传统数据库的表结构(通常是一个列一个字段)，然后以后每次在你要使用这个数据的时候再重组它们。</li>
+<li>ES面向文档，这就意味着你可以存储完整的对象或者文档。ES不仅存储它们，并且对它们的每一个文档的内容做了索引以便可以查询到它们。在ES中，你是对文档进行的建索引、查询、排序、过滤，而不是对关系型数据的一行数据。这就是ES处理数据的一个最基本的不同点，这也是ES为什么能处理全文索引的关键。</li>
+</ul>
+</li>
+<li><p>精确索引VS全文索引</p>
+<ul>
+<li>在ES中的数据可以分为两类：精确值(exact values)以及全文(full text)。 精确值：例如日期类型date，若date其有两个值:2014-09-15与2014，那么这两个值不相等。又例如字符串类型foo与Foo不相等。 全文：通常是人类语言写的文本，例如一段tweet信息、email的内容等。</li>
+<li>精确值很容易被索引：一个值要么相当要么不等。 索引全文值就需要很多功夫。例如我们不仅要想：这个文档符合我们的查询吗？还要想：这个文档有多符合我们的查询？换句话说就是：这个文档跟我们的查询关联大吗？我们很少精确的去匹配整个全文，我们最想要的是去匹配全文文本的内部信息。除此，我们还希望搜索能够理解我们的意图;</li>
+<li>例如,如果你搜索UK，我们需要包含United Kingdom的文本也会被匹配。如果你搜索jump，那么包含jumped,jumps,jumping,更甚者leap的文本会被匹配。</li>
+<li>为了更方便的进行全文索引，ES首先要先分析文本，然后使用分析过的文本去创建倒序索引。</li>
+</ul>
+</li>
+<li><p>倒序索引&amp;文本分析</p>
+<ul>
+<li>ES使用倒序索引来加速全文索引。一个倒序索引由两部分组成：在文档中出现的所有不同的词；对每个词，它所出现的文档的列表。 例如：如果我们有两个文档，每一个文档有一个content字段，包含的内容如下：</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>1.The quick brown fox jumped over the lazy dog<br>2.Quick brown foxes leap over lazy dogs in summer</p>
+</blockquote>
+<p>要创建一个倒序索引，首先要将content分割成单独的词(称为terms or tokens)，创建一个所有terms的列表，然后罗列每一个term出现的文档。此过程称为tokenization。如下图：</p>
+<p><img src="/images/elk/1-1.png" alt="term"></p>
+<p>现在，如果我们想要搜索 quick brown，我们仅仅只需要找每一个term出现的文档即可。如下图：</p>
+<p><img src="/images/elk/1-2.png" alt="term"></p>
+<p>每一个文档都匹配到了，但是第一个比第二个要匹配的多。如果我们使用一个简单的相似性算法仅仅只计算匹配的数量，那么我们可以称第一个文档要比第二个匹配的好(与我们的查询更有关联)。<br>但是现在的倒序索引有一些问题：</p>
+<blockquote>
+<p>Quick与quick是两个不同的term，但是搜索的用户会认为它们应该是一样的term才是合理的。<br>fox和foxes，dog和dogs是一样的词根，应该列为同一个term。 jumped和leap虽然词根不一样，但是意义却相同。</p>
+</blockquote>
+<p>如果改善了上面的问题，那么倒序索引应该如下图：</p>
+<p><img src="/images/elk/1-3.png" alt="term"></p>
+<p>但是此时如果用户搜索Quick还会失败，因为term不含精确值Quick。但是，如果我们对QueryString使用与上述改善步骤相同的策略，那么用户搜索的Quick将会被转换为quick，此过程称为normalization。那么将会成功匹配。 对content的处理tokenization和normalization称为analysis过程。ES有很多种内置的analyzer处理这些。</p>
+<h3 id="Elasticsearch设计原理">Elasticsearch设计原理</h3><h4 id="一个空的集群">一个空的集群</h4><p><img src="/images/elk/2-1.png" alt="term"></p>
+<ul>
+<li>如果我们启动了一个节点，没有索引没有数据，那么看起来就像上图一样。 一个节点Node运行着ES的实例，一个集群由一个或多个使用着同样名字(cluster.name)的节点组成，分享数据和负载。 当Node从集群中添加或删除时，集群会重组自己，使数据平摊的更均匀。</li>
+<li>集群中需要有一台master节点。master的作用是掌管集群的管理工作： 例如创建和删除索引。 从集群中添加或删除一台节点。 master节点无需掌管文档级的变更和索引。这也意味着在只有一台master的情况下，随着负载的增加master不会成为瓶颈。 所有的节点都可能变成master。</li>
+<li>作为user，我们可以与任何一台节点通信，包括master。每一台节点都知道每一个文档的位置并且可以将user的请求路由到文档所在的节点，并且这台节点负责接收它路由到的node or nodes的响应，并且将数据组织起来返回给用户。这些对用户都是透明的。</li>
+</ul>
+<h4 id="创建一个索引—index,shard,cluster">创建一个索引—index,shard,cluster</h4><ul>
+<li>将数据添加到ES的前提是，我们需要一个索引(名词):index——一个存储与这个索引相对应数据的地方。实际上，index仅仅只是一个命名空间来指向一个或多个实际的物理分片(shard)。</li>
+<li>一个分片(shard)是一个比较低层的工作单元来处理这个索引(index)的所有数据的一个切片(slice)。一个shard实际上是一个Lucene实例，在它的能力范围内拥有完整的搜索功能(在处理它自己拥有的数据时有所有的功能)。我们所有文档的索引indexed(动词)和存储工作都是在shard上，但这是透明的，我们不需要直接和shard通信，而是和我们创建的index(名词)通信。</li>
+<li>shards是ES将数据分布式在你的集群的关键。想象下shards是数据的容器，文档存储在shards里，而shards被分配在集群的每一个节点Node里。当你的集群规模增长和降低时，ES会自动的在Nodes间迁移shards以保持集群的负载均衡。</li>
+<li>shard的分类与作用：<ul>
+<li>shard可分为primary shard和replica shard。</li>
+<li>在一个index里的每一个文档都属于一个单独的primary shard，所以primary shard的数量决定了你最大能存储的数据量(对应于一个index)。</li>
+<li>注意：shard是归属与index的，而不是cluster的。</li>
+</ul>
+</li>
+<li>replica shard是primary shard的拷贝。replica有两个作用：   <ul>
+<li>冗余容灾</li>
+<li>提供读请求服务，例如搜索或读取文档primary shard的数量在索引创建时确定后不能修改，replica可以在任何时候修改。 例： 见Figure2，在2.1的集群上创建一个index，拥有3个primary shards以及1个replica shards。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/elk/2-2.png" alt="term"></p>
+<p>由于只有一台Node，而Primary shard的Replicas与其在同一台节点上毫无意义，所以集群没有初始化replicas，这时添加另外一台Node。见Figure3，每一个primary shard初始化了一个replica。</p>
+<p><img src="/images/elk/2-3.png" alt="term"></p>
+<h4 id="水平扩容">水平扩容</h4><p>当我们继续添加一台节点时，Node1和Node2中的各取一个shard移动到了Node3.见Figure4</p>
+<p><img src="/images/elk/2-4.png" alt="term"></p>
+<p>这样，我们每一台Node上只有两个shard。这就意味着每一台Node的硬件资源(CPU,RAM,I/O)将会被更少的shards共享，提高了每一个shard的性能。在这个案例中，6个shards最多可使用6台Node，这样每个shard就可以使用100%的node硬件资源。<br>现在我们修改replica的数量到2，如Figure5</p>
+<p><img src="/images/elk/2-5.png" alt="term"></p>
+<p>这样我们就有了一个3primary shards，6replica shards的Cluster。我们可将Node提高到9台。水平扩容了集群性能。</p>
+<h4 id="容灾">容灾</h4><p>ES可以容下当节点宕机情况下的异常。例如现在我们杀掉Node1节点。见Figure6</p>
+<p><img src="/images/elk/2-6.png" alt="term"></p>
+<p>我们杀掉的是master节点。一个Cluster必须要有master以保证集群的功能正常。所以集群要做的第一件事是选择一个新的master：Node2. 当我们杀掉1节点时，Primary shards 1和2丢失了。如果丢失了primary shard，index(名词)将不能正常的工作。此时P1和P2的拷贝存在Node2和Node3上。所以此时新升级的master(Node2)将做的第一件事就是将NODE2和NODE3上的replica shard1和replica shard2升级为primary shard。此时如果我们杀掉NODE2，整个集群的容灾过程同理，还是可以正常运行。</p>
+<p>这时，如果我们重启了NODE1，cluster将会重新分配缺少的两个replica shards(现在每个primary shard只有2个replicas，配置是3个，缺少2个)。如果NODE1的数据是旧的，那么它将会继续利用它们，NODE1只会从现在的Primary Shards拷贝这期间更改的数据。</p>
+<h3 id="分布式文档存储">分布式文档存储</h3><h4 id="Shards文档路由">Shards文档路由</h4><p>当你对一个文档建立索引时，它仅存储在一个primary shard上。ES是怎么知道一个文档应该属于哪个shard？当你创建一个新的文档时，ES是怎么知道应该把它存储至shard1还是shard2？ 这个过程不能随机无规律的，因为以后我们还要将它取出来。它的路由算法是：</p>
+<blockquote>
+<p>shard = hash(routing) % numberofprimary_shards</p>
+</blockquote>
+<p>routing的值可以是文档的id，也可以是用户自己设置的一个值。hash将会根据routing算出一个数值然后%primaryshards的数量。这也是为什么primary_shards在index创建时就不能修改的原因。</p>
+<p>问题：当看到这里时，产生了一个问题:ES为什么要这样设计路由算法，这样就强制使primaryshards不可变，不利于以后index的扩容，除非事前就要对数据规模有所评估来设计可扩展的index。为什么不能使用一致性hash解决primaryshards改变时的情况呢？</p>
+<h4 id="Primary/Replica_Shards的交互">Primary/Replica Shards的交互</h4><p>假如我们有Figure8的集群。我们可以向这个集群的任何一台NODE发送请求，每一个NODE都有能力处理请求。每一个NODE都知道每一个文档所在的位置所以可以直接将请求路由过去。下面的例子，我们将所有的请求都发送到NODE1。</p>
+<p><img src="/images/elk/2-7.png" alt="term"></p>
+<p>注：最好的实践方式是轮询所有的NODE来发送请求，以达到请求负载均衡。</p>
+<h4 id="写操作">写操作</h4><p>创建、索引、删除文档都是写操作，这些操作必须在primary shard完全成功后才能拷贝至其对应的replicas上。见Figure9。</p>
+<p><img src="/images/elk/2-8.png" alt="term"></p>
+<blockquote>
+<p>1.客户端向Node1发送写操作的请求。<br>2.Node1使用文档的_id来决定这个文档属于shard0，然后将请求路由至NODE3，P0所在的位置。<br>3.Node3在P0上执行了请求。如果请求成功，则将请求并行的路由至NODE1 NODE2的R0上。当所有的replicas报告成功后，NODE3向请求的node(NODE1)发送成功报告，NODE1再报告至Client。<br>当客户端收到执行成功后，操作已经在Primary shard和所有的replica shards上执行成功了。</p>
+</blockquote>
+<h4 id="读操作">读操作</h4><p>一个文档可以在primary shard和所有的replica shard上读取。见Figure10</p>
+<p><img src="/images/elk/2-9.png" alt="term"></p>
+<blockquote>
+<p>1.客户端发送Get请求到NODE1。<br>2.NODE1使用文档的_id决定文档属于shard 0.shard 0的所有拷贝存在于所有3个节点上。这次，它将请求路由至NODE2。<br>3.NODE2将文档返回给NODE1，NODE1将文档返回给客户端。 对于读请求，请求节点(NODE1)将在每次请求到来时都选择一个不同的replica。<br>shard来达到负载均衡。使用轮询策略轮询所有的replica shards。</p>
+</blockquote>
+<h4 id="更新操作">更新操作</h4><p>更新操作，结合了以上的两个操作：读、写。见Figure11</p>
+<p><img src="/images/elk/2-10.png" alt="term"></p>
+<blockquote>
+<p>1.客户端发送更新操作请求至NODE1<br>2.NODE1将请求路由至NODE3，Primary shard所在的位置<br>3.NODE3从P0读取文档，改变source字段的JSON内容，然后试图重新对修改后的数据在P0做索引。如果此时这个文档已经被其他的进程修改了，那么它将重新执行3步骤，这个过程如果超过了retryon_conflict设置的次数，就放弃。<br>4.如果NODE3成功更新了文档，它将并行的将新版本的文档同步到NODE1和NODE2的replica shards重新建立索引。一旦所有的replica<br>shards报告成功，NODE3向被请求的节点(NODE1)返回成功，然后NODE1向客户端返回成功。</p>
+</blockquote>
+<h3 id="Shard以及数据读写方式的设计">Shard以及数据读写方式的设计</h3><h4 id="不变性">不变性</h4><ul>
+<li>写到磁盘的倒序索引是不变的：自从写到磁盘就再也不变。这会有很多好处：<ul>
+<li>不需要添加锁。如果你从来不用更新索引，那么你就不用担心多个进程在同一时间改变索引。</li>
+<li>一旦索引被内核的文件系统做了Cache，它就会待在那因为它不会改变。只要内核有足够的缓冲空间，绝大多数的读操作会直接从内存而不需要经过磁盘。这大大提升了性能。</li>
+<li>其他的缓存(例如fiter cache)在索引的生命周期内保持有效，它们不需要每次数据修改时重构，因为数据不变。</li>
+<li>写一个单一的大的倒序索引可以让数据压缩，减少了磁盘I/O的消耗以及缓存索引所需的RAM。</li>
+</ul>
+</li>
+<li>当然，索引的不变性也有缺点。如果你想让新修改过的文档可以被搜索到，你必须重新构建整个索引。这在一个index可以容纳的数据量和一个索引可以更新的频率上都是一个限制。</li>
+</ul>
+<h4 id="动态更新索引">动态更新索引</h4><p>如何在不丢失不变形的好处下让倒序索引可以更改？答案是：使用不只一个的索引。 新添额外的索引来反映新的更改来替代重写所有倒序索引的方案。 Lucene引进了per-segment搜索的概念。一个segment是一个完整的倒序索引的子集，所以现在index在Lucene中的含义就是一个segments的集合，每个segment都包含一些提交点(commit point)。见Figure16。新的文档建立时首先在内存建立索引buffer，见Figure17。然后再被写入到磁盘的segment，见Figure18。</p>
+<p><img src="/images/elk/3-1.png" alt="term"></p>
+<p><img src="/images/elk/3-2.png" alt="term"></p>
+<ul>
+<li>一个per-segment的工作流程如下：<ul>
+<li>新的文档在内存中组织，见Figure17。</li>
+<li>每隔一段时间，buffer将会被提交：一个新的segment(一个额外的新的倒序索引)将被写到磁盘 一个新的提交点(commit point)被写入磁盘，将包含新的segment的名称。 磁盘fsync，所有在内核文件系统中的数据等待被写入到磁盘，来保障它们被物理写入。</li>
+<li>新的segment被打开，使它包含的文档可以被索引。</li>
+<li>内存中的buffer将被清理，准备接收新的文档。</li>
+</ul>
+</li>
+<li>当一个新的请求来时，会遍历所有的segments。词条分析程序会聚合所有的segments来保障每个文档和词条相关性的准确。通过这种方式，新的文档轻量的可以被添加到对应的索引中。</li>
+</ul>
+<h4 id="删除和更新">删除和更新</h4><ul>
+<li>segments是不变的，所以文档不能从旧的segments中删除，也不能在旧的segments中更新来映射一个新的文档版本。取之的是，每一个提交点都会包含一个.del文件，列举了哪一个segmen的哪一个文档已经被删除了。 当一个文档被”删除”了，它仅仅是在.del文件里被标记了一下。被”删除”的文档依旧可以被索引到，但是它将会在最终结果返回时被移除掉。</li>
+<li>文档的更新同理：当文档更新时，旧版本的文档将会被标记为删除，新版本的文档在新的segment中建立索引。也许新旧版本的文档都会本检索到，但是旧版本的文档会在最终结果返回时被移除。</li>
+</ul>
+<h4 id="实时索引">实时索引</h4><ul>
+<li>在上述的per-segment搜索的机制下，新的文档会在分钟级内被索引，但是还不够快。 瓶颈在磁盘。将新的segment提交到磁盘需要fsync来保障物理写入。但是fsync是很耗时的。它不能在每次文档更新时就被调用，否则性能会很低。</li>
+<li>现在需要一种轻便的方式能使新的文档可以被索引，这就意味着不能使用fsync来保障。 在ES和物理磁盘之间是内核的文件系统缓存。之前的描述中,Figure19,Figure20，在内存中索引的文档会被写入到一个新的segment。但是现在我们将segment首先写入到内核的文件系统缓存，这个过程很轻量，然后再flush到磁盘，这个过程很耗时。但是一旦一个segment文件在内核的缓存中，它可以被打开被读取。</li>
+</ul>
+<p><img src="/images/elk/3-3.png" alt="term"></p>
+<p><img src="/images/elk/3-4.png" alt="term"></p>
+<h4 id="更新持久化">更新持久化</h4><p>不使用fsync将数据flush到磁盘，我们不能保障在断电后或者进程死掉后数据不丢失。ES是可靠的，它可以保障数据被持久化到磁盘。 在2.6.2中，一个完全的提交会将segments写入到磁盘，并且写一个提交点，列出所有已知的segments。当ES启动或者重新打开一个index时，它会利用这个提交点来决定哪些segments属于当前的shard。 如果在提交点时，文档被修改会怎么样？不希望丢失这些修改：</p>
+<ul>
+<li>当一个文档被索引时，它会被添加到in-memory buffer，并且添加到Translog日志中，见Figure21.</li>
+</ul>
+<p><img src="/images/elk/3-5.png" alt="term"></p>
+<ul>
+<li>refresh操作会让shard处于Figure22的状态：每秒中，shard都会被refreshed，在in-memory buffer中的文档会被写入到一个新的segment，但没有fsync，in-memory buffer被清空。</li>
+</ul>
+<p><img src="/images/elk/3-6.png" alt="term"></p>
+<ul>
+<li>这个过程将会持续进行：新的文档将被添加到in-memory buffer和translog日志中，见Figure23</li>
+</ul>
+<p><img src="/images/elk/3-7.png" alt="term"></p>
+<ul>
+<li>一段时间后，当translog变得非常大时，索引将会被flush，新的translog将会建立，一个完全的提交进行完毕。见Figure24<ul>
+<li>在in-memory中的所有文档将被写入到新的segment.</li>
+<li>内核文件系统会被fsync到磁盘。</li>
+<li>旧的translog日志被删除</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/elk/3-8.png" alt="term"></p>
+<p>translog日志提供了一个所有还未被flush到磁盘的操作的持久化记录。当ES启动的时候，它会使用最新的commit point从磁盘恢复所有已有的segments，然后将重现所有在translog里面的操作来添加更新，这些更新发生在最新的一次commit的记录之后还未被fsync。</p>
+<p>translog日志也可以用来提供实时的CRUD。当你试图通过文档ID来读取、更新、删除一个文档时，它会首先检查translog日志看看有没有最新的更新，然后再从响应的segment中获得文档。这意味着它每次都会对最新版本的文档做操作，并且是实时的。</p>
+<h4 id="Segment合并">Segment合并</h4><ul>
+<li>通过每隔一秒的自动刷新机制会创建一个新的segment，用不了多久就会有很多的segment。segment会消耗系统的文件句柄，内存，CPU时钟。最重要的是，每一次请求都会依次检查所有的segment。segment越多，检索就会越慢。</li>
+<li>ES通过在后台merge这些segment的方式解决这个问题。小的segment merge到大的，大的merge到更大的。。。</li>
+<li>这个过程也是那些被”删除”的文档真正被清除出文件系统的过程，因为被标记为删除的文档不会被拷贝到大的segment中。合并过程如Figure25：<ul>
+<li>当在建立索引过程中，refresh进程会创建新的segments然后打开他们以供索引。</li>
+<li>merge进程会选择一些小的segments然后merge到一个大的segment中。这个过程不会打断检索和创建索引。</li>
+<li>Figure26，一旦merge完成，旧的segments将被删除：新的segment被flush到磁盘，一个新的提交点被写入，包括新的segment，排除旧的小的segments，新的segment打开以供索引旧的segments被删除。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/elk/3-9.png" alt="term"></p>
+<p><img src="/images/elk/3-10.png" alt="term"></p>
+<p>merge大的segments会消耗大量的I/O和CPU，严重影响索引性能。默认，ES会节制merge过程来给留下足够多的系统资源。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/10/year-books/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2463,165 +2809,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/11/2016-5-11-tree-traversal/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/11/2016-5-11-tree-traversal/" itemprop="url">
-                  二叉树的遍历
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-11T00:00:00+08:00">
-                2016-05-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/05/11/2016-5-11-tree-traversal/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/11/2016-5-11-tree-traversal/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>本文展示了二叉树的前序遍历、中序遍历、后序遍历;</li>
-<li>每种遍历均用递归和非递归的方法实现。</li>
-<li>递归的方法明显比非递归的方法容易理解。</li>
-<li>非递归的实现方式有很多种，本文给出了用一个栈实现的方法。</li>
-</ul>
-<h3 id="程序">程序</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br></pre></td><td class="code"><pre><span class="line">package test;</span><br><span class="line"></span><br><span class="line">import java.util.Stack;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> Test &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> TreeNode &#123;</span><br><span class="line">		<span class="keyword">int</span> val;</span><br><span class="line">		TreeNode left;</span><br><span class="line">		TreeNode right;</span><br><span class="line"></span><br><span class="line">		TreeNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">			val = x;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TreeNode <span class="title">BinaryTree</span><span class="params">(<span class="keyword">int</span>[] <span class="built_in">array</span>)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> makeBinaryTreeByArray(<span class="built_in">array</span>, <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TreeNode <span class="title">makeBinaryTreeByArray</span><span class="params">(<span class="keyword">int</span>[] <span class="built_in">array</span>, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (index &lt; <span class="built_in">array</span>.length) &#123;</span><br><span class="line">			<span class="keyword">int</span> value = <span class="built_in">array</span>[index];</span><br><span class="line">			<span class="keyword">if</span> (value != <span class="number">0</span>) &#123;</span><br><span class="line">				TreeNode t = <span class="keyword">new</span> TreeNode(value);</span><br><span class="line">				<span class="built_in">array</span>[index] = <span class="number">0</span>;</span><br><span class="line">				t.left = makeBinaryTreeByArray(<span class="built_in">array</span>, index * <span class="number">2</span>);</span><br><span class="line">				t.right = makeBinaryTreeByArray(<span class="built_in">array</span>, index * <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">				<span class="keyword">return</span> t;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> null;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//前序遍历 递归实现</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">preTraversal</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(root==null)&#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		System.out.print(root.val+<span class="string">" "</span>);</span><br><span class="line">		preTraversal(root.left);</span><br><span class="line">		preTraversal(root.right);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//前序遍历 非递归实现(栈)</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">preTraversal1</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">		Stack&lt;TreeNode&gt; <span class="built_in">stack</span> = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">		<span class="keyword">if</span>(root==null)&#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="built_in">stack</span>.push(root);</span><br><span class="line">		<span class="keyword">while</span>(!<span class="built_in">stack</span>.isEmpty())&#123;</span><br><span class="line">			TreeNode tmp = <span class="built_in">stack</span>.pop();</span><br><span class="line">			System.out.print(tmp.val+<span class="string">" "</span>);</span><br><span class="line">			<span class="keyword">if</span>(tmp.right!=null)&#123;</span><br><span class="line">				<span class="built_in">stack</span>.push(tmp.right);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(tmp.left!=null)&#123;</span><br><span class="line">				<span class="built_in">stack</span>.push(tmp.left);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//中序遍历 递归实现</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">midTraversal</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(root==null)&#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(root.left!=null)&#123;</span><br><span class="line">			midTraversal(root.left);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		System.out.print(root.val+<span class="string">" "</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(root.right!=null)&#123;</span><br><span class="line">			midTraversal(root.right);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//中序遍历 非递归实现(栈)</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">midTraversal1</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">		Stack&lt;TreeNode&gt; <span class="built_in">stack</span> = <span class="keyword">new</span> Stack&lt;&gt;();    </span><br><span class="line">		TreeNode node = root;    </span><br><span class="line">        <span class="keyword">while</span> (node != null || <span class="built_in">stack</span>.size() &gt; <span class="number">0</span>) &#123;    </span><br><span class="line">            <span class="keyword">while</span> (node != null) &#123;    </span><br><span class="line">                <span class="built_in">stack</span>.push(node);    </span><br><span class="line">                node = node.left;    </span><br><span class="line">            &#125;    </span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">stack</span>.size() &gt; <span class="number">0</span>) &#123;    </span><br><span class="line">                node = <span class="built_in">stack</span>.pop();    </span><br><span class="line">                System.out.print(node.val+<span class="string">" "</span>);  </span><br><span class="line">                node = node.right;    </span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;   </span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//后序遍历 递归实现</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">behTraversal</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(root==null)&#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(root.left!=null)&#123;</span><br><span class="line">			behTraversal(root.left);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(root.right!=null)&#123;</span><br><span class="line">			behTraversal(root.right);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		System.out.print(root.val+<span class="string">" "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//后序遍历 非递归实现(栈)</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">behTraversal1</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">		Stack&lt;TreeNode&gt; <span class="built_in">stack</span> = <span class="keyword">new</span> Stack&lt;TreeNode&gt;();    </span><br><span class="line">		TreeNode node = root, prev = root;    </span><br><span class="line">        <span class="keyword">while</span> (node != null || <span class="built_in">stack</span>.size() &gt; <span class="number">0</span>) &#123;    </span><br><span class="line">            <span class="keyword">while</span> (node != null) &#123;    </span><br><span class="line">                <span class="built_in">stack</span>.push(node);    </span><br><span class="line">                node = node.left;    </span><br><span class="line">            &#125;    </span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">stack</span>.size() &gt; <span class="number">0</span>) &#123;    </span><br><span class="line">            	TreeNode temp = <span class="built_in">stack</span>.peek().right;    </span><br><span class="line">                <span class="keyword">if</span> (temp == null || temp == prev) &#123;    </span><br><span class="line">                    node = <span class="built_in">stack</span>.pop();    </span><br><span class="line">                    System.out.print(node.val+<span class="string">" "</span>);    </span><br><span class="line">                    prev = node;    </span><br><span class="line">                    node = null;    </span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;    </span><br><span class="line">                    node = temp;    </span><br><span class="line">                &#125;    </span><br><span class="line">            &#125;    </span><br><span class="line">        &#125; </span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**  </span><br><span class="line">     *                  13 </span><br><span class="line">     *                 /  \ </span><br><span class="line">     *               65    5 </span><br><span class="line">     *              /  \    \ </span><br><span class="line">     *             97  25   37 </span><br><span class="line">     *            /    /\   / </span><br><span class="line">     *           22   4 28 32 </span><br><span class="line">     */</span>  </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span>[] arr = &#123; <span class="number">0</span>, <span class="number">13</span>, <span class="number">65</span>, <span class="number">5</span>, <span class="number">97</span>, <span class="number">25</span>, <span class="number">0</span>, <span class="number">37</span>, <span class="number">22</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">28</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">32</span>, <span class="number">0</span> &#125;;</span><br><span class="line">		TreeNode root = BinaryTree(arr);</span><br><span class="line">		preTraversal(root);  <span class="comment">//13 65 97 22 25 4 28 5 37 32</span></span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">		preTraversal1(root);  <span class="comment">//13 65 97 22 25 4 28 5 37 32 </span></span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">		midTraversal(root);  <span class="comment">//22 97 65 4 25 28 13 5 32 37 </span></span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">		midTraversal1(root);  <span class="comment">//22 97 65 4 25 28 13 5 32 37 </span></span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">		behTraversal(root);  <span class="comment">//22 97 4 28 25 65 32 37 5 13 </span></span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">		behTraversal1(root);  <span class="comment">//22 97 4 28 25 65 32 37 5 13 </span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2671,7 +2858,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-count">92</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2693,7 +2880,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2799,7 +2986,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
