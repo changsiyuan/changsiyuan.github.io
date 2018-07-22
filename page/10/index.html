@@ -320,6 +320,1286 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/12/2015-3-12-docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/12/2015-3-12-docker/" itemprop="url">
+                  退出Docker后如何再次进入Hadoop运行环境
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-03-12T00:00:00+08:00">
+                2015-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">hadoop</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/12/2015-3-12-docker/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/12/2015-3-12-docker/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>docker是单机上模拟集群的好工具。它既具有虚拟机的特性，同时，由于它不包含操作系统内核，docker比传统的的虚拟机显得更加轻量级。</li>
+<li>本文主要讲述了在退出docker后，如何再次进入hadoop运行环境；</li>
+</ul>
+<h3 id="docker再次进入hadoop运行环境的几个步骤">docker再次进入hadoop运行环境的几个步骤</h3><ul>
+<li>启动docker；</li>
+<li>用secureCRT连接192.168.59.103，用户名docker，密码tcuser（官方默认初始密码）；</li>
+<li>用docker images可以看到已经安装的master、slave1、slave2三个镜像；</li>
+<li>用下面的命令启动三个镜像的容器：<ul>
+<li><code>docker start master</code></li>
+<li><code>docker start slave1</code></li>
+<li><code>docker start slave2</code></li>
+</ul>
+</li>
+<li>用docker ps可以看到已经启动的三个容器；</li>
+<li>分别开三个选项卡，然后分别用下面命令进入相应容器（首次建立运行环境时已经配置过hosts文件，所以这里不用写ip）：<ul>
+<li><code>docker attach master</code></li>
+<li><code>docker attach slave1</code></li>
+<li><code>docker attach slave2</code></li>
+</ul>
+</li>
+<li>用chkconfig检查和hadoop相关的服务是否已经启动，没有启动的话按照类似下面的命令启动：<code>service hadoop-hdfs-namenode start</code>；</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/02/18/2015-2-18-DIY年夜饭2015/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/02/18/2015-2-18-DIY年夜饭2015/" itemprop="url">
+                  DIY年夜饭2015
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-02-18T00:00:00+08:00">
+                2015-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/02/18/2015-2-18-DIY年夜饭2015/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/18/2015-2-18-DIY年夜饭2015/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>今年继续DIY全家人的年夜饭，先上图一张：</li>
+</ul>
+<p><img src="/images/2015cooking/whole.jpg" alt="whole pic"></p>
+<ul>
+<li>下面是我做的几道菜，如果您也对烹饪感兴趣，欢迎联系我，联系方式在“关于”额。</li>
+</ul>
+<h3 id="我做的年夜饭">我做的年夜饭</h3><ul>
+<li><strong><em>三色菜丁</em></strong>：黄瓜、胡萝卜、虾仁。</li>
+</ul>
+<p><img src="/images/2015cooking/三色菜丁.jpg" alt="三色菜丁"></p>
+<ul>
+<li><strong><em>清蒸草鱼</em></strong>：</li>
+</ul>
+<p><img src="/images/2015cooking/清蒸草鱼.jpg" alt="清蒸草鱼"></p>
+<ul>
+<li><strong><em>炸鸡翅</em></strong>：</li>
+</ul>
+<p><img src="/images/2015cooking/炸鸡翅.jpg" alt="炸鸡翅"></p>
+<ul>
+<li><strong><em>红烧肉</em></strong>：</li>
+</ul>
+<p><img src="/images/2015cooking/红烧肉.jpg" alt="红烧肉"></p>
+<ul>
+<li><strong><em>鸡蛋南瓜汤</em></strong>：</li>
+</ul>
+<p><img src="/images/2015cooking/鸡蛋南瓜汤.jpg" alt="鸡蛋南瓜汤"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/31/2015-1-31-java-style/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/01/31/2015-1-31-java-style/" itemprop="url">
+                  Java命名规范
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-31T00:00:00+08:00">
+                2015-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/01/31/2015-1-31-java-style/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/31/2015-1-31-java-style/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>编写java程序时，程序的易读性是评判程序好坏的很重要的指标，那么写java时，对象的命名要注意哪些方面呢？请看本节分解！</li>
+<li>参考：<a href="https://google-styleguide.googlecode.com/svn/trunk/javaguide.html#s5.2.5-non-constant-field-names" target="_blank" rel="external">google java style</a></li>
+</ul>
+<h3 id="命名注意事项">命名注意事项</h3><ul>
+<li>Package names：全部小写，不要加特殊字符，比如<code>com.example.deepspace</code>，以下写法是错误的<code>com.example.deepSpace</code>，<code>com.example.deep_space</code>；</li>
+<li>Class names：写成UpperCamelCase，比如<code>HashIntegrationTest</code>，<code>Character</code>;</li>
+<li>Method names：写成lowerCamelCase，比如<code>sendMessage</code>，<code>testPop_emptyStack</code>；</li>
+<li>Constant names：写成全部大写形式，比如<code>CONSTANT_CASE</code>,<code>static final int NUMBER = 5;</code>,<code>static final ImmutableList&lt;String&gt; NAMES = ImmutableList.of(&quot;Ed&quot;, &quot;Ann&quot;);</code>,<code>static final Joiner COMMA_JOINER = Joiner.on(&#39;,&#39;);</code>,<code>static final SomeMutableType[] EMPTY_ARRAY = {};</code>；</li>
+</ul>
+<h3 id="其他注意事项">其他注意事项</h3><ul>
+<li>不要在程序中写孤零零的数字，要么它有明确的含义（60×60×24），要么就将他定义为final常量放在程序最上面，程序中引用即可；</li>
+<li>名称的含义尽量明确，尽量用全称，不要用缩写，除非是大家都公认的名称，比如：<code>num</code>,<code>temp</code>；</li>
+<li>程序中的注释就少不就多，而且尽量用英文注释；</li>
+<li>尽量避免代码重复；</li>
+<li>写程序的过程中要考虑代码的可移植性；</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/12/2015-1-12-computer-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/01/12/2015-1-12-computer-start/" itemprop="url">
+                  计算机开机过程详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-12T00:00:00+08:00">
+                2015-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/computer/" itemprop="url" rel="index">
+                    <span itemprop="name">computer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/01/12/2015-1-12-computer-start/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/12/2015-1-12-computer-start/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>计算机开机过程似乎是个非常复杂的过程，本文为您梳理出计算机开机最重要的若干阶段，让您对计算机开机过程一目了然；</li>
+<li>参考资料：<a href="http://www.ruanyifeng.com/blog/2013/02/booting.html" target="_blank" rel="external">计算机是如何启动的</a></li>
+</ul>
+<h3 id="第一阶段：BIOS">第一阶段：BIOS</h3><ul>
+<li>按下开机键，读取ROM内容；</li>
+<li>硬件自检，屏幕会显示检测的CPU、内存、硬盘的信息，如果有错则蜂鸣；</li>
+<li>按照用户的设定，决定计算机从哪里启动（是从硬盘、还是从DVD、还是从优盘），这一步之前用户可以通过长按F12修改从哪里启动；</li>
+</ul>
+<h3 id="第二阶段：主引导记录">第二阶段：主引导记录</h3><ul>
+<li>磁盘逻辑结构见下图：</li>
+</ul>
+<p><img src="/images/disk.png" alt="disk"></p>
+<ul>
+<li>决定从硬盘启动；</li>
+<li>从硬盘的0号扇区读取主引导记录（master boot record，MBR）；</li>
+<li>MBR结尾是分区表(上图)，告诉计算机每个分区的起始和终止地址；</li>
+<li>确定活动分区（装有操作系统的分区），读取这个分区的引导块（第一个块），执行它；</li>
+<li>引导块中的程序负责装载该分区的操作系统；</li>
+<li>操作系统启动，加载操作系统内核，启动任务管理器等；</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/07/2015-1-7-menu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/01/07/2015-1-7-menu/" itemprop="url">
+                  家常菜谱汇总
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-07T00:00:00+08:00">
+                2015-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/01/07/2015-1-7-menu/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/07/2015-1-7-menu/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>在编代码累的时候，不妨给自己放松一下，做一道可口美味的佳肴犒劳一下自己；</li>
+<li>作为一个吃货，不仅要会吃，而且要会做，这才叫高端大气上档次的吃货；</li>
+<li>如果遇见朋友来家中做客，亲自下厨不仅给朋友不一样的体验，而且能够让对方切身感受到自己的真诚；</li>
+<li>喜欢做饭的我在此给大家分享下家常菜的菜谱，欢迎补充；</li>
+</ul>
+<h3 id="基础家常菜">基础家常菜</h3><table>
+<thead>
+<tr>
+<th>菜名</th>
+<th>所需食材</th>
+<th>制作工艺</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>拍黄瓜</td>
+<td>黄瓜、蒜</td>
+<td>黄瓜洗净，拍成小块，加入醋、蒜汁、香菜、芝麻酱等</td>
+</tr>
+<tr>
+<td>地三鲜</td>
+<td>土豆，茄子，青椒</td>
+<td>去皮切滚刀块–热油加郫县豆瓣和蒜–爆炒不要加水</td>
+</tr>
+<tr>
+<td>麻婆豆腐</td>
+<td>嫩豆腐、麻婆豆腐调料、葱</td>
+<td>嫩豆腐切块–下热油锅–加混合到水里的调料汁–三分钟即可出锅–用绿色葱装饰</td>
+</tr>
+<tr>
+<td>葱香豆腐</td>
+<td>老豆腐、鸡蛋、粉芡、葱姜、番茄酱（番茄）、糖盐</td>
+<td>老豆腐从里到外依次裹上：盐、葱姜、粉芡、鸡蛋液；炸豆腐至金黄色；锅中加少量水、糖，放入豆腐、番茄酱红烧；</td>
+</tr>
+<tr>
+<td>手撕包菜</td>
+<td>包菜（圆白菜）</td>
+<td>热油下葱姜蒜和干辣椒–下包菜爆炒–放酱油、陈醋、少量糖即可（不加水）</td>
+</tr>
+<tr>
+<td>蒜茄子</td>
+<td>茄子、芝麻酱、蒜</td>
+<td>茄子切条蒸熟–拌入蒜汁、芝麻酱、香菜</td>
+</tr>
+<tr>
+<td>鲜汁香煎带鱼</td>
+<td>带鱼</td>
+<td>带鱼切段刨肚洗净控干–加料酒、盐、葱姜腌制–裹上薄面控干–油炸熟透；少量热油放入葱姜、料酒–出锅放入酱油–浇到带鱼表面；</td>
+</tr>
+<tr>
+<td>三色虾仁</td>
+<td>虾仁、黄瓜、胡萝卜、料酒</td>
+<td>虾仁洗净，用少量料酒腌制（不要放淀粉之类的！），黄瓜和胡萝卜切丁，热油炒虾仁盛出，热油炒黄瓜胡萝卜，放入虾仁，爆炒即可出锅</td>
+</tr>
+<tr>
+<td>乡野小炒鸡</td>
+<td>N个冰冻鸡腿、土豆块、香菇</td>
+<td>鸡肉剁块洗净（也可稍微过开水去血）– 放盐腌制–放葱姜、酱油、郫县豆瓣（料酒和糖同放同不放）腌制一个小时，热油下锅爆炒–加水刚好没过鸡块（只加一次水且千万不要加多）–炖熟–加入土豆块、香菇–炖熟</td>
+</tr>
+<tr>
+<td>粉蒸肉</td>
+<td>带皮的五花肉、粉蒸肉调料</td>
+<td>肉切成薄片（否则蒸不熟）–将肉和粉蒸肉调料拌在一起，下锅蒸熟即可出锅</td>
+</tr>
+<tr>
+<td>红烧肉</td>
+<td>五花肉、葱姜、红烧肉专用调料</td>
+<td>上等五花肉整块放在清水中煮差不多熟，将肉捞出切块，热锅热油，下大料和姜片，然后下煮过的肉，加入料酒，炒至肉表面金黄，加少量水再次炖煮保证熟透，加入生抽或红烧肉专用调味料，小火炖煮、大火收汁即可上桌</td>
+</tr>
+<tr>
+<td>五彩菜丁</td>
+<td>绿色青椒（红色青椒）、胡萝卜、老豆腐、土豆、黄瓜、洋葱、黑木耳</td>
+<td>所有食材切成大小不一的块状–加入郫县豆瓣–爆炒出锅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="高端大气上档次的美味佳肴">高端大气上档次的美味佳肴</h3><table>
+<thead>
+<tr>
+<th>菜名</th>
+<th>所需食材</th>
+<th>制作工艺</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>清蒸鲈鱼（草鱼）</td>
+<td>鲈鱼（草鱼）、葱姜、生抽料酒</td>
+<td>鲈鱼杀好洗净，用盐、料酒、葱姜、生抽腌制鲈鱼，下锅蒸15分钟即可，放上葱丝、姜丝，热油浇在鱼身上即可上桌</td>
+</tr>
+<tr>
+<td>油焖香辣虾</td>
+<td>大对虾N只</td>
+<td>虾洗净剪去须须（不剥壳不剪头）–盐、葱姜、料酒腌制一小时–裹淀粉油炸大虾–加入腌制时用的调料闷熟–必要时可每个虾单独装盘，盘中黄色汤汁、配以绿色西兰花、红色椒丝、黑色胡椒酱；</td>
+</tr>
+<tr>
+<td>香酥龙利鱼排</td>
+<td>龙利鱼、鸡蛋、面包糠、番茄酱、菜花</td>
+<td>龙利鱼去头剥皮切片–用盐和胡椒粉腌制鱼片–鱼片先蘸干面粉，再拖鸡蛋液，然后裹上面包糠–热油将鱼片炸熟摆盘–淋上少量番茄酱配色、加绿色菜花装饰</td>
+</tr>
+<tr>
+<td>椒丝糖醋排骨</td>
+<td>排骨，青椒，多种调味料</td>
+<td>排骨煮30分钟撇沫子（尽量弄熟了）–料酒、酱油、香醋腌制排骨–油炸排骨并烧熟盛出–三勺白糖、两勺酱油、一勺料酒、3勺香醋、5勺清水制作汤汁–油锅中爆葱姜蒜–排骨下油锅翻炒–浇上汤汁后炒熟并收汁装盘–排骨成盘里–加青椒葱丝、胡萝卜雕花等配色</td>
+</tr>
+<tr>
+<td>鲜鸡蛋肉卷</td>
+<td>肉馅、香菇、鸡蛋、葱姜、大豆酱、蒸包子专用调料</td>
+<td>猪肉馅剁碎，放入拌馅专用调料、大豆酱、酱油、盐、葱姜、香菇等–平底锅加热，放入少量油，倒入一个打碎的鸡蛋（一个鸡蛋饼只用一个鸡蛋），用铲子摊成薄饼状，等放凉后出锅–将肉馅均匀摊在鸡蛋饼上（不要太厚），卷起来–将鸡蛋卷蒸熟（10分钟），出锅切片即可</td>
+</tr>
+<tr>
+<td>牛肉小丸子</td>
+<td>牛肉馅、专用调料、大豆酱、酱油、葱姜、鸡蛋、淀粉、娃娃菜、香菜等</td>
+<td>牛肉馅剁碎，加入拌馅专用调料、大豆酱、酱油、葱姜、鸡蛋、鸡精、胡椒粉、香油、淀粉（使丸子不易碎）等–油锅炸丸子–娃娃菜下锅翻炒–成盘待用–将炸过的牛肉丸子加水炖煮，待丸子漂浮起来后，放入刚刚炒过的娃娃菜，加盐和鸡精–娃娃菜在下，牛肉丸在上盛入小碗中，加入香菜和青椒丝调色；</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/06/2015-1-6-stress/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/01/06/2015-1-6-stress/" itemprop="url">
+                  远离压力小窍门
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-06T00:00:00+08:00">
+                2015-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/01/06/2015-1-6-stress/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/06/2015-1-6-stress/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>现代社会生活节奏快，人人都有压力，可能还是很沉重的压力；</li>
+<li>互联网行业尤其如此，但是我们不要抱怨压力，而要善于释放压力，将压力变成提升自己、完善自己的动力；</li>
+<li>本文分享几种释放压力的好方法，有需要的朋友不妨一试，欢迎补充；</li>
+</ul>
+<h3 id="时间遗忘法">时间遗忘法</h3><blockquote>
+<ul>
+<li>时间是最好的解药，当我们出现情感问题与心理压力时，随着时间的逝去，积极地忘记过去的、眼前的不愉快，随时修正自己的认知观念，那么，痛苦的经历将不再会影响你的未来。</li>
+</ul>
+</blockquote>
+<h3 id="音乐放松法">音乐放松法</h3><blockquote>
+<ul>
+<li>音乐与声音可以影响我们的情绪。他人的赞扬声、指责声、议论声等都会影响你的心态，优美的轻音乐可以调整我们的情绪与心理压力，让我们的心灵放松下来，享受被音乐包围的美妙感觉。</li>
+</ul>
+</blockquote>
+<h3 id="自信激励法">自信激励法</h3><blockquote>
+<ul>
+<li>心理暗示的作用大到你自己都无法想象的程度。多鼓励自己，能让自己更自信与振作起来。只要你相信自己是最好的、最可以依赖的，是无所不能的，那么，你可能就真的可以做到无所不能。</li>
+</ul>
+</blockquote>
+<h3 id="顺其自然法">顺其自然法</h3><blockquote>
+<ul>
+<li>顺其自然看起来很简单，做起来却很难，但是，它的效果也是最显著的。当你能做到宠辱不惊，去留无意，那么还有什么不能放下的，还有什么心理压力不能放松呢？</li>
+</ul>
+</blockquote>
+<h3 id="淡化功利法">淡化功利法</h3><blockquote>
+<ul>
+<li>面对一个功利价值观比较盛行的社会，很多人都是为了功利而在努力奋斗着。适当的功利心并没有坏处，但是过度就会让我们的心理压力增大。建立合理的、客观的自我期望值，奋斗目标要合理。</li>
+</ul>
+</blockquote>
+<h3 id="换位思考法">换位思考法</h3><blockquote>
+<ul>
+<li>换一个角度，换一种认知去看待问题，也许在你眼中那些不公平的事情、不协调的人际关系、不愉快的情感体验就会一笑而过！</li>
+</ul>
+</blockquote>
+<h3 id="相互拥抱">相互拥抱</h3><blockquote>
+<ul>
+<li>2007年的一项动物实验中，一只草原田鼠与群体隔离单独饲养后，其身上表现出不安、压力、忧郁等症状，经注射催产素后症状便得到缓解。催产素虽然一般在性行为、分娩、哺乳时自然分泌，但如果有与朋友作轻度肌肤接触的拥抱或者与爱犬嬉戏等行为，也能促使催产素分泌。</li>
+</ul>
+</blockquote>
+<h3 id="有计划地担忧">有计划地担忧</h3><blockquote>
+<ul>
+<li>美国宾夕法尼亚大学研究发现，一天专门抽出30分钟时间忧虑，有助缓解心理压力。研究指出，安排出固定的时间去思考需要担忧的问题，而不是浪费过多时间与精力去作无谓的忧虑，更有助于把心思集中在工作、学习与生活上，能更有效地减轻心理压力。</li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/05/2015-1-5-psychological-effect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/01/05/2015-1-5-psychological-effect/" itemprop="url">
+                  生活中的10大心理学效应
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-05T00:00:00+08:00">
+                2015-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/01/05/2015-1-5-psychological-effect/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/05/2015-1-5-psychological-effect/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>偶尔在网上看到了心理学效应的总结，自己归纳整理了下，在此分享给喜欢心理学的朋友们；</li>
+</ul>
+<h3 id="瓦拉赫效应">瓦拉赫效应</h3><blockquote>
+<ul>
+<li>奥托•瓦拉赫是诺贝尔化学奖获得者，他的成功过程极富传奇色彩。瓦拉赫在开始读中学时，父母为他选择了一条文学之路，不料一学期下来，教师为他写下了这样的评语：“瓦拉赫很用功。但过分拘泥，难以造就文学之材。”此后，父母又让他改学油画，可瓦拉赫既不善于构图，又不会润色，成绩全班倒数第一。面对如此“笨拙”的学生，绝大部分老师认为他成才无望，只有化学老师认为做事一丝不苟，具备做好化学实验的素质，建议他学化学，这下瓦拉赫智慧的火花一下子被点燃了，终于获得了成功。瓦拉赫的成功说明了这样一个道理：学生的智能发展是不均衡的，都有智慧的强点和弱点，他们一旦找到了发挥自己智慧的最佳点，使智能得到充分发挥，便可取得惊人的成绩。后人称这种现象为“瓦拉赫效应”。</li>
+</ul>
+</blockquote>
+<h3 id="门坎效应">门坎效应</h3><blockquote>
+<ul>
+<li>所谓门坎效应，是指一个人接受了较低层次的要求后，适当引导，往往会逐步接受更高层次的要求。该效应是美国社会心理学家弗里德曼与弗雷瑟于1966年在做无压力屈从：登门坎技术的现场实验中提出的。</li>
+</ul>
+</blockquote>
+<h3 id="共生效应">共生效应</h3><blockquote>
+<ul>
+<li>自然界有这样一种现象：当一株植物单独生长时，显得矮小、单调，而与众多同类植物一起生长时，则根深叶茂，生机盎然。人们把植物界中这种相互影响、相互促进的现象，称之为“共生效应”。事实上，我们人类群体中也存在“共生效应”。英国“卡迪文实验室”从1901年至1982年先后出现了25位诺贝尔获奖者，便是“共生效应”一个杰出的典型。</li>
+</ul>
+</blockquote>
+<h3 id="刻板效应">刻板效应</h3><blockquote>
+<ul>
+<li>社会心理学认为，那种用老眼光看人造成的影响称为“刻板效应”。它是对人的一种固定而笼统的看法，从而产生一种刻板印象。在学校经常可见到这种现象，教师对那些天资聪颖、学习成绩优秀的学生，脸上往往流露出喜爱的神色，并受到器重和青睐。而天资愚笨、学习成绩较差的学生则往往受到歧视，教师表现出急躁、厌烦的情绪，令人沮丧的话常挂在嘴边。实践证明，经常受到这种“待遇”的学生，会顿觉凉水浇身，丧失了学习信心，失掉了克服困难的勇气，以至产生颓废情绪。</li>
+</ul>
+</blockquote>
+<h3 id="首因效应">首因效应</h3><blockquote>
+<ul>
+<li>首因效应有时又称为第一印象的作用，指的是知觉对象给知觉者留下第一印象对社会知觉的影响作用。具体说，就是初次与人或事接触时，在心理上产生对某人或某事带有情感因素的定势，从而影响到以后对该人或该事的评价。所以，我们可以看出，对决策中收集正确的情报加以分析而言，这种效应是不利的。无论第一印象是好或是坏都是片面的，不利于全面地了解、分析。<br>第一印象所产生的作用称之为首因效应。根据第一印象来评价一个人的好坏，往往比较偏颇。如果在招聘考试和考察员工绩效时，只凭第一印象，就会被某些表面现象蒙蔽。<br>首因效应在招聘过程中主要表现有两个方面：一是以貌取人。对仪表堂堂、风度翩翩的应聘者容易赢得主考官的好感，二是以言取人，那些口若悬河、对答如流者往往给人留下好印象。因此在选拔人才时，既要听其言、观其貌，还要察其行、考其绩。</li>
+</ul>
+</blockquote>
+<h3 id="近因效应">近因效应</h3><blockquote>
+<ul>
+<li>近因效应指的是某人或某事的近期表现在头脑中占据优势，从而改变了对该人或该事的一贯看法。近因效应与首因效应是相对应的两种效应。首因效应一般在较陌生的情况下产生影响，而近因效应一般在较熟悉的情况下产生影响。两者都是对人或事的片面了解而主观臆断，使得决策信息失真。</li>
+</ul>
+</blockquote>
+<h3 id="晕轮效应（光环效应）">晕轮效应（光环效应）</h3><blockquote>
+<ul>
+<li>晕轮效应是指某人或某事由于其突出的特征留下了深刻的印象，而忽视了其它的心理和行为品质。它有时会产生“积极肯定的晕轮”，有时会产生“消极否定的晕轮”，这都会干扰对信息的评价，要克服晕轮效应就必须坚持客观，不掺杂主观成分。</li>
+</ul>
+</blockquote>
+<h3 id="蝴蝶效应">蝴蝶效应</h3><blockquote>
+<ul>
+<li>1960年，美国麻省理工学院教授洛伦兹研究“长期天气预报”问题时，出现了疑难问题：她在计算机上用一组简化数据模拟天气的演变，原本是想利用计算机的高速运算来提高天气预报的准确性。但是，事与愿违，多次计算表明，初始条件的极微小差异，会导致错误的结论。心理情绪也是如此，有一组漫画显示，一个人在单位被领导训了一顿，心里很恼火，回家冲妻子发起了脾气，妻子无来由地被训，也很生气，就摔门而去。走在街上，一条宠物狗拦住了去路，“汪汪”狂吠，妻子更生气啦，就一脚踢过去，小狗受到踢打，狂奔路过一个老人面前，把老人吓了一跳。正巧这位老人有心脏病，被突然冲出的小狗一吓，当场心脏病发作，不治身亡。<br>洛伦兹发现了微小差异导致的巨大反差，她用一个形象的比喻来表达这个发现，一只小小的蝴蝶在巴西上空振动翅膀，它煽动起来的小小漩涡与其他气流汇合，可能在一个月后的美国得克萨斯州会引起一场风暴——这就是混沌学中著名的“蝴蝶效应”。<br>在对人力资源的管理中，人事管理工作者如果灵活运用人事心理效应，就能充分调动下属或人才的积极性，使人尽其才，才尽其能，从而使工作效能达到最优。</li>
+</ul>
+</blockquote>
+<h3 id="罗森塔尔效应">罗森塔尔效应</h3><blockquote>
+<ul>
+<li>美国心理学家罗森塔尔考查某校，随意从每班抽3名学生共18人写在一张表格上，交给校长，极为认真地说：“这18名学生经过科学测定智商很高。”事过半年，罗氏又来到该校，发现这18名学生的确表现超常。<br>罗森塔尔效应就是期望心理中的共鸣现象。运用到人事管理中，就要求领导对下属要投入感情、希望和特别的诱导，使下属得以发挥自身的主动性和创造性。如领导在交办某一项任务时，不妨对下属说：“我相信你一定能办好”、“我想早点听到你成功的消息。”这样下属就会朝你期待的方向发展，人才也就在期待之中得以产生。</li>
+</ul>
+</blockquote>
+<h3 id="贝尔效应">贝尔效应</h3><blockquote>
+<ul>
+<li>英国学者贝尔天赋极高，有人说他毕业后若研究晶体和生物化学，定会赢得多次诺贝尔奖。但他却心甘情愿地走另一条道路，把一个个开拓性的课题提出来，指引别人登上了科学高峰，此举被称为贝尔效应。<br>贝尔效应要求领导者具有伯乐精神和人梯精神，要以单位和集体为先，慧眼识才，放手用才，敢于提拔任用能力比自己强的人，积极为有才干的下属创造机会。</li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/02/2015-1-2-front-end-feelings/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -803,7 +2083,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">92</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -814,7 +2094,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -825,7 +2105,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

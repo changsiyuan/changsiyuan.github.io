@@ -320,6 +320,1230 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/18/2018-7-18-Architecture-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/07/18/2018-7-18-Architecture-7/" itemprop="url">
+                  Architecture（七）旁路缓存策略
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T00:00:00+08:00">
+                2018-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/18/2018-7-18-Architecture-7/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/07/18/2018-7-18-Architecture-7/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>本文介绍数据库中的旁路缓存策略；</li>
+</ul>
+<h3 id="旁路缓存策略">旁路缓存策略</h3><ul>
+<li>旁路缓存策略（cache aside pattern）是一种数据库结合缓存的设计模式；</li>
+<li>基本架构：<ul>
+<li>数据库有主数据库（用于写）、从数据库（用于读），另有缓存用于提升读写效率；</li>
+</ul>
+</li>
+</ul>
+<h3 id="策略概述">策略概述</h3><ul>
+<li>读请求：<ul>
+<li>先读缓存，如果不命中，再读从数据库；</li>
+<li>如果缓存不命中，读从数据库后，写入缓存，方便下次命中；</li>
+</ul>
+</li>
+<li>写请求：<ul>
+<li>先写主数据库，再淘汰缓存；原因：数据总是以数据库为准，而不是以缓存为准，先写作为标准的一方；</li>
+<li>淘汰缓存，而不是更新缓存；原因：如果更新而不淘汰缓存，则A\B两个进程并行写时，A写主数据库-&gt;B写主数据库-&gt;B更新缓存-&gt;A更新缓存，则业务期望的缓存为B写入的，但事实缓存中留存A写入的；</li>
+</ul>
+</li>
+</ul>
+<h3 id="存在的问题">存在的问题</h3><ul>
+<li>由于主数据库和从数据库不能及时同步，且读请求总是从从数据库中读并更新缓存，导致缓存始终和从数据库一致，即缓存旧数据的时候，主数据库已经是新数据了；</li>
+<li>解决方案：当主数据库同步到从数据库时，清除缓存。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/17/2018-7-17-Architecture-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/07/17/2018-7-17-Architecture-6/" itemprop="url">
+                  Architecture（六）数据库架构设计
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T00:00:00+08:00">
+                2018-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/17/2018-7-17-Architecture-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/07/17/2018-7-17-Architecture-6/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>本文介绍数据库中的架构设计；</li>
+<li>通常，单机是无法满足大系统对数据库的读写要求的，必须用集群的方式来解决；</li>
+<li>引入集群意味着提升了系统的复杂度，使系统变得复杂和不好维护；</li>
+<li>通常采用数据库负载均衡策略、读写分离策略、分库分表策略等加以优化；</li>
+</ul>
+<h3 id="负载均衡">负载均衡</h3><ul>
+<li>扩展性强：当系统要更高数据库处理速度时，只要简单地增加数据库服务器就可以得到扩展；</li>
+<li>可维护性：当某节点发生故障时，系统会自动检测故障并转移故障节点的应用，保证数据库的持续工作；</li>
+<li>安全性：<ul>
+<li>因为数据会同步的多台服务器上，可以实现数据集的冗余，通过多份数据来保证安全性；</li>
+<li>将数据库放到了内网之中，更好地保护了数据库的安全性；</li>
+</ul>
+</li>
+<li>易用性：对应用来说完全透明，集群暴露出来的就是一个IP(1) 不能够按照Web服务器的处理能力分配负载；</li>
+<li>缺点：负载均衡器(控制端)故障，会导致整个数据库系统瘫痪；</li>
+</ul>
+<h3 id="读写分离">读写分离</h3><ul>
+<li>当读和写的频率相差很多时（ebay的读写比率是260:1），为了提升效率，减少磁盘IO压力，采取读写分离；</li>
+<li>实现原理：<ul>
+<li>数据库服务器搭建主从集群，一主一从、一主多从都可以；</li>
+<li>数据库主机负责读写操作，从机只负责读操作；</li>
+<li>数据库主机通过复制将数据同步到从机，每台数据库服务器都存储了所有的业务数据；</li>
+<li>业务服务器将写操作发给数据库主机，将读操作发给数据库从机；</li>
+</ul>
+</li>
+<li><p>主从机数据不一致的解决：</p>
+<ul>
+<li>数据不一致：当数据写入主服务器后，要在下次同步后才能查询到；</li>
+<li>读从机失败后再读一次主机；</li>
+<li><p>关键业务(账号、转账等)读写操作全部指向主机，非关键业务采用读写分离；</p>
+<p><img src="/images/Architecture/Architecture12.png" alt="term"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="分库分表">分库分表</h3><h4 id="分数据库">分数据库</h4><ul>
+<li>是指按功能模块拆分到不同的数据库，比如分为订单库、商品库、用户库；</li>
+<li>join只适用于同一数据库的不同表联合查询，拆分后不同数据库之间无法用join语句进行查询，只能分几次查询；</li>
+<li>事务是同一数据库中的概念，要想在不同数据库之间实现事务的回滚，只能用查询log回滚的方式；</li>
+<li>成本高，拆分到不同的数据库意味着需要建立多个备份数据库；</li>
+</ul>
+<h4 id="分数据库表_-_垂直(纵向)拆分">分数据库表 - 垂直(纵向)拆分</h4><ul>
+<li>原先是一个表中包含所有10个字段；</li>
+<li>现在将查询频率特别高的字段分离到另外的表中（比如婚恋网站的name, sex, age三个字段），其他字段（如个人介绍destribution等）留在原表；</li>
+<li>优点：查询性能提升，如果只查询重要字段，无需将其他字段也查出来，速度很快；</li>
+<li>缺点：如果要查出所有字段，必须经过两次查询；</li>
+</ul>
+<h4 id="分数据库表_-_水平(横向)拆分">分数据库表 - 水平(横向)拆分</h4><ul>
+<li>将同一个表的数据进行分块保存到不同的数据库中，这些数据库中的表结构完全相同；</li>
+<li>顺序路由：<ul>
+<li>如可以按订单的日前按年份才分，2003年的放在db1中，2004年的db2,以此类推；</li>
+<li>缺点是数据分布不均，可能2003年的订单有100W，2008年的有500W；</li>
+</ul>
+</li>
+<li>hash路由：<ul>
+<li>对user_id进行hash（或者如果user_id是数值型的话直接使用user_id的值也可），然后用一个特定的数字，比如应用中需要将一个数据库切分成4个数据库的话，我们就用4这个数字对user_id的hash值进行取模运算，决定存在哪个表中；</li>
+<li>如果现在想将4个表变成5个表，改变膜值，则所有的数据都需要改变位置，很麻烦；</li>
+</ul>
+</li>
+<li>配置路由：<ul>
+<li>就是建立一个DB，这个DB单独保存user_id到DB的映射关系，每次访问数据库的时候都要先查询一次这个数据库，以得到具体的DB信息，然后才能进行我们需要的查询操作；</li>
+<li>优点：灵活性强，一对一关系；</li>
+<li>缺点：每次查询之前都要多一次查询，会造成一定的性能损失；</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/16/2018-7-16-Architecture-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/07/16/2018-7-16-Architecture-5/" itemprop="url">
+                  Architecture（五）微服务概述
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-16T00:00:00+08:00">
+                2018-07-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/16/2018-7-16-Architecture-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/07/16/2018-7-16-Architecture-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>本文介绍微服务架构。</li>
+</ul>
+<h3 id="微服务特点">微服务特点</h3><ul>
+<li>对服务来说：<ul>
+<li>服务小，松耦合：服务面向一个独立的业务逻辑，SOA（service oriented architecture）；</li>
+<li>独立的进程；</li>
+<li>轻量级通信：用https协议通信，用json数据格式；</li>
+</ul>
+</li>
+<li>对团队来说：<ul>
+<li>独立开发：不同团队无需相同技术栈，每个团队维护自己的数据源；</li>
+<li>独立部署：不需要过多协调不同团队进度；</li>
+<li>康威法则：设计系统的组织，其产生的设计等同于组织之内、组织之间的沟通结构；</li>
+</ul>
+</li>
+<li>弊端：<ul>
+<li>技术栈众多；</li>
+<li>分布式系统，数据只能保证最终一致；</li>
+<li>运维和测试复杂；</li>
+</ul>
+</li>
+</ul>
+<h3 id="实践建议">实践建议</h3><ul>
+<li>何时使用：<ul>
+<li>系统复杂性较低时不使用微服务，使用单块应用，因为微服务所需的基础设施成本高，业务不复杂时微服务的优势无法体现出来；</li>
+<li>系统复杂性提升时，逐步将单块应用拆解为微服务；</li>
+</ul>
+</li>
+<li>拆分粒度：<ul>
+<li>微服务拆分粒度过粗，则体现不出微服务的价值；</li>
+<li>拆分过细又导致：维护、测试成本上升，效率下降；服务调用链太长，问题定位不方便，性能也会下降；</li>
+<li>一般一个微服务由2-3个人负责最为合适；每个人能够全面理解系统；能够相互讨论避免出错；</li>
+</ul>
+</li>
+<li>自动化：<ul>
+<li>随着微服务的增多，自动化工具必须提供，否则维护成本太高；</li>
+</ul>
+</li>
+</ul>
+<h3 id="如何拆分">如何拆分</h3><ul>
+<li>根据业务逻辑拆分；</li>
+<li>根据服务成熟度拆分：成熟服务，可能会变化的服务；</li>
+<li>根据可靠性需求拆分：必须保证99.999%可靠的核心服务，保证99%可靠就可以的非核心服务；</li>
+<li>根据性能需求拆分：将性能要求高或者性能压力大的模块拆分出来，避免性能压力大的服务影响其他服务；</li>
+</ul>
+<h3 id="微服务需要考虑">微服务需要考虑</h3><p><img src="/images/Architecture/Architecture10.png" alt="term"></p>
+<h3 id="微服务和SOA的区别">微服务和SOA的区别</h3><ul>
+<li><strong>Class</strong> Microservice <em>implements</em> SOA；</li>
+</ul>
+<p><img src="/images/Architecture/Architecture11.png" alt="term"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/15/2018-7-15-Architecture-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/07/15/2018-7-15-Architecture-4/" itemprop="url">
+                  Architecture（四）负载均衡
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T00:00:00+08:00">
+                2018-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/15/2018-7-15-Architecture-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/07/15/2018-7-15-Architecture-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>本文介绍几种负载均衡架构及算法。</li>
+</ul>
+<h3 id="总体策略">总体策略</h3><ul>
+<li>DNS负载均衡用于实现地理级别的负载均衡；</li>
+<li>硬件负载均衡用于实现集群级别的负载均衡；</li>
+<li>软件负载均衡用于实现机器级别的负载均衡；</li>
+</ul>
+<p><img src="/images/Architecture/Architecture7.png" alt="term"></p>
+<h3 id="硬件负载均衡">硬件负载均衡</h3><ul>
+<li>类似路由器、交换机；</li>
+<li>优点：<ul>
+<li>支持各种负载均衡算法；</li>
+<li>支持100万并发（一般软件负载均衡也就支持10万并发）；</li>
+<li>很多设备同时支持负载均衡、防火墙、防DDOS攻击功能；</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>价格高昂；</li>
+</ul>
+</li>
+</ul>
+<h3 id="软件负载均衡">软件负载均衡</h3><ul>
+<li>优点：<ul>
+<li>便宜；</li>
+<li>维护和部署简单（安装Ngnix软件即可）；</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>并发量远小于硬件负载均衡，Linux服务器上装一个Nginx大概能到5万每秒；</li>
+<li>一般不具备防火墙、防DDOS攻击等功能；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Architecture/Architecture8.png" alt="term"></p>
+<h3 id="DNS负载均衡">DNS负载均衡</h3><ul>
+<li>实现地理级别的负载均衡；</li>
+<li>DNS服务器将域名解析为最靠近用户的主机的IP地址，提升访问速度；</li>
+<li>缺点：<ul>
+<li>DNS缓存不能及时更新，有可能定位到一个已经移走的主机；</li>
+<li>除了映射IP地址，没有提供其他的负载均衡算法和策略；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Architecture/Architecture9.png" alt="term"></p>
+<h3 id="均衡算法">均衡算法</h3><ul>
+<li>轮询：<ul>
+<li>负载均衡系统收到请求后，按照顺序轮流分配到服务器上；</li>
+<li>算法简单，没有考虑机器的状态；</li>
+</ul>
+</li>
+<li>加权轮询：<ul>
+<li>分给32核机器的概率是分给16核机器的概率的两倍；</li>
+<li>考虑了机器性能，但无法根据机器状态动态调整；</li>
+</ul>
+</li>
+<li>负载最低优先：<ul>
+<li>根据及其具体状态决定负载均衡策略；</li>
+<li>考虑：机器连接数、机器的HTTP连接数、CPU占用率、IO占用率；</li>
+</ul>
+</li>
+<li>性能最佳优先：<ul>
+<li>根据及其具体状态决定负载均衡策略；</li>
+<li>考虑：服务器响应时间；</li>
+</ul>
+</li>
+<li>Hash：<ul>
+<li>对源IP地址hash决定任务分配到哪台服务器；</li>
+<li>对session ID进行hash决定任务分配到哪台服务器，可以保证同一个会话的包都发送到同一台服务器处理；</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/10/2018-7-10-Architecture-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/07/10/2018-7-10-Architecture-3/" itemprop="url">
+                  Architecture（三）基本架构
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T00:00:00+08:00">
+                2018-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/10/2018-7-10-Architecture-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/07/10/2018-7-10-Architecture-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>本文介绍几种基本架构及其优缺点</li>
+</ul>
+<h3 id="CAP原理">CAP原理</h3><ul>
+<li>独裁者架构：<ul>
+<li>优点：只有一个决策者，不会混乱；决策者随时掌控所有机器状态（上报者发送信条给决策者），实现统一调度；决策机器不存储数据，其他机器存储；</li>
+<li>缺点：一旦决策者宕机，集群群龙无首；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Architecture/Architecture3.png" alt="term"></p>
+<ul>
+<li>主备协商：<ul>
+<li>优点：主机备机都存数据；从机平时不提供数据，只在主机出问题时升级为主机；主机坏了马上切换到备机；</li>
+<li>缺点：一旦主备机之间的通讯中断，则数据不同步。备机连不上主机，如果备机认为主机损坏，则自己升级为主机，如果主机实际上没有坏，外部用户会以为这个系统有两个主机，造成混乱。如果备机认为主机没有损坏，则自己不会升级为主机，如果主机实际上坏了，外部用户会以为这个系统没有主机，造成混乱。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Architecture/Architecture4.png" alt="term"></p>
+<ul>
+<li>主从协商：<ul>
+<li>优点：从机正常情况下也是要提供读的操作；主从复制在主机故障时，读操作相关的业务可以继续运行；不浪费从机资源；</li>
+<li>缺点：可能数据不一致；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Architecture/Architecture5.png" alt="term"></p>
+<ul>
+<li>民主选举：<ul>
+<li>介绍：只有一个管理者；多个独立个体自由交换信息；个体通过一定规则的选举生成管理节点；获得多数票者取胜；</li>
+<li>缺点：如果个体间部分通讯中断，则系统很有可能分裂为多个小集群，如果每个小集群都选举出一个管理者，则造成混乱，解决方法是规定投票节点数必须超过系统总节点数一半；</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Architecture/Architecture6.png" alt="term"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/21/2018-6-21-Architecture-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/06/21/2018-6-21-Architecture-2/" itemprop="url">
+                  Architecture（二）CAP原理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-21T00:00:00+08:00">
+                2018-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/21/2018-6-21-Architecture-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/06/21/2018-6-21-Architecture-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>本文介绍了CAP原理；</li>
+</ul>
+<h3 id="CAP原理">CAP原理</h3><ul>
+<li>在一个分布式系统中，Consistency（数据一致性）、 Availability（服务可用性）、Partition tolerance（分区容错性），三者不可兼得；</li>
+<li>一般来说，分布式系统优先实现P和A，C用最终一致性代替；</li>
+</ul>
+<h3 id="详细解释">详细解释</h3><ul>
+<li>一致性：All nodes see the same data at the same time；</li>
+<li>可用性：A non-failing node will return a reasonable response within a reasonable amount of time (no error or timeout)；</li>
+<li>分区容错性：出现消息丢失或者分区错误时系统能够继续运行；</li>
+</ul>
+<h3 id="使用案例">使用案例</h3><ul>
+<li>保证CP牺牲A：当系统不同节点间通讯中断、不能及时同步数据时，为了保证数据一致，此时对用户请求返回error错误信息，即系统暂时不可用；</li>
+</ul>
+<p><img src="/images/Architecture/Architecture1.png" alt="term"></p>
+<ul>
+<li>保证AP牺牲C：有可能向用户返回旧数据，即脏读；</li>
+</ul>
+<p><img src="/images/Architecture/Architecture2.png" alt="term"></p>
+<ul>
+<li>保证AC牺牲P：系统中只有一个节点，已经不是分布式系统；</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/16/2018-4-16-Architecture-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/04/16/2018-4-16-Architecture-1/" itemprop="url">
+                  Architecture（一）架构简介
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-16T00:00:00+08:00">
+                2018-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/16/2018-4-16-Architecture-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/16/2018-4-16-Architecture-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>架构的设计在软件设计中极为重要，一个好的架构设计能够成倍提升开发和运维效率、提升产品的交付能力；</li>
+<li>架构设计的思路和软件编程有很大不同，这不仅仅体现在所需知识的不同、而且思维模式和设计理念也各不相同；</li>
+<li>在工作之余，我认真学习了极客时间的<a href="https://time.geekbang.org/column/81" target="_blank" rel="external">从0开始学架构</a>课程，受益匪浅；</li>
+<li>接下来我会用若干篇幅的博客展示一下学习笔记，欢迎大家指教；</li>
+<li>本文对架构设计的原则和目的加以总结；</li>
+</ul>
+<h3 id="架构设计的目的">架构设计的目的</h3><ul>
+<li>目的：解决软件系统复杂性带来的问题；</li>
+<li>核心：balance；<ul>
+<li>平衡希望系统高性能、高扩展性和时间成本、开发成本之间的矛盾；</li>
+<li>对各种设计的优缺点做取舍；</li>
+</ul>
+</li>
+</ul>
+<h3 id="架构设计原则">架构设计原则</h3><ul>
+<li><strong>合适优于业界领先</strong>：很适合别的系统的架构，不一定适合当前项目，不是每个系统都需要架构设计；</li>
+<li><strong>简单优于复杂</strong>：架构设计不是为了片面追求系统的高可用性、高扩展性、高性能，而是最适合业务的实际情况；</li>
+<li><strong>演化优于一步到位</strong>：架构是演化出来的，而不是设计出来的，谁都不可能在刚开始开发的时候、业务需求不明确的时候设计出完整的架构；</li>
+</ul>
+<h3 id="架构设计需要考虑">架构设计需要考虑</h3><ul>
+<li>高性能：<ul>
+<li>单机：充分利用CPU、disk、memory、IO等资源；</li>
+<li>集群：如何扩展单机的处理能力，满足业务需求，比如春节发红包、双十一等；</li>
+</ul>
+</li>
+<li>高可用：<ul>
+<li>保证服务不间断正常运行；</li>
+<li>应对：硬件故障，软件故障、网络故障，外部故障（水灾地震）；</li>
+<li>保证高可用的核心：冗余；</li>
+</ul>
+</li>
+<li>可扩展性：<ul>
+<li>正确预测变化、完美封装变化；</li>
+<li>所有的预测都存在出错的可能性；</li>
+<li>适度的预测而不是完美的预测；</li>
+</ul>
+</li>
+<li>安全性；</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/2018-1-18-ElasticSearch-Intro/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1182,1633 +2406,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/20/2017-5-20-flasgger/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/20/2017-5-20-flasgger/" itemprop="url">
-                  Flasgger使用心得
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T00:00:00+08:00">
-                2017-05-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/05/20/2017-5-20-flasgger/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/20/2017-5-20-flasgger/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>Flask是一款流行的Python实现的Web开发微框架；</li>
-<li>Swagger是一款Restful接口的文档在线自动生成+功能测试功能软件；</li>
-<li>通过swagger能够清晰、便捷地调试符合Restful规范的API；</li>
-<li>在flask框架中使用的swagger即为flasgger，flasgger是flask支持的swagger UI，便于调试使用flask框架搭建的web api接口；</li>
-<li>本文介绍了flasgger的用法和不足之处。</li>
-</ul>
-<h3 id="使用方法">使用方法</h3><ul>
-<li>首先，需要在项目中安装flasgger，具体方法有两种：<ul>
-<li>方法一：在visual studio中右键工程，搜索flasgger，自动安装；</li>
-<li>方法二：使用pip命令，<code>pip install flasgger</code>；</li>
-</ul>
-</li>
-<li>安装后，使用下面的程序框架，搭建最简单的web api：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line">Swagger(app)</span><br><span class="line"></span><br><span class="line"><span class="decorator">@app.route('/api/&lt;string:language&gt;/', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(language)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    This is the language awesomeness API</span><br><span class="line">    Call this api passing a language name and get back its features</span><br><span class="line">    ---</span><br><span class="line">    tags:</span><br><span class="line">      - Awesomeness Language API</span><br><span class="line">    parameters:</span><br><span class="line">      - name: language</span><br><span class="line">        in: path</span><br><span class="line">        type: string</span><br><span class="line">        required: true</span><br><span class="line">        description: The language name</span><br><span class="line">      - name: size</span><br><span class="line">        in: query</span><br><span class="line">        type: integer</span><br><span class="line">        description: size of awesomeness</span><br><span class="line">    responses:</span><br><span class="line">      500:</span><br><span class="line">        description: Error The language is not awesome!</span><br><span class="line">      200:</span><br><span class="line">        description: A language with its awesomeness</span><br><span class="line">        schema:</span><br><span class="line">          id: awesome</span><br><span class="line">          properties:</span><br><span class="line">            language:</span><br><span class="line">              type: string</span><br><span class="line">              description: The language name</span><br><span class="line">              default: Lua</span><br><span class="line">            features:</span><br><span class="line">              type: array</span><br><span class="line">              description: The awesomeness list</span><br><span class="line">              items:</span><br><span class="line">                type: string</span><br><span class="line">              default: ["perfect", "simple", "lovely"]</span><br><span class="line"></span><br><span class="line">    """</span></span><br><span class="line"></span><br><span class="line">    language = language.lower().strip()</span><br><span class="line">    features = [</span><br><span class="line">        <span class="string">"awesome"</span>, <span class="string">"great"</span>, <span class="string">"dynamic"</span>, </span><br><span class="line">        <span class="string">"simple"</span>, <span class="string">"powerful"</span>, <span class="string">"amazing"</span>, </span><br><span class="line">        <span class="string">"perfect"</span>, <span class="string">"beauty"</span>, <span class="string">"lovely"</span></span><br><span class="line">    ]</span><br><span class="line">    size = int(request.args.get(<span class="string">'size'</span>, <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">if</span> language <span class="keyword">in</span> [<span class="string">'php'</span>, <span class="string">'vb'</span>, <span class="string">'visualbasic'</span>, <span class="string">'actionscript'</span>]:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"An error occurred, invalid language for awesomeness"</span>, <span class="number">500</span></span><br><span class="line">    <span class="keyword">return</span> jsonify(</span><br><span class="line">        language=language,</span><br><span class="line">        features=random.sample(features, size)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.run(debug=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>从上面的程序我们可以看出，只要将yaml格式的flasgger描述性程序放置在两组双引号之间的位置，即可实现flasgger的基本功能；</li>
-<li>访问<a href="http://localhost:5000/apidocs/index.html" target="_blank" rel="external">http://localhost:5000/apidocs/index.html</a> 即可看到flasgger页面；</li>
-</ul>
-<p><img src="/images/flasgger/flasgger.png" alt="flasgger"></p>
-<ul>
-<li>当然，上面的yaml描述性程序可以放置在单独的文件中，那么api中用@符号引入这个文件即可：</li>
-</ul>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line">from flask import Flask, jsonify, request</span><br><span class="line">from flasgger import Swagger</span><br><span class="line">from flasgger<span class="class">.utils</span> import swag_from</span><br><span class="line"></span><br><span class="line">app = <span class="function"><span class="title">Flask</span><span class="params">(__name__)</span></span></span><br><span class="line"><span class="function"><span class="title">Swagger</span><span class="params">(app)</span></span></span><br><span class="line"></span><br><span class="line">@app.<span class="function"><span class="title">route</span><span class="params">(<span class="string">'/api/&lt;string:language&gt;/'</span>, methods=[<span class="string">'GET'</span>])</span></span></span><br><span class="line">@<span class="function"><span class="title">swag_from</span><span class="params">(<span class="string">'index.yml'</span>)</span></span></span><br><span class="line">def <span class="function"><span class="title">index</span><span class="params">(language)</span></span>:</span><br><span class="line">    language = language.<span class="function"><span class="title">lower</span><span class="params">()</span></span>.<span class="function"><span class="title">strip</span><span class="params">()</span></span></span><br><span class="line">    features = [</span><br><span class="line">        <span class="string">"awesome"</span>, <span class="string">"great"</span>, <span class="string">"dynamic"</span>, </span><br><span class="line">        <span class="string">"simple"</span>, <span class="string">"powerful"</span>, <span class="string">"amazing"</span>, </span><br><span class="line">        <span class="string">"perfect"</span>, <span class="string">"beauty"</span>, <span class="string">"lovely"</span></span><br><span class="line">    ]</span><br><span class="line">    size = <span class="function"><span class="title">int</span><span class="params">(request.args.get(<span class="string">'size'</span>, <span class="number">1</span>)</span></span>)</span><br><span class="line">    <span class="keyword">if</span> language <span class="keyword">in</span> [<span class="string">'php'</span>, <span class="string">'vb'</span>, <span class="string">'visualbasic'</span>, <span class="string">'actionscript'</span>]:</span><br><span class="line">        return <span class="string">"An error occurred, invalid language for awesomeness"</span>, <span class="number">500</span></span><br><span class="line">    return jsonify(</span><br><span class="line">        language=language,</span><br><span class="line">        features=random.<span class="function"><span class="title">sample</span><span class="params">(features, size)</span></span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.<span class="function"><span class="title">run</span><span class="params">(debug=True)</span></span></span><br></pre></td></tr></table></figure>
-<h3 id="flasgger配置文件解析：">flasgger配置文件解析：</h3><ul>
-<li>在flasgger的配置文件中，以yaml的格式描述了flasgger页面的内容；</li>
-<li>tags标签中可以放置对这个api的描述和说明；</li>
-<li>parameters标签中可以放置这个api所需的参数，如果是GET方法，可以放置url中附带的请求参数，如果是POST方法，可以将参数放置在schema子标签下面；</li>
-<li>responses标签中可以放置返回的信息，以状态码的形式分别列出，每个状态码下可以用schema标签放置返回实体的格式；</li>
-</ul>
-<h3 id="flasgger的不足">flasgger的不足</h3><ul>
-<li>flasgger的配置文件中，对于POST方法，在描述POST body的schema标签中，不支持以yaml格式描述的数组或嵌套的object，这使得页面上面无法显示这类POST body的example；</li>
-<li>解决方案：将这类POST body的example放置在description部分（三横杠”—“上面的部分），由于description部分是用html格式解析的，所以可以以html的语法编写；</li>
-</ul>
-<h3 id="参考">参考</h3><ul>
-<li><a href="http://brunorocha.org/python/flask/flasgger-api-playground-with-flask-and-swagger-ui.html" target="_blank" rel="external">flasgger介绍</a></li>
-<li><a href="http://docs.jinkan.org/docs/flask/" target="_blank" rel="external">flask文档</a></li>
-<li><a href="https://github.com/rochacbruno/flasgger" target="_blank" rel="external">flasgger源码</a></li>
-<li><a href="https://swagger.io/" target="_blank" rel="external">swagger官网</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/01/2017-5-1-investment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/01/2017-5-1-investment/" itemprop="url">
-                  企业财务报表分析方法
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T00:00:00+08:00">
-                2017-05-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/feeling/" itemprop="url" rel="index">
-                    <span itemprop="name">feeling</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/05/01/2017-5-1-investment/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/01/2017-5-1-investment/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>最近研究投资，看了肖星的<a href="https://book.douban.com/subject/25926542/" target="_blank" rel="external">一本书读懂财报</a>，做了一些笔记；</li>
-<li>结合一些投资的资料，总结了一下投资中，特别是股票投资中，需要知道的一些研判公司经营情况的基础概念和公式，特在本篇博客中加以记录，共大家参考；</li>
-<li>这些概念和公式都是纸面上的，需要结合具体情况分析才有价值；</li>
-<li>投资活动中，不能偏信任何一个公式、概念或理论，需要结合具体情况，实事求是进行分析；</li>
-<li>非常感谢这篇公众号的总结：<a href="http://mp.weixin.qq.com/s/jVtmTEgzfzRfX2Qz_EgXKQ" target="_blank" rel="external">看过这份最全财务公式表的会计人，月薪还怕破不了5w？</a></li>
-</ul>
-<h3 id="三张基础财务报表">三张基础财务报表</h3><h4 id="资产负债表">资产负债表</h4><p>资产负债表——所有表格的基础。从某种意义上说，一个公司的资产负债表才是根本。无论是现金流量表还是利润表都是对资产负债表的深入解释。在格雷厄姆的时代，会计准则并没有要求现金流量表。后来的会计准则进一步发展，现金流量表才成为必须。因此在格雷厄姆的《证券分析》一书中对资产负债表的论述与分析是最多的。</p>
-<h4 id="现金流量表——资产负债表的变化">现金流量表——资产负债表的变化</h4><p>现金流量表是对资产负债表变化的解释。现金的变化最终反映到资产负债表的现金及等价物一项。而现金的变化源泉则是净利润。净利润经过“经营”、“投资”、“筹资”三项重要的现金变动转变为最终的现金变化。</p>
-<p>首先，净利润经过营运资本的变化、摊销折旧等非现金项目、其他项目（财务支出或收入、投资收益等）的调整，最终转换为经营现金流。</p>
-<p>其次，投资的支出与收益的现金流量。其中买卖资产对资产负债表的资产项目有影响。</p>
-<p>最后，筹资的现金流量。其中，借债与还债会影响资产负债表的借款项目。分红与增发会影响资产负债表的股东权益项目。</p>
-<h4 id="利润表——净利润的来源">利润表——净利润的来源</h4><p>利润表是净利润的来源。而净利润则直接影响资产负债表中股东权益的变化。</p>
-<p>这三张表格是一个公司财务状况的精髓与总结。也是公司这个动态系统的简化模型。</p>
-<h4 id="财务报表汇总图">财务报表汇总图</h4><p><img src="/images/20170501-investment/three-financial-statement.png" alt="财务报表"></p>
-<h3 id="企业经营状况分析">企业经营状况分析</h3><p>企业经营状况主要从以下三个方面进行分析：</p>
-<ul>
-<li>企业偿债能力；</li>
-<li>企业营运能力；</li>
-<li>企业盈利能力；</li>
-</ul>
-<p><img src="/images/20170501-investment/analysis.png" alt="企业经营状况分析"></p>
-<h3 id="企业财务报表分析公式大全">企业财务报表分析公式大全</h3><h4 id="偿债能力分析">偿债能力分析</h4><p>1、流动比率=流动资产/流动负债*100%。指标越高，企业流动资产流转越快，偿还流动负债能力越强。国际公认200%，我国150%较好。</p>
-<p>2、速动比率=速动资产(流动资产-存货)/流动负债*100%。国际标志比率100%我国90%左右。</p>
-<p>3、资产负债率=负债总额/资产总额*100%。指标越高负债程度高，经营风险大，能以较低的资金成本进行生产经营。保守比率不高于50%，国际公认较好60%。</p>
-<p>4、长期资产适合率=(所有者权益+长期负债)/(固定资产+长期投资)*100%</p>
-<h4 id="资本状况分析">资本状况分析</h4><p>1、资本保值增值率=扣除客观因素后的年末所有者权益/年初所有者权益*100%，指标越高，资本保全情况越好，企业发展潜力越大，债权人利益越有保障。</p>
-<p>2、资本积累率=本年所有者权益增长额/年初所有者权益*100%，指标越高，所有者权益增长越快，资本积累能力越强，保全情况好，持续发展能力越大。</p>
-<h4 id="盈利能力分析">盈利能力分析</h4><p>1、主营业务毛利率=毛利(主营收入-主营成本)/主营业务收入*100%，介于20%-50%之间，一般相对合理稳定，流动性强的商品，毛利率低。设计新颖的特殊商品(时装)毛利率高。</p>
-<p>2、主营业务净利率=净利润/主营业务收入*100%，反映企业基本获利能力。</p>
-<p>3、主营业务成本率=主营业务成本/主营业务收入*100%</p>
-<p>4、 营业费用率=营业费用/主营业务收入*100%</p>
-<p>5、主营业务税金率=主营业务税金及附加/主营业务收入*100%</p>
-<p>6、资产净利率=税后净利/平均总资产<em>100%=主营业务净利率</em>总资产周转率。指标高低于企业资产结构，经验管理水平有密切关系。</p>
-<p>7、净资产收益率=净利润/平均所有者权益*100%。反映投资者投资回报率，股东期望平均年度净资产收益率能超过12%。</p>
-<p>8、不良资产比率=年末不良资总额/年末资产总额*100%</p>
-<p>9、资产损失比率=待处理资产损失净额/年末资产总额*100%</p>
-<p>10、固定资产成新率=平均固定资产净值/平均固定资产原值*100%</p>
-<p>11、 流动比率=流动资产/流动负债*100%</p>
-<p>12、 速动比率=速动资产/流动负债*100%</p>
-<p>13、 资产负债率=负债总额/资产总额*100%</p>
-<p>14、长期资产适合率=(所有者权益+长期负债)/(固定资产+长期投资)*100%</p>
-<p>15、资本保值增值率=扣除客观因素后的年末所有者权益/年初所有者权益*100%</p>
-<p>16、资本积累率=本年所有者权益增长额/年初所有者权益*100%</p>
-<p>17、 主营业务毛利率=毛利/主营业务收入*100%</p>
-<p>18、 主营业务净利率=净利润/主营业务收入*100%</p>
-<p>19、主营业务成本率=主营业务成本/主营业务收入*100%</p>
-<p>20、 营业费用率=营业费用/主营业务收入*100%</p>
-<p>21、主营业务税金率=主营业务税金及附加/主营业务收入*100%</p>
-<p>22、资产净利率=税后净利/平均总资产<em>100%=主营业务净利率</em>总资产周转率</p>
-<p>23、 净资产收益率=净利润/平均所有者权益*100%</p>
-<p>24、 管理费用率=管理费用/主营业务收入*100%</p>
-<p>25、 财务费用率=财务费用/主营业务收入*100%</p>
-<p>26、成本、费用利润率=利润总额/(主营业务成本+期间费用)*100%</p>
-<p>27、 销售收现比=销售收现/销售额</p>
-<p>28、 营运指数=经营现金净流量/经营所得现金</p>
-<p>29、 现金比率=现金余额/流动负债*100%</p>
-<p>30、现金流动负债比=经营活动净现金流量/流动负债*100%</p>
-<p>31、现金债务总额比=经营活动净现金流量/总负债*100%</p>
-<p>32、 销售现金比率=经营现金净流量/销售额*100%</p>
-<p>33、应收帐款周转率(次数)=赊销收入净额/应收帐款平均余额</p>
-<p>34、 应收帐款周转天数</p>
-<p>=天数/应收帐款周转次数</p>
-<p>=计算期天数*应收帐款平均余额/赊销收入净额</p>
-<p>销售收入净额=销售收入-现销收入-销售折扣与折让</p>
-<p>35、 存货周转率=销售成本/平均存货</p>
-<p>36、 存货周转天数=计算期天数/存货周转率</p>
-<p>37、流动资产周转次数(率)=销售收入净额/流动资产平均余额</p>
-<p>38、流动资产周转天数=计算期天数/流动资产周转次数</p>
-<p>39、总资产周转率=销售收入净额/平均资产总额</p>
-<p>40、总资产周转天数=计算期天数/总资产周转率</p>
-<p>41、已获利息倍数=(税前利润总额+利息支出)/利息支出</p>
-<p>42、总资产报酬率=(利润总额+利息支出)/平均资产总额</p>
-<h4 id="营运能力分析">营运能力分析</h4><p>1、应收帐款周转率(次数)=赊销收入净额/应收帐款平均余额，指标高说明收帐迅速，账龄期限短，减少企业收帐费用和坏账损失。</p>
-<p>2、 应收帐款周转天数</p>
-<p>=天数/应收帐款周转次数</p>
-<p>=计算期天数*应收帐款平均余额/赊销收入净额</p>
-<p>销售收入净额=销售收入-现销收入-销售折扣与折让</p>
-<p>3、存货周转率=销售成本/平均存货。一般情况周转速度越快，变现速度越快，占用存货资金少，占用相同数额的存货而实现的销货成本大。</p>
-<p>4、存货周转天数=计算期天数(年360天)/存货周转率</p>
-<p>5、流动资产周转次数(率)=销售收入净额/流动资产平均余额，指标高表明企业流动资产周转速度快，利用效果好。</p>
-<p>6、流动资产周转天数=计算期天数/流动资产周转次数</p>
-<p>7、总资产周转率=销售收入净额/平均资产总额。周转速度快，企业的营运能力强;指标低，说明收入不足，或资产闲置浪费。</p>
-<p>8、 总资产周转天数=计算期天数/总资产周转率</p>
-<p>9、已获利息倍数=(税前利润总额+利息支出)/利息支出</p>
-<p>10、总资产报酬率=(利润总额+利息支出)/平均资产总额</p>
-<h4 id="综合偿债能力">综合偿债能力</h4><p>已获利息倍数=(税前利润总额+利息支出)÷利息支出</p>
-<ul>
-<li>盈利能力：</li>
-</ul>
-<p>主营业务净利率=(净利润÷主营业务收入)×100%</p>
-<p>资产净利率=(净利润÷平均总资产)×100%=主营业务净利率*总资产周转率</p>
-<p>净资产收益率=(净利润÷平均净资产总额)×100%</p>
-<p>总资产报酬率=(利润总额+利息支出)÷平均资产总额</p>
-<ul>
-<li>营运能力：</li>
-</ul>
-<p>应收帐款周转率=主营业务收入÷应收帐款平均余额<br>(高表明企业收帐迅速，帐龄期限短，可减少收帐费用和坏帐损失，相对增加企业流动资产的投资收益，说明资产流动性大，变现快短期偿债能力强)</p>
-<p>存货周转率=主营业务成本÷平均存货余额<br>(高表明企业资产由于销售顺畅而具有较高的流动性存货转现速度快存货占用水平低，过高 存货不足，产品脱销)<br>(慢：必然占用在量的资金，造成资金浪费，营运困难)</p>
-<p>流动资产周转率=主营业务收入÷平均资产总额</p>
-<p>总资产周转率=主营业务收入÷平均资产总额<br>(过低：收入不足，资产闲置,浪费)</p>
-<ul>
-<li>发展能力：</li>
-</ul>
-<p>销售增长率=(本年主营业务收入-上年主营业务收入)÷上年主营业务收入</p>
-<p>资本积累率=[(年末所有者权益-年初所有者权益)÷年初所有者权益]×100%</p>
-<p>主营业务利润 = 主营业务收入 — 主营业务成本 — 主营业务税金及附加</p>
-<p>营业利润 = 主营业务利润 + 其他业务利润 — 期间费用</p>
-<p>利润总额 = 营业利润 + 投资收益 + 补贴收入 + 营业外收入 — 营业外支出</p>
-<p>净利润 = 利润总额 — 所得税</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/30/2017-4-30-travel-wuhan/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/04/30/2017-4-30-travel-wuhan/" itemprop="url">
-                  武汉游记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-30T00:00:00+08:00">
-                2017-04-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/feeling/" itemprop="url" rel="index">
-                    <span itemprop="name">feeling</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/30/2017-4-30-travel-wuhan/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/30/2017-4-30-travel-wuhan/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>五一假期原本准备待在家里，不过按耐不住一颗游玩的心，和女朋友一起来到武汉，近距离欣赏江城的靓丽风景；</li>
-<li>武汉是湖北省省会、中部六省唯一的副省级市和特大城市，中国中部地区中心城市，全国重要的工业基地；</li>
-<li>武汉地处江汉平原东部，长江中游。世界第三大河长江及其最大支流汉江横贯市境中央，将武汉中心城区一分为三，形成武昌、汉口、汉阳三镇隔江鼎力的格局；</li>
-<li>下面，就带您领略武汉的美景。</li>
-</ul>
-<h3 id="黄鹤楼">黄鹤楼</h3><ul>
-<li>黄鹤楼位于武汉长江南岸的武昌蛇山之巅，为国家5A级旅游景区，享有“天下江山第一楼“、”天下绝景“之称；</li>
-<li>黄鹤楼是武汉市标志性建筑，与晴川阁、古琴台并称“武汉三大名胜”，也与湖南岳阳楼、江西南昌滕王阁并称为“江南三大名楼”；</li>
-<li>李白的《黄鹤楼送孟浩然之广陵》就出自与此：故人西辞黄鹤楼，烟花三月下扬州，孤帆远影碧空尽，唯见长江天际流。</li>
-<li>下图是黄鹤楼，五一人非常多，从楼下到最上层走了一个多小时；</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/黄鹤楼.jpg" alt="黄鹤楼"></p>
-<ul>
-<li>黄鹤楼上的风景很美，可以远眺长江大桥；</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/黄鹤楼远眺.jpg" alt="黄鹤楼远眺"></p>
-<h3 id="长江大桥">长江大桥</h3><ul>
-<li>武汉长江大桥位于湖北省武汉市武昌蛇山和汉阳龟山之间的长江江面上，是万里长江上的第一座大桥，也是新中国成立后在长江上修建的第一座复线铁路、公路两用桥，被称为“万里长江第一桥”；</li>
-<li>武汉长江大桥是苏联援华156项工程之一，于1955年9月动工，1957年10月15日正式通车，全长约1670米。上层为公路桥（107国道），下层为双线铁路桥（京广铁路），桥身共有8墩9孔，每孔跨度为128米，桥下可通万吨巨轮；</li>
-<li>1956年6月毛泽东题写的“一桥飞架南北，天堑变通途”，正是对武汉长江大桥沟通中国南北交通这一重要作用的真实写照，作为中国第一个五年计划主要成就，大桥图案入选1962年4月发行的第三套人民币，成为新中国国家建设的重要标志；</li>
-<li>下图是站在长江大桥桥头照的：</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/长江大桥.jpg" alt="长江大桥"></p>
-<p><img src="/images/2017travel-2/wuhan/长江大桥桥头.jpg" alt="长江大桥桥头"></p>
-<ul>
-<li>站在桥上，每当有火车通过时，能够明显感觉到桥的晃动；</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/长江大桥桥面.jpg" alt="长江大桥桥面"></p>
-<h3 id="户部巷">户部巷</h3><ul>
-<li>作为一个吃货，无论到哪里，最重要的就是吃了，户部巷有很多好吃的，当然不能错过；</li>
-<li>户部巷位于武昌最繁华的司门口，东靠十里长街，西临浩瀚长江，南枕“天下江山第一楼”黄鹤楼，北接都府堤红色景区，是一处由名街名楼名景名江环绕而成的美食天堂；</li>
-<li>热干面是武汉最出名的小吃了，热腾腾的面条上浇上一勺麻酱，别提味道有多好了，除此之外，糊米酒也非常出名，糊米酒是在普通的米酒中加入了黑芝麻，集“米酒”和“芝麻糊”于一身，味道很独特；</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/热干面-糊米酒-银耳汤.jpg" alt="热干面-糊米酒-银耳汤"></p>
-<ul>
-<li>来武汉不能不吃武昌鱼，武昌鱼分为清蒸和红烧两种，其中清蒸武昌鱼更能够保持鱼的鲜味；武昌鱼肉非常嫩，蛋白质含量高，是营养和美味的完美结合；毛主席在《水调歌头~游泳》中也曾赞美过武昌鱼的鲜美：才饮长沙水，又食武昌鱼，万里长江横渡，极目楚天舒。</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/武昌鱼.jpg" alt="武昌鱼"></p>
-<ul>
-<li>藕汤是武汉挺出名的小吃，汤的味道非常鲜美，加上藕片和排骨熬制而成；</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/藕汤.jpg" alt="藕汤"></p>
-<ul>
-<li>糯米团子，外面是糯米，里面的鲜猪肉；</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/糯米团子.jpg" alt="糯米团子"></p>
-<ul>
-<li>烧麦，这是香菇大肉馅的烧麦，非常好吃；</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/烧麦.jpg" alt="烧麦"></p>
-<ul>
-<li>豆皮是武汉出名的小吃，制作十分简单，将新鲜的生豆皮放入油锅中煎制即可，配上鲜萝卜丝，非常好吃；</li>
-</ul>
-<p><img src="/images/2017travel-2/wuhan/豆皮.jpg" alt="豆皮"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/27/2017-2-27-web-encryption/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/02/27/2017-2-27-web-encryption/" itemprop="url">
-                  网站安全架构——常用加密方法小结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-27T00:00:00+08:00">
-                2017-02-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/02/27/2017-2-27-web-encryption/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/27/2017-2-27-web-encryption/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>在网站的安全性架构中，常常用到各种加密方法和算法；</li>
-<li>本文总结了几种加密方法的原理，以备不时之用；</li>
-<li>本文不涉及技术细节；</li>
-</ul>
-<h3 id="单项散列加密">单项散列加密</h3><ul>
-<li>原理：采取某种算法，使得通过明文可以得到密文，但是不能由密文反推明文；这类算法的特点是，输入变化微小也能引起结果的大幅变化；</li>
-<li>应用场景1：为安全起见，用户密码是加密后存入数据库中，验证身份时只对比密文，不对比明文；这种方法常被攻击者用彩虹表攻击（常用密码明文及其密文之间的对应关系表）；</li>
-<li>应用场景2：用于生成信息摘要、验证信息的完整性等；</li>
-<li>代表算法：MD5，SHA；</li>
-</ul>
-<h3 id="对称加密">对称加密</h3><ul>
-<li>原理：加密和解密使用同一个密钥，适合对大量数据进行加密；</li>
-<li>关键点：密钥的安全性是加密算法有效性的保证；</li>
-<li>代表算法：DES，RC；</li>
-</ul>
-<h3 id="非对称加密">非对称加密</h3><ul>
-<li>分为私钥（所有者掌握）和公钥（公开），公钥加密只能私钥解开，私钥加密只能公钥解开；</li>
-<li>应用场景1：在传递少量敏感信息时（如验证身份），可以用公钥加密，经传输后，对方使用私钥解密，这样即便传输过程中信息泄露，攻击者也不能获取明文；</li>
-<li>应用场景2：签名者用私钥对信息（数字签名）加密，接受者用公钥进行解密，由于只有发送者掌握私钥，所以发送者对该信息不能抵赖；</li>
-<li>代表算法：RSA；</li>
-</ul>
-<h3 id="HTTPS依赖的加密算法">HTTPS依赖的加密算法</h3><ul>
-<li>HTTPS(Secure Hypertext Transfer Protocol)安全超文本传输协议 它是一个安全通信通道，它基于HTTP开发，用于在客户计算机和服务器之间交换信息。它使用安全套接字层(SSL)进行信息交换，简单来说它是HTTP的安全版,是使用 TLS/SSL 加密的 HTTP 协议。</li>
-<li>HTTP 协议采用明文传输信息，存在信息窃听、信息篡改和信息劫持的风险，而协议 TLS/SSL 具有身份验证、信息加密和完整性校验的功能，可以避免此类问题。</li>
-<li>TLS/SSL 全称安全传输层协议 Transport Layer Security, 是介于 TCP 和 HTTP 之间的一层安全协议，不影响原有的 TCP 协议和 HTTP 协议，所以使用 HTTPS 基本上不需要对 HTTP 页面进行太多的改造。</li>
-<li>TLS/SSL 的功能实现主要依赖于三类基本算法：散列函数 Hash、对称加密和非对称加密，其利用非对称加密实现身份认证和密钥协商，对称加密算法采用协商的密钥对数据加密，基于散列函数验证信息的完整性。</li>
-</ul>
-<p><img src="/images/safety/https-tls-ssl.png" alt="https-safety"></p>
-<h3 id="如何保证密钥安全：">如何保证密钥安全：</h3><ul>
-<li>决不能把密钥写在源码中；</li>
-<li>密钥也尽量不要写在配置文件中；</li>
-<li>方案一：将密钥和算法放置在独立的服务器上，甚至做成一个专用的硬件设备，由专人维护，独立提供加密解密服务；这种方法每次都要远程调用服务，性能不太好；</li>
-<li>方案二：将加解密算法放在应用系统中，密钥本身放在独立的服务器中，这样可改善性能；</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/18/2017-2-18-travel-Singapore-Malaysia-Thailand/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/02/18/2017-2-18-travel-Singapore-Malaysia-Thailand/" itemprop="url">
-                  新马泰游记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-18T00:00:00+08:00">
-                2017-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/feeling/" itemprop="url" rel="index">
-                    <span itemprop="name">feeling</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/02/18/2017-2-18-travel-Singapore-Malaysia-Thailand/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/18/2017-2-18-travel-Singapore-Malaysia-Thailand/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="第一次出国">第一次出国</h3><ul>
-<li>新马泰之行是我第一次出国，趁着尚未正式工作，出去玩一圈长长见识，以后这样的机会就不多了；</li>
-<li>出去玩之前，听说新加坡环境很好、马来西亚的水果很好吃、泰国有很多人妖，但这都只是听说，身临其境之后才发现，有很多东西和听说的不完全一样；</li>
-<li>2月正值三国的旅游旺季，此时出国正和时宜；</li>
-<li>行程整体安排：<ul>
-<li>2月9日：郑州新郑国际机场出发，经停香港，于当地时间23:45抵达曼谷素万那普国际机场；</li>
-<li>2月10日：曼谷；</li>
-<li>2月11日-12日：芭提雅；</li>
-<li>2月13日：曼谷；</li>
-<li>2月14日：曼谷素万那普国际机场出发，与北京时间11:30抵达新加坡樟宜国际机场；</li>
-<li>2月14日-15日：新加坡；</li>
-<li>2月15日：从新加坡陆路过境到马来西亚，并抵达马六甲；</li>
-<li>2月16日：马六甲，并乘车抵达吉隆坡；</li>
-<li>2月17日-18日：吉隆坡；</li>
-<li>2月18日：从吉隆坡乘车赴新山，并通过陆路口岸过境进入新加坡，从新加坡樟宜国际机场出发，经停香港，返回郑州；</li>
-</ul>
-</li>
-<li>行程总里程：9880公里；</li>
-</ul>
-<h3 id="新马泰三国概况">新马泰三国概况</h3><table>
-<thead>
-<tr>
-<th></th>
-<th>泰国</th>
-<th>新加坡</th>
-<th>马来西亚</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>首都</td>
-<td>曼谷</td>
-<td>新加坡</td>
-<td>吉隆坡</td>
-</tr>
-<tr>
-<td>面积</td>
-<td>513115平方公里<br>相当于四川省大小</td>
-<td>683平方公里<br>相当于广州市大小</td>
-<td>330257平方公里<br>相当于云南省大小</td>
-</tr>
-<tr>
-<td>人口</td>
-<td>6800万</td>
-<td>553万</td>
-<td>3033万</td>
-</tr>
-<tr>
-<td>语言</td>
-<td>泰语</td>
-<td>英语/马来语/华语</td>
-<td>马来语</td>
-</tr>
-<tr>
-<td>宗教</td>
-<td>佛教</td>
-<td>佛教/伊斯兰教</td>
-<td>伊斯兰教</td>
-</tr>
-<tr>
-<td>气候</td>
-<td>热带季风气候<br>均温27℃</td>
-<td>热带海洋气候<br>均温33℃</td>
-<td>热带海洋气候<br>均温29℃</td>
-</tr>
-<tr>
-<td>时差</td>
-<td>比北京早一个小时</td>
-<td>同北京时间</td>
-<td>同北京时间</td>
-</tr>
-<tr>
-<td>交通</td>
-<td>靠左行驶</td>
-<td>靠左行驶</td>
-<td>靠左行驶</td>
-</tr>
-<tr>
-<td>货币</td>
-<td>泰铢<br>1泰铢约兑换0.1962人民币</td>
-<td>新加坡元<br>1新加坡元约兑换4.8389人民币</td>
-<td>林吉特<br>1林吉特约兑换1.5421人民币</td>
-</tr>
-<tr>
-<td>电压</td>
-<td>220V</td>
-<td>220V<br>英式插头</td>
-<td>240V<br>英式插头</td>
-</tr>
-<tr>
-<td>紧急电话</td>
-<td>报警 191<br>火警 199<br>急救 1691<br></td>
-<td>报警 999<br>火警 995<br>急救 995<br></td>
-<td>报警 999<br>火警 994<br>急救 999<br></td>
-</tr>
-</tbody>
-</table>
-<h3 id="泰国">泰国</h3><ul>
-<li>泰国的货币是泰铢，到机场后先兑换了一些：</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/泰铢1.jpg" alt="泰铢-正面"></p>
-<p><img src="/images/2017travel-1/Thailand/泰铢2.jpg" alt="泰铢-背面"></p>
-<ul>
-<li>泰国的饮食酸甜居多，菜里面一般会放一些黄色的尖椒调味，所以菜品普遍偏辣，下图是酒店的自助早餐，包括炒洋葱、炒豆芽等：</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/泰国自助早餐.jpg" alt="泰国自助早餐"></p>
-<ul>
-<li>泰国议会制的君主立宪制国家。泰国人多信仰佛教。在古代，泰国地区的人看病、上学、结婚等事宜都是在寺庙中完成的。直至今日，泰国的酒店每天早晨都能看到前来化缘的僧人。</li>
-<li>泰国国王在民众心目中的地位非常高，举例来说，每到毕业季，国王会巡游77个省、并亲自向大学生颁发毕业证书，普通民众家里如果能拜访一张和泰国国王的合照是非常荣耀的事情。国王的生日2月5日被定为泰国的父亲节。</li>
-<li>泰国国王登基的地方就是大皇宫，这是历代王宫保存最完美、规模最大、最有民族特色的王宫，是泰国的”故宫“。大皇宫位于曼谷市中心，紧邻湄南河，及政治、宗教、艺术于一体，堪称世界瑰宝，供奉贴金佛像地方必须脱鞋进入。</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/大皇宫1.jpg" alt="泰国大皇宫"><br><img src="/images/2017travel-1/Thailand/大皇宫2.jpg" alt="泰国大皇宫"></p>
-<ul>
-<li>大皇宫中建筑金碧辉煌，其实这是金色油漆和彩色玻璃的杰作，但在古代，这可都是真正的黄金和宝石啊！</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/大皇宫3.jpg" alt="泰国大皇宫"><br><img src="/images/2017travel-1/Thailand/大皇宫4.jpg" alt="泰国大皇宫"><br><img src="/images/2017travel-1/Thailand/大皇宫5.jpg" alt="泰国大皇宫"><br><img src="/images/2017travel-1/Thailand/大皇宫6.jpg" alt="泰国大皇宫"></p>
-<ul>
-<li>参观完大皇宫，旁边就是世界闻名的湄南河，这条河是古时候泰国的通商要道，河道旁边全是商店和餐馆：</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/湄南河1.jpg" alt="湄南河"><br><img src="/images/2017travel-1/Thailand/湄南河2.jpg" alt="湄南河"></p>
-<ul>
-<li>湄南河旁边的餐馆中，泰式的炒米饭尤其受欢迎：</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/湄南河3.jpg" alt="湄南河"></p>
-<ul>
-<li>在芭提雅的格兰岛，对于像我一样的内地人而言，最重要的一项活动就是看海了，宽广的太平洋一望无际，海水十分清澈。在海里游泳的感觉和在游泳池里大不一样。在这里，我完成了人生的第一次潜水。</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/大海.jpg" alt="大海"></p>
-<ul>
-<li>在芭提雅滨海的56层高的观光塔上，纵览芭提雅全景，这个三面临海的城市，给我留下深刻印象：</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/观光塔.jpg" alt="观光塔上"></p>
-<ul>
-<li>无意中还发现了泰国版的红牛，酸甜可口，非常好喝：</li>
-</ul>
-<p><img src="/images/2017travel-1/Thailand/红牛.jpg" alt="泰国版红牛"></p>
-<h3 id="新加坡">新加坡</h3><ul>
-<li>从曼谷距新加坡大概1500公里，飞行约3个小时，飞机上的景色非常美，能当屏保了：</li>
-</ul>
-<p><img src="/images/2017travel-1/Singapore/飞机.jpg" alt="飞机"></p>
-<ul>
-<li>新加坡的货币是新元，到机场先换了几张：</li>
-</ul>
-<p><img src="/images/2017travel-1/Singapore/新元1.jpg" alt="新元"><br><img src="/images/2017travel-1/Singapore/新元2.jpg" alt="新元"></p>
-<ul>
-<li><p>到了新加坡，我才知道这些新加坡独有的特色：</p>
-<ul>
-<li>新加坡很小，东西最长处仅45公里，所有吃的东西靠进口；</li>
-<li>新加坡距赤道仅137公里，每天都下2-3场雨，气候非常湿润；</li>
-<li>在新加坡，所有的自来水均可直接饮用，边洗澡边喝水也是可以的；</li>
-<li>新加坡实行12年义务教育，小学上课时间07:30-13:30，下午不上课，好幸福；</li>
-<li>新加坡贩卖口香糖非法，要罚款5000新币并做9个月的牢；</li>
-<li>新加坡生孩子第一胎奖励1.2万新元，第二胎奖励2.4万新元，以此类推，但这个钱家长取不出来，只能供孩子使用；</li>
-<li>新加坡所有的电梯没有4和13，不吉利；</li>
-<li>新加坡车牌只有10年使用权，过期只能再买；</li>
-<li>新加坡房价均价只有1万人民币，不过只卖给本国人，由于太潮，一楼不住人；</li>
-<li>新加坡药店很少，所有口服药必须有医生允许才能买到，60岁以上老人体检免费；</li>
-<li>新加坡的酒非常贵，而且政府对酒有严格的控制，晚上十点以后不能买酒、所有超市的收银台无法扫描酒类商品（包括烧菜用的料酒）；</li>
-</ul>
-</li>
-<li><p>新加坡圣淘沙岛上的赌场非常有名，里面聚集了世界各地的土豪，但有三种人不能进入赌场：21岁以下的，被加入黑名单的，本地人不让进(除非买100新元门票才让进，外国人持护照免费进入)，赌场都不是新加坡政府开的，都是外国政府投资；</p>
-</li>
-<li>小心翼翼的进去转了一圈，有几百张赌桌，上面摆放着花花绿绿的筹码，有各种玩法，和电影上看到的差不多。由于赌场内部严禁拍照，所以只能上一张赌场的外景：</li>
-</ul>
-<p><img src="/images/2017travel-1/Singapore/赌场.jpg" alt="赌场"></p>
-<ul>
-<li><p>圣淘沙岛上有一尊高35米的狮身鱼尾雕塑，夜景非常美：<br><img src="/images/2017travel-1/Singapore/狮身鱼尾.jpg" alt="狮身鱼尾"></p>
-</li>
-<li><p>酒店旁边有很多大排档。新加坡的大排档不像国内给人一种不卫生的感觉，这里非常干净，地板看不到一片污渍或者纸屑。我点了一份烤巴沙鱼，5.5新币，鱼肉滑嫩入味，味道非常鲜美：<br><img src="/images/2017travel-1/Singapore/烤巴沙鱼.jpg" alt="烤巴沙鱼"></p>
-</li>
-<li><p>新加坡地方虽小，但是整个城市给人干净、整洁、有序的感觉，下图分别是滨海艺术中心、金融区、赌场外景、狮身鱼尾像、国会大厦和高等法院：</p>
-</li>
-</ul>
-<p><img src="/images/2017travel-1/Singapore/滨海艺术中心.jpg" alt="滨海艺术中心"><br><img src="/images/2017travel-1/Singapore/金融区.jpg" alt="金融区"><br><img src="/images/2017travel-1/Singapore/赌场外景.jpg" alt="赌场外景"><br><img src="/images/2017travel-1/Singapore/狮身鱼尾像.jpg" alt="狮身鱼尾像"><br><img src="/images/2017travel-1/Singapore/国会大厦.jpg" alt="国会大厦"><br><img src="/images/2017travel-1/Singapore/高等法院.jpg" alt="高等法院"></p>
-<h3 id="马来西亚">马来西亚</h3><ul>
-<li>吉隆坡以南41公里的太子城是马来西亚耗资81亿美元新建的行政中心，红色的建筑是太子清真寺，由于是用粉红色的大理石建成，故又称粉红清真寺。进入清真寺要脱鞋，光脚踩着滚烫的石阶、高大的穹顶、彩色的琉璃令人流连忘返。</li>
-</ul>
-<p><img src="/images/2017travel-1/Malaysia/清真寺1.jpg" alt="太子清真寺"><br><img src="/images/2017travel-1/Malaysia/清真寺2.jpg" alt="太子清真寺"><br><img src="/images/2017travel-1/Malaysia/清真寺3.jpg" alt="太子清真寺"><br><img src="/images/2017travel-1/Malaysia/清真寺4.jpg" alt="太子清真寺"></p>
-<ul>
-<li>清真寺旁边绿顶的建筑，就是新建的首相府。真是美得无法形容！</li>
-</ul>
-<p><img src="/images/2017travel-1/Malaysia/美景1.jpg" alt="太子清真寺"><br><img src="/images/2017travel-1/Malaysia/美景2.jpg" alt="太子清真寺"><br><img src="/images/2017travel-1/Malaysia/首相府.jpg" alt="首相府"></p>
-<ul>
-<li><p>驱车来到吉隆坡，首先参观了位于市中心的吉隆坡塔；<br><img src="/images/2017travel-1/Malaysia/吉隆坡塔.jpg" alt="吉隆坡塔"></p>
-</li>
-<li><p>马来西亚曾经是英国和荷兰殖民地，二战期间曾被日本占领，经历了坎坷的民族独立和解放斗争。</p>
-</li>
-</ul>
-<p><img src="/images/2017travel-1/Malaysia/英雄纪念碑1.jpg" alt="英雄纪念碑"><br><img src="/images/2017travel-1/Malaysia/英雄纪念碑2.jpg" alt="英雄纪念碑"><br><img src="/images/2017travel-1/Malaysia/独立广场1.jpg" alt="独立广场"><br><img src="/images/2017travel-1/Malaysia/独立广场2.jpg" alt="独立广场"><br><img src="/images/2017travel-1/Malaysia/独立广场3.jpg" alt="独立广场"></p>
-<ul>
-<li>马来西亚人多信仰伊斯兰教，故酒店中天花板上一般有一个向西的标志，方便做礼拜，而且酒店卫生间的马桶旁总是放着一个用来解决个人如厕后卫生问题的喷头：</li>
-</ul>
-<p><img src="/images/2017travel-1/Malaysia/酒店1.jpg" alt="酒店"><br><img src="/images/2017travel-1/Malaysia/酒店2.jpg" alt="酒店"></p>
-<h3 id="新马泰游小提示">新马泰游小提示</h3><ul>
-<li>关于行李：<ul>
-<li>不要带生鲜食品，否则过不了检验检疫；</li>
-<li>可以带少量未开封的零食，如小面包、豆干；</li>
-<li>托运行李中不要放置打火机、锂电池等物品，锂电池、照相机等电子产品不能托运，需要随身携带；</li>
-<li>新加坡只允许携带19根香烟入境，不能携带酒，不能携带口香糖；</li>
-<li>可以带一些驱蚊液、防晒霜；</li>
-</ul>
-</li>
-<li>国际航班提前3个小时办理登机手续，不要迟到了；</li>
-<li>在国外需要保管好护照，如果丢失护照，需要立即和中国大使馆联系申请临时护照；申请临时护照时，需要用到个人照片，为了以防万一，出发前最好随身携带2张2寸白底近期免冠照；</li>
-<li>新马泰三国均为靠左行驶，过马路时需要特别注意，遵守当地交通法规；</li>
-<li>泰国是小费制国家，泰国酒店需要给服务生小费，标准：20泰铢/人/天，其他服务（如服务生提行李、参加骑大象活动、当地的导游和司机等）也需要给相应数量的小费；小费必须是纸币，不能给硬币；</li>
-<li>参观曼谷大皇宫等景点时，为了表达对国王的尊重，不能穿拖鞋、背心、无袖上衣、短裤等，女士尽量穿着过膝长裙；</li>
-<li>以下的app在国外非常好用：<ul>
-<li>社交类：facebook，twitter；</li>
-<li>地图：Google map，Here；</li>
-<li>住宿和酒店：Booking，Airbnb；</li>
-<li>车辆和交通：Grab；</li>
-</ul>
-</li>
-<li>可以在机场兑换一些当地货币，以免在买水或者零食时遇到麻烦；</li>
-<li>大额消费尽量刷卡，这样可以有机会获得优惠的汇率，具体优惠程度参照商店的标准；</li>
-<li>国外的通信费较高，中国移动在开通国际漫游后，新马泰三国的移动数据流量费为1元人民币/M，如果游玩天数较多，建议在机场办理当地不限流量的电话卡，或者提前在淘宝上买；</li>
-<li>因为宗教信仰等原因，马来西亚的厕所可能没有纸巾，当地人习惯使用马桶旁边的小水管解决如厕后的个人卫生问题，所以记得携带手纸；</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/12/year-books/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/12/year-books/" itemprop="url">
-                  2016我的年度书单
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-12T00:00:00+08:00">
-                2016-12-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/12/12/year-books/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/12/year-books/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>2016年，我把所有的精力都放在了找实习和工作上，同时还要完成学校要求的小论文和毕业论文，几乎没什么精力来读“闲书”，下面这些书都是每天临睡前看一会儿，积少成多读完的。</li>
-<li>读书能让我静下心，认真思考我自己，认真思考这个世界，思考清楚了，才有“静力”，做起事情来才更有“动力”。</li>
-<li>我不喜欢读电子书，下面所有的书我都是买来或者从图书馆借来纸质版的书籍阅读。</li>
-<li>我认为自己思想还不够深入、品性还需要磨砺，我读书的目的正是为了修炼性格、磨砺自己。</li>
-<li>下面是我的2016书单，欢迎大家赞赏、吐槽、拍砖。</li>
-</ul>
-<h3 id="2016-我的书单">2016-我的书单</h3><ul>
-<li>《自卑与超越》<ul>
-<li>作者： [奥地利] 阿弗雷德·阿德勒 </li>
-<li>本书作者阿弗雷德·阿德勒是弗洛伊德精神分析学派的核心成员之一，他立足于个体心理学，在本书中全面阐释了自卑的含义和意义，对人的自卑心理全面分析，将自卑的产生、发展、认识描绘的淋漓尽致，是对人性中自卑情结最为深刻的刻画。</li>
-<li>本书不仅具有较大的理论价值，也具有较大的使用价值。本书从社会生活、商业、人文、教育等多方面分析了自卑情结，深刻揭示了人的行为和内在的自卑情结的联系，深入诠释了接受自卑比克服自卑更加重要这一事实。</li>
-<li>本书绝对不仅仅讲了自卑，也绝不是只有自认为自卑的人才需要阅读，本书通过自卑揭示了一些不为人知的心理学原理，而这些原理又是被广泛应用在社会生活中的，我强烈推荐所有对心理学感兴趣的朋友阅读此书！</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/2016books/book1.jpg" alt="book1"></p>
-<ul>
-<li>《追求意义的意志》<ul>
-<li>作者: [奥地利] 维克多·弗兰克尔</li>
-<li>本书的作者维克多·弗兰克尔出生于奥地利，是美国著名的临床心理学家，获得维也纳大学医学博士和哲学博士学位。他亲历了二战，在希特勒占领奥地利后为了照顾年迈的父母，在获得美国签证的情况下没有逃离险境，而是坚持留在奥地利，最终被送进集中营。在集中营中，他亲眼见证了一个个生命的逝去，在巨大的痛苦和伤痛中不断思考生命的价值和意义，从痛苦、彷徨、抑郁甚至死亡的边缘寻找那一点点的亮光和希望。在那种情境下，生命只是囚服上的号码牌，没有人知道自己什么时候会被送进毒气室，生命的意义和存在的价值到底在哪里？恐怕只有像作者这样的亲历者才有资格回答这个问题。放眼望去，人类所经历的一切痛苦是否是值得的？作为一个个体，在社会中所经历的痛苦是否是值得的？思考这些问题可能会让你暂时感到恐惧和无助，但只有思考清楚了这些问题，我们才能从心底感到希望和快乐，真正明白活着是为了什么、我们现在的所有付出和努力是为了什么。</li>
-<li>刚开始阅读本书时，我将书名误认为《追求意志的意义》，读了几章，发现不对劲，回头一看标题，方才豁然开朗，明白了作者的想表达的含义。</li>
-<li>文本作者被称之为继弗洛伊德的心理分析、阿德勒的个体心理学之后的维也纳第三心理治疗学派。我强烈建议对心理学感兴趣的朋友们阅读此书。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/2016books/book2.jpg" alt="book2"></p>
-<ul>
-<li>《脆弱的力量》<ul>
-<li>作者：[美] 布琳·布朗</li>
-<li>本文作者是最受欢迎的5大TED演讲者、美国最具影响力女性之一的布琳·布朗，如果您没有时间阅读本书，建议直接观看作者同一主题的TED<a href="http://www.ted.com/talks/brene_brown_on_vulnerability" target="_blank" rel="external">演讲视频</a>。</li>
-<li>本书从脆弱和羞耻感的角度研究了爱、归属感和人生，将脆弱和力量这两个看似矛盾的词汇完美的统一起来，让人们意识到脆弱的意义和价值所在，也让人们对不确定性和危机感不再恐惧。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/2016books/book3.jpg" alt="book3"></p>
-<ul>
-<li>《非暴力沟通》<ul>
-<li>作者：[美] 马歇尔·卢森堡</li>
-<li>本书是沟通领域的佳作，从心理学的角度描绘了人的观察和评论的不统一性、体会和表达的不统一性、事实和感受的不统一性。什么时候应该尊重事实？什么时候又应该尊重感受？作者给出了自己的回答。</li>
-<li>倾听是解决沟通障碍的良药，怎样有效倾听对方的感受、最大程度地减少伤害？读完本书，您心中自然会有答案。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/2016books/book4.jpg" alt="book4"></p>
-<ul>
-<li>《钝感力》<ul>
-<li>作者：[日] 渡边淳一 </li>
-<li>本书送给像我一样对于他人的看法和感受比较敏感的朋友。</li>
-<li>本书的作者是日本著名的医学家、小说家，曾获得医学博士学位。本文从医学的角度描绘了“钝感力”作为一种为人处世的态度及人生智慧，相比激进、张扬、刚硬而言，更易在目前竞争激烈、节奏飞快、错综复杂的现代社会中生存，也更易取得成功。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/2016books/book5.jpg" alt="book5"></p>
-<ul>
-<li>《亲爱的安德烈》<ul>
-<li>作者：[中] 龙应台</li>
-<li>《目送》、《孩子你慢慢来》、《亲爱的安德烈》是著名作家龙应台的亲情三部曲，其中我最喜欢这本《亲爱的安德烈》。</li>
-<li>书中充分和细腻的描述了这位母亲在儿子长大后理性上和感性上的冲突，既希望儿子陪在身边、又希望儿子独立奋斗，既希望儿子理解自己、又怕自己已经和时代脱节。于是，母子俩用了三年时间互相通信，龙应台“认识了人生里第一个十八岁的人”，安德烈“也第一次认识了自己的母亲”。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/2016books/book6.jpg" alt="book6"></p>
-<ul>
-<li>《思想的星空》<ul>
-<li>作者: [中] 周国平</li>
-<li>本文作者周国平是中国社会科学院哲学研究所研究员，他的作品充满了人生的智慧和哲学的魅力，融理性和激情于一体，笔调清新自然，内涵睿智深刻，在这里同时推荐他的其他作品：《尼采美学文选》、《尼采诗集》、《偶像的黄昏》。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/2016books/book7.jpg" alt="book7"></p>
-<ul>
-<li>《幸福的方法》<ul>
-<li>作者：[美] 泰勒·本·沙哈尔</li>
-<li>本文作者泰勒·本·沙哈尔是哈佛大学心理学硕士、哲学和组织行为学博士，著名的《幸福课》就是他本人开创的。</li>
-<li>本书用充满智慧的语言、科学实证的方法、自助成功的案例和巧妙创新的编排，让人们能够把积极心理学应用到日常生活之中。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/2016books/book8.jpg" alt="book8"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/20/2016-7-20-roll-linkedlist/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/20/2016-7-20-roll-linkedlist/" itemprop="url">
-                  关于leetcode环形链表相关题目的总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-20T00:00:00+08:00">
-                2016-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/07/20/2016-7-20-roll-linkedlist/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/20/2016-7-20-roll-linkedlist/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>这几天，博主总结了一些leetcode的链表题目，本文参考了网上大牛的文章，结合自己的想法，总结了环形链表的解决方案，欢迎各位补充／批评指正。</li>
-</ul>
-<h3 id="建模">建模</h3><ul>
-<li>链表头节点是X，环的第一个节点是Y;</li>
-<li>slow和fast分别是指针，如果从链表头部开始往后移动，且fast指针移动速度为slow指针移动速度的两倍，设第一次的交点是Z；</li>
-<li>各段的长度分别是a,b,c，如图所示；</li>
-<li>环的长度是L；</li>
-<li>slow和fast指针的向前移动速度分别是qs,qf；</li>
-</ul>
-<p><img src="/images/algorithm/roll.png" alt="roll"></p>
-<h3 id="判断链表是否有环（leetcode_141）">判断链表是否有环（leetcode 141）</h3><ul>
-<li>fast如果走到了null，证明没有环；</li>
-<li>fast如果和slow相遇了，证明有环；</li>
-<li>代码如下：</li>
-</ul>
-<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition <span class="keyword">for</span> singly-linked list.</span><br><span class="line"> * <span class="keyword">class</span> ListNode &#123;</span><br><span class="line"> *     <span class="built_in">int</span> val;</span><br><span class="line"> *     ListNode <span class="keyword">next</span>;</span><br><span class="line"> *     ListNode(<span class="built_in">int</span> x) &#123;</span><br><span class="line"> *         val = x;</span><br><span class="line"> *         <span class="keyword">next</span> = <span class="literal">null</span>;</span><br><span class="line"> *     &#125;</span><br><span class="line"> * &#125;</span><br><span class="line"> */</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> Solution &#123;</span><br><span class="line">    <span class="keyword">public</span> boolean hasCycle(ListNode head) &#123;</span><br><span class="line">        ListNode fast = head;</span><br><span class="line">        ListNode slow = head;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(fast!=<span class="literal">null</span>&amp;&amp;fast.<span class="keyword">next</span>!=<span class="literal">null</span>)&#123;</span><br><span class="line">            slow = slow.<span class="keyword">next</span>;</span><br><span class="line">            fast = fast.<span class="keyword">next</span>.<span class="keyword">next</span>;</span><br><span class="line">            <span class="keyword">if</span>(fast==slow)&#123;</span><br><span class="line">                return <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="环长度是多少">环长度是多少</h3><ul>
-<li>方法一：在第一次相遇后，相当于slow和fast的距离是一个环的长度，继续让这两个指针以各自的速度去走，下一次相遇时，走过的节点数即为环的长度；</li>
-<li>方法二：第一次相遇后，让fast停着不走了，slow继续走，记录到下次相遇时走过了几个节点，即为环的长度；</li>
-<li>方法三：第一次相遇时slow走过的距离：<code>a+b</code>，fast走过的距离：<code>a+b+c+b</code>；因为fast的速度是slow的两倍，所以fast走的距离是slow的两倍，有 <code>2(a+b) = a+b+c+b</code>；可以得到<code>a=c</code>；最终我们得到<code>L=b+c=a+b</code>，也就是说，从一开始到二者第一次相遇，循环的次数就等于环的长度；</li>
-</ul>
-<h3 id="找到环中的第一个节点（leetcode_142）">找到环中的第一个节点（leetcode 142）</h3><ul>
-<li>我们已经得到了结论a=c；</li>
-<li>那么让两个指针分别从X和Z开始走，每次走一步，那么正好会在Y相遇，也就是环的第一个节点；</li>
-<li>代码如下：</li>
-</ul>
-<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition <span class="keyword">for</span> singly-linked list.</span><br><span class="line"> * <span class="keyword">class</span> ListNode &#123;</span><br><span class="line"> *     <span class="built_in">int</span> val;</span><br><span class="line"> *     ListNode <span class="keyword">next</span>;</span><br><span class="line"> *     ListNode(<span class="built_in">int</span> x) &#123;</span><br><span class="line"> *         val = x;</span><br><span class="line"> *         <span class="keyword">next</span> = <span class="literal">null</span>;</span><br><span class="line"> *     &#125;</span><br><span class="line"> * &#125;</span><br><span class="line"> */</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> Solution &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode detectCycle(ListNode head) &#123;</span><br><span class="line">        ListNode fast = head;</span><br><span class="line">        ListNode slow = head;</span><br><span class="line">        <span class="keyword">while</span>(fast!=<span class="literal">null</span>&amp;&amp;fast.<span class="keyword">next</span>!=<span class="literal">null</span>)&#123;</span><br><span class="line">            slow = slow.<span class="keyword">next</span>;</span><br><span class="line">            fast = fast.<span class="keyword">next</span>.<span class="keyword">next</span>;</span><br><span class="line">            <span class="keyword">if</span>(slow==fast)&#123;</span><br><span class="line">                fast = head;</span><br><span class="line">                <span class="keyword">while</span>(fast!=slow)&#123;</span><br><span class="line">                    slow = slow.<span class="keyword">next</span>;</span><br><span class="line">                    fast = fast.<span class="keyword">next</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                return slow;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="如何将有环的链表变成单链表（解除环）">如何将有环的链表变成单链表（解除环）</h3><ul>
-<li>在上一个问题的最后，将c段中Y点之前的那个节点与Y的链接切断即可；</li>
-</ul>
-<h3 id="如何判断两个单链表是否有交点，如何找到第一个相交的节点（leetcode_160）">如何判断两个单链表是否有交点，如何找到第一个相交的节点（leetcode 160）</h3><ul>
-<li>先判断两个链表是否有环；</li>
-<li>如果一个有环一个没环，肯定不相交；</li>
-<li>如果两个都没有环，判断两个列表的尾部是否相等；</li>
-<li>如果两个都有环，判断一个链表上的Z点是否在另一个链表上；</li>
-<li>找到第一个相交的节点方法：<ul>
-<li>求出两个链表的长度L1,L2（如果有环，则将Y点当做尾节点来算）;</li>
-<li>假设L1&lt;L2，用两个指针分别从两个链表的头部开始走;</li>
-<li>长度为L2的链表先走(L2-L1)步，然后两个一起走，直到二者相遇；</li>
-</ul>
-</li>
-<li>代码如下：</li>
-</ul>
-<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition <span class="keyword">for</span> singly-linked list.</span><br><span class="line"> * <span class="keyword">public</span> <span class="keyword">class</span> ListNode &#123;</span><br><span class="line"> *     <span class="built_in">int</span> val;</span><br><span class="line"> *     ListNode <span class="keyword">next</span>;</span><br><span class="line"> *     ListNode(<span class="built_in">int</span> x) &#123;</span><br><span class="line"> *         val = x;</span><br><span class="line"> *         <span class="keyword">next</span> = <span class="literal">null</span>;</span><br><span class="line"> *     &#125;</span><br><span class="line"> * &#125;</span><br><span class="line"> */</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> Solution &#123;</span><br><span class="line">    <span class="keyword">public</span> static <span class="built_in">int</span> getLength(ListNode head)&#123;</span><br><span class="line">        ListNode point = head;</span><br><span class="line">        <span class="built_in">int</span> length = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(point!=<span class="literal">null</span>)&#123;</span><br><span class="line">            length++;</span><br><span class="line">            point = point.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return length;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> ListNode getIntersectionNode(ListNode headA, ListNode headB) &#123;</span><br><span class="line">        <span class="built_in">int</span> aLength = getLength(headA);</span><br><span class="line">        <span class="built_in">int</span> bLength = getLength(headB);</span><br><span class="line">        <span class="built_in">int</span> diff = Math.max(aLength,bLength)-Math.min(aLength,bLength);</span><br><span class="line">        </span><br><span class="line">        ListNode pointA = headA;</span><br><span class="line">        ListNode pointB = headB;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(diff&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(aLength&gt;bLength)&#123;</span><br><span class="line">                pointA = pointA.<span class="keyword">next</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(aLength&lt;bLength)&#123;</span><br><span class="line">                pointB = pointB.<span class="keyword">next</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            diff--;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(pointA!=pointB)&#123;</span><br><span class="line">            pointA = pointA.<span class="keyword">next</span>;</span><br><span class="line">            pointB = pointB.<span class="keyword">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return pointA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2858,7 +2455,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">92</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2869,7 +2466,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2880,7 +2477,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
