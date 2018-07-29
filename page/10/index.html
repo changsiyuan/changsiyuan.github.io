@@ -320,6 +320,196 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/04/01/2015-4-1-mapreduce-name-explain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/04/01/2015-4-1-mapreduce-name-explain/" itemprop="url">
+                  MapReduce过程名词解释
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-01T00:00:00+08:00">
+                2015-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">hadoop</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/04/01/2015-4-1-mapreduce-name-explain/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/01/2015-4-1-mapreduce-name-explain/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>在mapreduce的运行过程中，有很多精巧的机制保证整个作业运行在高效率、相对公平和高容错性的环境下。</li>
+<li>mapreduce运行过程中（特别是shuffle过程中）有很多容易混淆的名词。本文通过罗列这些名词的含义来对这些过程加以解释说明。</li>
+</ul>
+<h3 id="名词解释">名词解释</h3><table>
+<thead>
+<tr>
+<th>名词</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shuffle</td>
+<td>将map的输出作为输入传给reducer的过程的总称；</td>
+</tr>
+<tr>
+<td>spill</td>
+<td>map的结果从内存往磁盘写数据的过程；中文译为“溢写”，但并不一定是当内存溢出后才写入磁盘；</td>
+</tr>
+<tr>
+<td>partitioner</td>
+<td>指partitioner接口，作用是根据key或value及reduce的数量决定当前的这对输出数据<key value="">应交给哪个reduce task处理；</key></td>
+</tr>
+<tr>
+<td>sort</td>
+<td>指快速排序；当map内存占用达到一定比例时，需对于内存中的key做sort，以便combiner过程；</td>
+</tr>
+<tr>
+<td>combiner</td>
+<td>将一个map内存中具有相同<key,value>对的value加起来，以减少spill到磁盘的数据量；将已经写到磁盘的文件进行上述动作也称为combiner；</key,value></td>
+</tr>
+<tr>
+<td>merge</td>
+<td>若map产生的数据量较大，一个map会有多个spill过程从而在磁盘中产生多个spill文件。将磁盘中多个spill文件合并成一个的过程称为spill；merge的本质是合并文件的过程，具有相同key的value并没有在merge过程中相加，而是在combiner中实现；</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/12/2015-3-12-docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2083,7 +2273,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">100</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2094,7 +2284,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2105,7 +2295,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-count">51</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

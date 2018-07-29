@@ -1,0 +1,1171 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Physical,Quantum," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="引言
+量子论和相对论是现代物理学的两大支柱，共同构成了现代物理学的基本观点和理论；
+在物理学的发展历程中，牛顿的经典物理学长期占据了不可撼动的主导地位，但人类对于宏观宇宙的探索不断表明，经典物理学仅适用于描述和解释低速、宏观物质的现象，并不能够解释物质在高速运动下表现出的规律和性质，所以才有了相对论；
+相对论完美的阐释了时间、空间的本质，以及时空在目前宇宙尺度上的关系，并对处于人类观测极限的黑洞等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不确定的世界 - 量子论和量子通信">
+<meta property="og:url" content="http://yoursite.com/2018/02/16/2018-2-16-quantum/index.html">
+<meta property="og:site_name" content="Eric Chang's Blog">
+<meta property="og:description" content="引言
+量子论和相对论是现代物理学的两大支柱，共同构成了现代物理学的基本观点和理论；
+在物理学的发展历程中，牛顿的经典物理学长期占据了不可撼动的主导地位，但人类对于宏观宇宙的探索不断表明，经典物理学仅适用于描述和解释低速、宏观物质的现象，并不能够解释物质在高速运动下表现出的规律和性质，所以才有了相对论；
+相对论完美的阐释了时间、空间的本质，以及时空在目前宇宙尺度上的关系，并对处于人类观测极限的黑洞等">
+<meta property="og:updated_time" content="2018-07-29T02:34:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="不确定的世界 - 量子论和量子通信">
+<meta name="twitter:description" content="引言
+量子论和相对论是现代物理学的两大支柱，共同构成了现代物理学的基本观点和理论；
+在物理学的发展历程中，牛顿的经典物理学长期占据了不可撼动的主导地位，但人类对于宏观宇宙的探索不断表明，经典物理学仅适用于描述和解释低速、宏观物质的现象，并不能够解释物质在高速运动下表现出的规律和性质，所以才有了相对论；
+相对论完美的阐释了时间、空间的本质，以及时空在目前宇宙尺度上的关系，并对处于人类观测极限的黑洞等">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/16/2018-2-16-quantum/"/>
+
+
+
+
+
+  <title> 不确定的世界 - 量子论和量子通信 | Eric Chang's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1258423514&web_id=1258423514" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Eric Chang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-feeling">
+          <a href="/tags/feeling" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-coffee"></i> <br />
+            
+            生活
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/tags/me" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/16/2018-2-16-quantum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                不确定的世界 - 量子论和量子通信
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-16T00:00:00+08:00">
+                2018-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/16/2018-2-16-quantum/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/16/2018-2-16-quantum/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="引言">引言</h3><ul>
+<li>量子论和相对论是现代物理学的两大支柱，共同构成了现代物理学的基本观点和理论；</li>
+<li>在物理学的发展历程中，牛顿的经典物理学长期占据了不可撼动的主导地位，但人类对于宏观宇宙的探索不断表明，经典物理学仅适用于描述和解释低速、宏观物质的现象，并不能够解释物质在高速运动下表现出的规律和性质，所以才有了相对论；</li>
+<li>相对论完美的阐释了时间、空间的本质，以及时空在目前宇宙尺度上的关系，并对处于人类观测极限的黑洞等天体的性质作出预测；</li>
+<li>但随着科技的发展，人们逐步意识到相对论也不是完美的，在原子、质子以及电子的微观尺度上，发生了很多违背相对论原理的现象，这就说明在及其微观的尺度上，物质、时间、空间的性质和宏观尺度大不相同，描述和研究方法也应当有所转变，经过长时间的探索和不懈的追求，量子论横空出世，它以一种超乎寻常的全新的视角解释这个世界所发生的一切，让人类对于宇宙和自身的认知达到了新的高度；</li>
+<li>量子论并不是理论的终点，也不是什么终极理论，量子论只是冰山一角，是解开这个宇宙所有谜团的入口，有更多的全新的事物等待人类继续不懈探索和追求；</li>
+<li>本文结合自己对量子论的学习和认知，总结了量子论的基本观点，并对量子通信原理加以阐述，供您参考；</li>
+<li>我不是物理学专业，如有错误敬请指出，为了方便理解，本文不含有任何公式；</li>
+</ul>
+<h3 id="量子的定义">量子的定义</h3><ul>
+<li>量子是一切具有量子特性的微观粒子的统称，比如原子、质子、电子等等；</li>
+<li>上述定义中的“量子特性”包括但不限于：波粒二象性、量子纠缠、不确定性等，这些性质本文中会一一阐述；</li>
+<li>另一种定义方式：量子是能表现出某物质或物理量特性的最小单元；</li>
+<li>实施上，上述定义中的“微观粒子”“最小单元”都是模糊的概念，由于量子学发展并未非常深入，所以这种定义本身就是模糊的，除非人类的认识达到了比量子还高的一个维度，才能在这个维度中对量子做出更加准确的定义；</li>
+</ul>
+<h3 id="相对论的时空观">相对论的时空观</h3><ul>
+<li>在全面阐述量子论之前，首先对相对论的时空观加以概述，这样可以使读者抛弃宏观、低速的视角和思维模式，开启面向整个宇宙的思考，这样有利于更好的理解量子论；</li>
+</ul>
+<h4 id="宏观状态下的物质">宏观状态下的物质</h4><ul>
+<li>牛顿的经典物理学对宏观低速状态的物质的性质做了非常经典的描述：<ul>
+<li>第一定律：不受外力的物体将保持静止或匀速直线运动；</li>
+<li>第二定律：一个物体的外合力＝质量*加速度；</li>
+<li>第三定律：两个物体相互作用时，对彼此施加的力大小相等方向相反；</li>
+<li>万有引力定律：两个粒子间的作用力正比于它们质量的乘积，反比与它们中心点距离的平方；</li>
+<li>开普勒定律：在相等的时间内，太阳和围绕它运动的行星连线所扫过的面积相等；</li>
+</ul>
+</li>
+</ul>
+<h4 id="相对论对光速的基本假设">相对论对光速的基本假设</h4><ul>
+<li>光速(电磁波速)在任何情况、任何测量条件下保持恒定；</li>
+<li>任何物质和信息速度不超过光速，在某种程度上，光速定义了整个宇宙；</li>
+<li>光子没有静质量；</li>
+</ul>
+<h4 id="相对论对时间的描述">相对论对时间的描述</h4><ul>
+<li>当物质的速度不断接近光速时，其性质不能够用经典物理学描述；</li>
+<li>钟慢效应：当物质的速度不断接近光速时，物质的变化会相对于其静止时减慢，即物质的“时钟”变慢；</li>
+<li>尺缩效应：当物质的速度不断接近光速时，测量的长度或距离，比地面上测得的短；</li>
+<li>质量增加：快达到光速时，再向物体传递能量不能使速度明显增加，此时能量转化为质量；</li>
+</ul>
+<h4 id="相对论对空间的描述">相对论对空间的描述</h4><ul>
+<li>万有引力的本质是大质量物质引起的空间形变，并不是力；</li>
+<li>引力越大，天体内测光行进路线越短，由于光速不变，所以大质量天体内侧的时间流逝速度比外侧慢；</li>
+<li>万有引力和加速度在对时空的影响上等效，一个飞行员如果承受了很大的加速度，他的时间会变慢；</li>
+<li>对于人造卫星，由于相对地表速度快，所以时间流逝速度比地面慢，又由于高度位于地球外侧，所以时间流逝速度比地面快，后者的效应比前者大一个数量级，故人造卫星的时间快于地面，需要定期校准，否则卫星的时钟和地面的时钟不匹配，会造成GPS定位不准等一系列问题；</li>
+</ul>
+<h3 id="量子的物理属性">量子的物理属性</h3><ul>
+<li>既然量子是物理学研究的范畴，那么必须要用相应的物理量来表征量子的性质；</li>
+<li>量子的物理属性包括：质量、自旋、电荷，请注意，这里的“质量”这个物理属性和宏观物质的“质量”有本质不同，“自旋”是量子特有的属性，宏观物质不具备；</li>
+<li>质量：<ul>
+<li>对于微观粒子质量等价于能量，描述粒子裹携的能量的多少；</li>
+<li>对于微观粒子，质量和能量界限很模糊，对于宏观物质，质量和能量的界限很明确；</li>
+<li>组成质子的所有夸克质量相加只占质子质量的1%，质子的其他质量来源于夸克的动能，即夸克的巨大的但被束缚在一起的能量外在表现为质子的质量；</li>
+<li>这也说明物质的本质是能量，从宇宙的尺度上来讲，质量和能量本是一回事，质量是能量的特殊组织形式和外在表现；</li>
+<li>质量和能量一定条件下能相互转化，比如在物质高速运动时，对物体施加的动能可能转化为物体的质量；在核裂变反应中，物质的质量会转化为巨大的能量；</li>
+</ul>
+</li>
+<li>自旋：粒子在各个位置出现的概率分布图不断变化，变化一轮所需的周期；</li>
+<li>电荷：描述粒子相互作用时产生各种电磁现象难易程度，分为正负，正电荷和负电荷对应的电磁现象正好相反；</li>
+</ul>
+<h3 id="量子的性质">量子的性质</h3><ul>
+<li>本节介绍量子的基本性质；</li>
+</ul>
+<h4 id="不确定性原理">不确定性原理</h4><ul>
+<li>宏观物质一般是确定的、可测的；</li>
+<li>微观粒子一般是不确定的、不可测的；</li>
+<li>微观粒子的速度、动量、位置、质量等物理量不能同时具有确定数值；</li>
+<li>一个值测的越准另一个值就越不准确；</li>
+<li>单个粒子的这些属性往往以概率云的形式存在，仅仅在测量时(有光子干扰时，有信息交换时)概率云塌缩为确定的数值；</li>
+</ul>
+<h4 id="量子纠缠">量子纠缠</h4><ul>
+<li>微观粒子具有量子纠缠现象，即互为纠缠态的两个粒子无论空间距离多么遥远，也能瞬间影响对方的状态；</li>
+<li>并不能利用这一现象使信息超光速传递，量子纠缠并不违反相对论基本原理；</li>
+<li>量子纠缠的比喻：在美国的女儿生下孩子那一瞬间，远在中国的母亲就变成了姥姥，即便她自己还不知道，之所以她是姥姥别人不是，而且她一定会成为姥姥，就是因为她和女儿之间有一种“纠缠”关系；</li>
+</ul>
+<h4 id="波粒二象性">波粒二象性</h4><ul>
+<li>对波粒二象性的错误理解：单个粒子是”粒子”一大堆粒子就表现出”波”的性质；</li>
+<li>波粒二象性是指，单个粒子本身即是波又是粒子；</li>
+<li>这是因为单个粒子本身以概率云的形式存在，例如，一个电子既可以是波(一个电子不如果不对其测量，它可以同时穿过两条狭缝产生干涉条纹，但如果去测量它，产生了它与外界的信息交换，它会确切的随机的穿过某一条狭缝而不产生干涉条纹)，又可以是粒子(可以与光子碰撞)；</li>
+</ul>
+<h4 id="如何理解薛定谔的猫">如何理解薛定谔的猫</h4><ul>
+<li>薛定谔的猫是著名的思想实验；</li>
+<li>将一只猫关在一钢盒内，盒中有极残忍的装置（必须保证此装置不受猫的直接干扰），在盖革计数器中有一小块辐射物质，它非常小，或许在1小时中只有一个原子衰变，在相同的几率下或许没有一个原子衰变；</li>
+<li>如果发生衰变，计数管便放电并通过继电器释放一个锤，击碎一个小小的氰化物瓶毒杀了这只猫，否则不会；</li>
+<li>常识告诉我们那只猫非死即活，两者必居其一，可是按照量子力学的规则，盒内整个系统处于两种态的叠加之中，一态中有活猫，另一态中有死猫，即量子理论告诉我们，这个不幸的动物处于一种悬而未决的死活叠加状态中；</li>
+<li>这个实验巧妙地将微观世界的不确定性原理和宏观世界的确定、可测联系起来，让人摸不着头脑，事实上，宏观世界的确定和微观世界的不确定两者并不矛盾，只是人们尚未发现为何及其大量的微观不可测事件导致了宏观的确定性，我们到底是生活在确定还是不确定中目前还没有定论；</li>
+</ul>
+<h3 id="量子的分类">量子的分类</h3><h4 id="费米子">费米子</h4><ul>
+<li>具有半整数自旋，每一种都有反粒子相对应；</li>
+<li>夸克：<ul>
+<li>下夸克：自旋1/2，电荷－1/3；</li>
+<li>上夸克：自旋1/2，电荷＋2/3；</li>
+<li>奇夸克：自旋0，电荷－1/3；</li>
+<li>粲夸克：自旋0，电荷＋2/3；</li>
+<li>底夸克：自旋0，电荷－1/3；</li>
+<li>顶夸克：自旋0，电荷＋2/3；</li>
+</ul>
+</li>
+<li>轻子：<ul>
+<li>电子/正电子：电荷±1；</li>
+<li>μ子/反μ子：电荷±1；</li>
+<li>τ子/反τ子：电荷±1；</li>
+<li>(反)电子中微子：电荷0；</li>
+<li>(反)μ子中微子：电荷0；</li>
+<li>(反)τ子中微子：电荷0；</li>
+</ul>
+</li>
+</ul>
+<h4 id="玻色子">玻色子</h4><ul>
+<li>具有整数自旋；</li>
+<li>光子：自旋1，电荷0，静质量0(指的是没有静止不动的光子)，能量来自电磁相互作用；</li>
+<li>W玻色子：自旋1，电荷1，能量来自弱相互作用；</li>
+<li>Z玻色子：自旋1，电荷0，能量来自弱相互作用；</li>
+<li>胶子：自旋1，电荷0，能量来自强相互作用；</li>
+<li>引力子：自旋2，电荷0，能量来自引力相互作用；</li>
+<li>希格斯玻色子：自旋0，电荷0，能量来自电弱交互作用；</li>
+</ul>
+<h3 id="量子通信基本原理">量子通信基本原理</h3><ul>
+<li>量子通信本质上是利用量子的“纠缠”特性；</li>
+<li>利用量子论实现光量子通信的过程如下：<ul>
+<li>首先先构建一对相互纠缠的粒子，将这两个粒子分别放在发送方和接收方；</li>
+<li>将具有未知量子态的粒子与发送方的粒子进行联合测量(一种操作)，这种操作改变了发送方粒子的量子态；</li>
+<li>根据量子的自旋特性，接收方的粒子会在瞬间(不耗费任何时间)发生坍塌(一种量子性质的改变) ，坍塌后的状态与发送方的粒子坍塌后的状态是对称的；</li>
+<li>然后将联合测量的信息通过经典信道传送给接收方，接收方根据接收到的信息对坍塌的粒子进行幺正变换(相当于逆转变换)，即可得到与发送方完全相同的未知量子态;</li>
+</ul>
+</li>
+<li>经典通信较光量子通信相比，其安全性和高效性都无法与之相提并论：<ul>
+<li>安全性：量子通信绝不会“泄密”，其一体现在量子加密的密钥是随机的，即使被窃取者截获，也无法得到正确的密钥，因此无法破解信息；其二，分别在通信双方手中具有纠缠态的2个粒子，其中一个粒子的量子态发生变化，另外一方的量子态就会随之立刻变化，并且根据量子理论，宏观的任何观察和干扰，都会立刻改变量子态，引起其坍塌，因此窃取者由于干扰而得到的信息已经破坏，并非原有信息；</li>
+<li>高效，被传输的未知量子态在被测量之前会处于纠缠态，即同时代表多个状态，例如一个量子态可以同时表示0和1两个数字，7个这样的量子态就可以同时表示128个状态或128个数字0~127，光量子通信的这样一次传输，就相当于经典通信方式的128次；</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/reward/wechat.png" alt="Eric Chang WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/reward/alipay.jpg" alt="Eric Chang Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Physical/" rel="tag"># Physical</a>
+          
+            <a href="/tags/Quantum/" rel="tag"># Quantum</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/18/2018-1-18-ElasticSearch-Intro/" rel="next" title="ElasticSearch原理简介">
+                <i class="fa fa-chevron-left"></i> ElasticSearch原理简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/16/2018-4-16-Architecture-1/" rel="prev" title="Architecture（一）架构简介">
+                Architecture（一）架构简介 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2018/02/16/2018-2-16-quantum/"
+           data-title="不确定的世界 - 量子论和量子通信" data-url="http://yoursite.com/2018/02/16/2018-2-16-quantum/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.png"
+               alt="Eric Chang" />
+          <p class="site-author-name" itemprop="name">Eric Chang</p>
+           
+              <p class="site-description motion-element" itemprop="description"><a href="http://www.yinshuisiyuan.net">www.yinshuisiyuan.net</a></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">100</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">51</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/changsiyuan" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2803286360" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.linkedin.com/profile/preview?locale=zh_CN&trk=prof-0-sb-preview-primary-button" target="_blank" title="linkedin">
+                  
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  
+                  linkedin
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:changsiyuan2011@126.com" target="_blank" title="mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  mail
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.ruanyifeng.com/home.html" title="阮一峰" target="_blank">阮一峰</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://azure.microsoft.com/en-us/?v=17.14" title="Azure" target="_blank">Azure</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" title="Python" target="_blank">Python</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000/001434501245426ad4b91f2b880464ba876a8e3043fc8ef000" title="Nodejs" target="_blank">Nodejs</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#量子的定义"><span class="nav-number">2.</span> <span class="nav-text">量子的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相对论的时空观"><span class="nav-number">3.</span> <span class="nav-text">相对论的时空观</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#宏观状态下的物质"><span class="nav-number">3.1.</span> <span class="nav-text">宏观状态下的物质</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相对论对光速的基本假设"><span class="nav-number">3.2.</span> <span class="nav-text">相对论对光速的基本假设</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相对论对时间的描述"><span class="nav-number">3.3.</span> <span class="nav-text">相对论对时间的描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相对论对空间的描述"><span class="nav-number">3.4.</span> <span class="nav-text">相对论对空间的描述</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#量子的物理属性"><span class="nav-number">4.</span> <span class="nav-text">量子的物理属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#量子的性质"><span class="nav-number">5.</span> <span class="nav-text">量子的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不确定性原理"><span class="nav-number">5.1.</span> <span class="nav-text">不确定性原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#量子纠缠"><span class="nav-number">5.2.</span> <span class="nav-text">量子纠缠</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#波粒二象性"><span class="nav-number">5.3.</span> <span class="nav-text">波粒二象性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何理解薛定谔的猫"><span class="nav-number">5.4.</span> <span class="nav-text">如何理解薛定谔的猫</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#量子的分类"><span class="nav-number">6.</span> <span class="nav-text">量子的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#费米子"><span class="nav-number">6.1.</span> <span class="nav-text">费米子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#玻色子"><span class="nav-number">6.2.</span> <span class="nav-text">玻色子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#量子通信基本原理"><span class="nav-number">7.</span> <span class="nav-text">量子通信基本原理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Chang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/cn/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by/3.0/cn/88x31.png" /></a><br />本作品采用<a rel="license" href="http://creativecommons.org/licenses/by/3.0/cn/">知识共享署名 3.0 中国大陆许可协议</a>进行许可。
+  
+  <script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v1/st.js','_st');
+
+  _st('install','1BK1VZMDEA-ktxiBz_9B');
+</script>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1258423514'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1258423514%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ericchang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

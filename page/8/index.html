@@ -320,6 +320,203 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/26/js-Closure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/26/js-Closure/" itemprop="url">
+                  JavaScript 闭包详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-26T00:00:00+08:00">
+                2015-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/10/26/js-Closure/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/26/js-Closure/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="js变量作用域">js变量作用域</h3><ul>
+<li>变量的作用域无非就是两种：全局变量和局部变量；</li>
+<li>Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量：</li>
+</ul>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> n=<span class="number">999</span>;</span><br><span class="line">　　<span class="function"><span class="keyword">function</span> <span class="title">f1</span><span class="params">()</span><span class="comment">&#123;</span><br><span class="line">　　　　alert(n);</span><br><span class="line">　　&#125;</span></span><br><span class="line"><span class="title">f1</span><span class="params">()</span>;</span> <span class="comment">// 999</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>但是，在函数外部自然无法读取函数内的局部变量：</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span><span class="params">()</span></span>&#123;</span><br><span class="line">　　　　<span class="keyword">var</span> n=<span class="number">999</span>;</span><br><span class="line">　　&#125;</span><br><span class="line">alert(n); <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>除非不用var声明：</li>
+</ul>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span><span class="params">()</span><span class="comment">&#123;</span><br><span class="line">　　　　n=999;</span><br><span class="line">　　&#125;</span></span><br><span class="line">　　<span class="title">f1</span><span class="params">()</span>;</span></span><br><span class="line">alert(n); <span class="comment">// 999</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>总之，js中作用域是链式的，内部可获取外部变量，反之不行；</li>
+<li>如果函数f2就被包括在函数f1内部，这时f1内部的所有局部变量，对f2都是可见的，但是反过来就不行，f2内部的局部变量，对f1就是不可见的；</li>
+<li>既然f2可以读取f1中的局部变量，那么只要把f2作为返回值，我们不就可以在f1外部读取它的内部变量了吗；</li>
+<li>这种打破常规，实现在函数外部访问函数私有变量的机制叫做闭包；</li>
+</ul>
+<h3 id="js什么时候进行垃圾回收？">js什么时候进行垃圾回收？</h3><ul>
+<li>在javascript中，如果一个对象不再被引用，那么这个对象就会被GC回收；</li>
+<li>如果两个对象互相引用，而不再被第3者所引用，那么这两个互相引用的对象也会被回收；</li>
+</ul>
+<h3 id="闭包（Closure）的定义">闭包（Closure）的定义</h3><ul>
+<li>闭包就是能够读取其他函数内部变量的函数；</li>
+<li>由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成”定义在一个函数内部的函数”；</li>
+<li>在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁；</li>
+</ul>
+<h3 id="闭包的深入理解">闭包的深入理解</h3><p>看下面程序：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function f1()&#123;</span><br><span class="line">　　　　<span class="keyword">var</span> n=<span class="number">999</span>;</span><br><span class="line">　　　　nAdd=function()&#123;n+=<span class="number">1</span>&#125;</span><br><span class="line">　　　　function f2()&#123;</span><br><span class="line">　　　　　　alert(n);</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　　　<span class="keyword">return</span> f2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> <span class="literal">result</span>=f1();</span><br><span class="line"><span class="literal">result</span>(); // <span class="number">999</span></span><br><span class="line">nAdd();</span><br><span class="line"><span class="literal">result</span>(); // <span class="number">1000</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>result实际上就是闭包f2函数，它一共运行了两次，第一次的值是999，第二次的值是1000，这证明了，函数f1中的局部变量n一直保存在内存中，并没有在f1调用后被自动清除；</li>
+<li>原因就在于f1是f2的父函数，而f2被赋给了一个全局变量，这导致f2始终在内存中（不满足上面任何一条垃圾回收条件），而f2的存在依赖于f1，因此f1也始终在内存中（不满足上面任何一条垃圾回收条件），不会在调用结束后被垃圾回收机制（garbage collection）回收；</li>
+<li>这段代码中另一个值得注意的地方，就是”nAdd=function(){n+=1}”这一行；<ul>
+<li>首先在nAdd前面没有使用var关键字，因此nAdd是一个全局变量，而不是局部变量；</li>
+<li>其次，nAdd的值是一个匿名函数（anonymous function），而这个匿名函数本身也是一个闭包，所以nAdd相当于是一个setter，可以在函数外部对函数内部的局部变量进行操作；</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用闭包需要注意">使用闭包需要注意</h3><ul>
+<li>由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE中可能导致内存泄露,解决方法是，在退出函数之前，将不使用的局部变量全部删除；</li>
+<li>闭包会在父函数外部，改变父函数内部变量的值，所以如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值；</li>
+</ul>
+<hr>
+<p>本文参考：<a href="http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html" target="_blank" rel="external">学习Javascript闭包（Closure）</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/25/js-this/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2443,191 +2640,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/30/2015-7-30-files-encode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/07/30/2015-7-30-files-encode/" itemprop="url">
-                  进制、文件和编码的理解
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-30T00:00:00+08:00">
-                2015-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/others/" itemprop="url" rel="index">
-                    <span itemprop="name">others</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/07/30/2015-7-30-files-encode/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/30/2015-7-30-files-encode/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="引言">引言</h2><ul>
-<li>进制、文件、编码是计算机系统的重要概念，应当理解；</li>
-<li>本文介绍了进制、文件、编码应当掌握的基本内容</li>
-</ul>
-<h2 id="进制">进制</h2><ul>
-<li>进制间转换<a href="http://jingyan.baidu.com/article/495ba84109665338b30ede98.html" target="_blank" rel="external">请戳这里</a>；</li>
-</ul>
-<h2 id="编码">编码</h2><ul>
-<li>编码是信息从一种形式或格式转换为另一种形式的过程；</li>
-<li>常见编码格式：ascii、GBK、UTF-8；</li>
-<li>无论何种编码，最终要在计算机中以二进制形式存储，英文和中文占用字节数目不同，具体占用几个字节由编码方式决定；</li>
-<li>计算机的文件分为二进制文件和文本文件，二进制文件是经过编译后的，用编辑器打开肯定是乱码，而文本文件中存储了此文件的编码方式，如果编辑器可以自动识别这个文本文件的编码方式，则用编辑器打开文本文件时就会自动正确解码，不会有乱码现象；</li>
-</ul>
-<h2 id="文件">文件</h2><ul>
-<li>计算机的文件有两种：文本文件、二进制文件；</li>
-<li>计算机的存储在物理上是二进制的，所以文本文件与二进制文件的区别并不是物理上的，而是逻辑上的，也可以说文本文件是二进制文件的特殊形式；</li>
-<li>两者区别：<ul>
-<li>文本文件是基于字符编码的文件，常见的编码有ASCII编码，UNICODE编码等等，先将文件中的人类可识别的字符转换为一串数字（具体怎么转换由编码方式决定），然后以二进制的形式存储在计算机中；</li>
-<li>二进制文件是基于值编码的文件，你可以根据具体应用，指定某个值是什么意思；</li>
-<li>文本文件能够用编辑器打开，二进制文件不能（乱码），二进制文件能够用特定的软件读取其中的内容（WinHex、UltraEdit）；</li>
-</ul>
-</li>
-<li>例子1：<ul>
-<li>文本文件：中文和英文文档、源代码文档；</li>
-<li>二进制文件：经过编译后的.class文件、可执行文件.exe；</li>
-</ul>
-</li>
-<li>例子2：<ul>
-<li>如果用文本文件存储int类型的数字1，其中存储的是1的ascii码（假定用ascii编码）49（一个字节），再将49转换成二进制进行物理存储，读取的时候读到的是49，经过解码显示数字1；</li>
-<li>如果用二进制文件存储int类型的数字1，由于int类型占用四个字节，故文件中存储的是四个字节00000000 00000000 00000000 00000001，在读取文件的时候应当告知以int方式读取，即四个四个字节读取；</li>
-</ul>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2677,7 +2689,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">100</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2688,7 +2700,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2699,7 +2711,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-count">51</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
