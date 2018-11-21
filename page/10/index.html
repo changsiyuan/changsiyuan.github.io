@@ -510,6 +510,229 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/04/01/2015-4-1-mapreduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/04/01/2015-4-1-mapreduce/" itemprop="url">
+                  MapReduce过程详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-01T00:00:00+08:00">
+                2015-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">hadoop</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/04/01/2015-4-1-mapreduce/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/01/2015-4-1-mapreduce/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>mapreduce的过程看似简单，其实，要保证数据处理过程中的高效率、高容错性，mapreduce中有很多精巧的机制值得我们学习和参考。本文主要介绍mapreduce的过程以及其中涉及到的重要的思想。</li>
+</ul>
+<h3 id="Mapreduce总体过程">Mapreduce总体过程</h3><ul>
+<li>作业启动</li>
+<li>作业初始化</li>
+<li>作业/任务调度</li>
+<li>Map任务执行</li>
+<li>shuffle</li>
+<li>Reduce任务执行</li>
+<li>作业完成</li>
+</ul>
+<h3 id="作业启动">作业启动</h3><ul>
+<li>用户编写mapreduce程序，并且打成jar包，将jar包放在本地集群，将输入数据放在HDFS上面；</li>
+<li>用户执行”hadoop jar“命令，启动作业；</li>
+<li>JobClient是大boss，他收到任务后，向”业务主管“JobTracker申请新的作业ID，YARN界面上显示的ID即job ID；</li>
+<li>JobClient检查输入输出路径、检查这个路径的权限等，如果一切正常则开始下一步；</li>
+</ul>
+<h3 id="作业初始化">作业初始化</h3><ul>
+<li>JobTracker可能会收到JobClient不同作业的请求，维护一个队列处理这些请求，交由作业调度器调度作业（见【附录–作业调度机制】）；</li>
+<li>分片数量由用户指定（见【附录–map数量的确定】），分片数量等于map数量，JobTracker根据map数量创建一批map任务；</li>
+</ul>
+<h3 id="作业/任务调度">作业/任务调度</h3><ul>
+<li>map任务分配是被动的而不是主动的。TaskTracker启动后，通过心跳和JobTracker保持联系并查询是否有任务可做，如果有任务则被分配任务；</li>
+<li>每个TaskTracker有固定数量的map任务槽和reduce任务槽若干个，分别用来接收map和reduce任务，系统会自动优先填满map任务槽，待map任务槽被填满后才会被分配reduce任务（因为map的优先级总是高于reduce）；</li>
+</ul>
+<h3 id="Map任务执行">Map任务执行</h3><ul>
+<li>某个TaskTracker领取map任务；</li>
+<li>这个TaskTracker将作业的jar包文件和相关配置文件复制到本地工作目录下（传输jar包而不传输数据的原则，代码靠近数据的原则）；</li>
+<li>TaskTracker启动单独的JVM运行这个map任务；</li>
+<li>map的输出结果中相同的key不一定在一块，为了下面的combine过程简洁，这里对map输出结果中的key进行快速排序（sort过程）；</li>
+<li>map任务的结果存入内存，并在内存有限的情况下定期写入磁盘（spill过程），将某一个map的输出的相同的key的value合并（即combine过程），spill与combine经常交替进行；</li>
+<li>多次spill会产生许多小文件在磁盘中，merge过程将他们合并；</li>
+<li>TaskTracker和JobTracker定期通信，报告进度；</li>
+</ul>
+<h3 id="shuffle">shuffle</h3><ul>
+<li>map的输出是（key, value）对（下面简称KV对）；</li>
+<li>将某一个map的输出的相同的key的value合并，即combine过程；</li>
+<li>决定这个map的结果给哪一个reduce：通过hash(key)mod(reduce数目)计算出partition的ID，上述的key就被分配给这个partition；一个partition中可以有多个key，但是同一个key只存在于一个partition中；一个partition对应一个reduce；</li>
+<li>有的partition负载可能很重，有的则很轻，需要通过一定的协调机制平衡负载（比如根据自己的需求重写partition函数）；</li>
+<li>partiton作为reduce的输入，每个reducer获得的是每个Key在在每个mapper上输出的结果，它需要使用reduce函数把相同Key的不同mapper的输出统计在一起。</li>
+</ul>
+<h3 id="Reduce任务执行">Reduce任务执行</h3><ul>
+<li>在部分map任务执行完后（不用等到所有map任务结束）JobTracker开始分配reduce任务到TaskTracker；</li>
+<li>TaskTracker启动单独的JVM运行这个reduce任务；</li>
+<li>TaskTracker从远地下载中间结果文件到本地（指partition文件、一个partition对应一个reduce），为reduce任务真正开展做准备，但不会开始执行reduce()函数；</li>
+<li>待所有的map任务都完成以后，JobTracker通知所有的TaskTracker开始做reduce任务；</li>
+<li>TaskTracker和JobTracker定期通信，报告进度；</li>
+</ul>
+<h3 id="作业完成">作业完成</h3><ul>
+<li>每个TaskTracker都将reduce任务的结果文件放到HDFS的临时文件中；</li>
+<li>当所有reduce任务完成后，这些临时文件会合并成最终输出文件放在用户指定的输出目录下；</li>
+<li>JobTracker收到所有任务的完成通知后，并通知JobClient作业已经完成，YARN管理系统会显示已完成的信息；</li>
+</ul>
+<h3 id="附录一：map数量的确定">附录一：map数量的确定</h3><ul>
+<li>用户通过指定期望的map数和期望的分片最小值来调控map数量，具体是系统通过下面几步算出map个数；</li>
+</ul>
+<p><img src="/images/map.png" alt="map num"></p>
+<h3 id="附录二：作业调度机制">附录二：作业调度机制</h3><ul>
+<li>JobTracker可同时调度多个作业任务，具体有如下几种调度机制：</li>
+<li><strong>先进先出调度机制</strong>：设定VERY_HIGH、HIGH、NORMAL、LOW、VERY_LOW五个等级的优先级，任务优先级高的先执行，如果优先级相同，先进入调度器的任务先执行；</li>
+<li><strong>公平调度机制</strong>：JobTracker掌管着所有的资源，平均为进入队列的任务分配资源，支持资源抢占；</li>
+<li><strong>能力调度器</strong>：如果一个任务所需资源多，就为他多分配资源，反之少分配资源；</li>
+</ul>
+<p>###附录三：JobTracker容错机制</p>
+<ul>
+<li><strong>心跳机制</strong>：JobTracker和TaskTracker定期通信（通过mapred.tasktracker.expiry.interval设定间隔时间，默认为10分钟），TaskTracker报告任务完成情况；未正常返回的任务，JobTracker会重新分配TaskTracker去完成；</li>
+<li><strong>黑名单机制</strong>：每个job维护一个TaskTracker黑名单，一旦TaskTracker无法完成任务即进入黑名单，JobTracker不会再给他分配任务；</li>
+<li><strong>集群黑名单</strong>：如果一个TaskTracker进入job黑名单的次数过多，或者这个TaskTracker进入job黑名单的次数明显超过平均进入次数，则将其加入集群黑名单，以后不再向其分配任务；</li>
+<li><strong>检错机制</strong>：如果JobTracker发现某个TaskTracker不正常或者完成任务速度明天低于平均水平，JobTracker会将这个任务另外交由另外一个TaskTracker去完成，如果这个TaskTracker完成的非常快，则JobTracker认为原来的TaskTracker有问题，遂kill原TaskTracker进程，并且判断是否将其加入黑名单；</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/12/2015-3-12-docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1998,237 +2221,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/01/2015-1-1-about-me/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/01/01/2015-1-1-about-me/" itemprop="url">
-                  This is me!
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-01T00:00:00+08:00">
-                2015-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/01/01/2015-1-1-about-me/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/01/2015-1-1-about-me/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="/images/me-life.jpg" alt="This is me!"></p>
-<h3 id="个人简介">个人简介</h3><blockquote>
-<ul>
-<li>中文名：常思源</li>
-<li>英文名：Eric</li>
-<li>性别：男</li>
-<li>家乡：河南-洛阳</li>
-<li>毕业院校：北京邮电大学(2014-2017)、郑州大学(2010-2014)</li>
-<li>就职公司：<a href="http://www.cn.slb.com/" target="_blank" rel="external">斯伦贝谢</a></li>
-<li>工作理念：<pre><code>-<span class="ruby"> quick：快速学习，快速解决问题，快速定位bug；
-</span>-<span class="ruby"> drive：主动做好每一件事，主动挖掘自己的潜力，注重细节；
-</span>-<span class="ruby"> learn：善于学习，快速学习，持续学习；</span>
-</code></pre></li>
-<li>个人博客：<a href="http://changsiyuan.github.io/" target="_blank" rel="external">http://changsiyuan.github.io/</a></li>
-<li>个人主页：<a href="http://www.yinshuisiyuan.net/" target="_blank" rel="external">http://www.yinshuisiyuan.net/</a></li>
-<li>Github：<a href="https://github.com/changsiyuan" target="_blank" rel="external">https://github.com/changsiyuan</a></li>
-<li>LinkedIn：<a href="http://www.linkedin.com/profile/preview?locale=zh_CN&amp;trk=prof-0-sb-preview-primary-button" target="_blank" rel="external">Eric Chang</a></li>
-<li>知乎：<a href="https://www.zhihu.com/people/EricChang/answers" target="_blank" rel="external">饮水思源</a></li>
-<li>微博：<a href="http://weibo.com/u/2803286360" target="_blank" rel="external">siyuan2015</a></li>
-<li>Email：changsiyuan2011@126.com</li>
-<li>爱好：读书、游泳、厨艺、心理学</li>
-<li>欢迎扫一扫关注我的微信公众号：<br><img src="/images/gongzhonghao.jpg" alt="我的二维码"></li>
-</ul>
-</blockquote>
-<hr>
-<h3 id="我的技术栈">我的技术栈</h3><ul>
-<li>前端<ul>
-<li>HTML(5)</li>
-<li>CSS(3)</li>
-<li>JavaScript</li>
-<li>Bootstrap</li>
-<li>jQuery</li>
-<li>AngularJs</li>
-</ul>
-</li>
-<li>后端 数据处理 数据库<ul>
-<li>Java/C#</li>
-<li>NodeJs/Python</li>
-<li>SQL</li>
-<li>PostgreSQL/MongoDB</li>
-<li>Hadoop</li>
-<li>MapReduce</li>
-</ul>
-</li>
-<li>Standard<ul>
-<li>W3C</li>
-<li>ECMAScript</li>
-<li>MVC</li>
-<li>RESTful</li>
-<li>语义化</li>
-<li>响应式设计</li>
-</ul>
-</li>
-<li>工具 编辑器<ul>
-<li>Git/TFS</li>
-<li>Markdown</li>
-<li>Eclipse</li>
-<li>Netbeans</li>
-<li>Visual Studio</li>
-<li>Sublime</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="项目经历和实习经历">项目经历和实习经历</h3><ul>
-<li>参见<a href="http://www.yinshuisiyuan.net" target="_blank" rel="external">我的主页</a></li>
-</ul>
-<hr>
-<h3 id="教育经历">教育经历</h3><h4 id="北京邮电大学(保送)_硕士">北京邮电大学(保送) 硕士</h4><blockquote>
-<p>2014.09 - 2017.03<br>排名：前5%<br>信息与通信工程学院，信息与通信工程专业<br>北邮网络体系构建与融合北京市重点实验室</p>
-</blockquote>
-<ul>
-<li>2014.09-2017.03：担任北邮数据科学中心微信公众号责任编辑，编写全部技术文章和新闻稿；</li>
-<li>2016.03：以学生一作身份发表EI检索论文一篇《A Parallel Space Saving Algorithm and Performance Test》(IHMSC 2016)</li>
-<li>2016.01：以学生一作身份获得两项发明专利；<blockquote>
-<p>Method for implementing metadata management in massive network data environment<br>Method for storing and updating corresponding relation between IP and domain name  </p>
-</blockquote>
-</li>
-<li>2015.12：北京邮电大学一等学业奖学金；</li>
-<li>2015.06：北京邮电大学厨艺大赛一等奖；</li>
-</ul>
-<h4 id="郑州大学_学士">郑州大学 学士</h4><blockquote>
-<p>2010.09 - 2014.06<br>排名：2/150<br>信息工程学院，电子信息工程专业</p>
-</blockquote>
-<ul>
-<li>2013.12：国家奖学金；</li>
-<li>2013.11：河南省三好学生；</li>
-<li>2013.02：“清华大学-洛阳市省级示范高中联合创新学习计划”优秀答辩评委；</li>
-<li>2012.12：郑州大学三好学生(三次)；</li>
-<li>2012.12：郑州大学一等奖学金；</li>
-<li>2011.10：国家励志奖学金；</li>
-<li>2011.03：中国郑开国际马拉松赛郑州大学志愿者组组长、优秀志愿者；</li>
-<li>证书：CET-6(492)，计算机三级，全国信息技术应用培训教育工程工程师证书，驾驶证。</li>
-</ul>
-<hr>
-<h3 id="您可以用手机扫描二维码以进一步了解我或下载我的简历">您可以用手机扫描二维码以进一步了解我或下载我的简历</h3><p><img src="/images/me-qr-code.png" alt="我的二维码"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2273,7 +2270,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">100</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

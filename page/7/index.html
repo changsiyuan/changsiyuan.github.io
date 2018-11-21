@@ -320,6 +320,182 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/04/2015-11-4-java-HashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/04/2015-11-4-java-HashMap/" itemprop="url">
+                  Java HashMap的实现
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-04T00:00:00+08:00">
+                2015-11-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/11/04/2015-11-4-java-HashMap/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/04/2015-11-4-java-HashMap/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>Java中，HashMap是重要的数据结构；</li>
+<li>HashMap用散列表实现，具体来说：<ul>
+<li>HashMap底层维护一个数组充当哈希表；</li>
+<li>当向HashMap中put一对键值时，它会根据key的hashCode值计算出一个位置，该位置就是此对象准备往数组中存放的位置，然后将key、value、next等值存放在Bucket中，作为Map.Entry；</li>
+<li>如果有哈希值的冲突，即两组数据要放在数组的同一个位置(bucket)中，则用链表实现；</li>
+<li>当从HashMap中get一个键值对时，HashMap会使用键对象的hashcode找到bucket位置，然后获取值对象；</li>
+<li>如果数组的同一个位置对应多个键值对，将会遍历LinkedList，并调用keys.equals()方法去找到LinkedList中正确的节点，最终找到要找的值对象；</li>
+</ul>
+</li>
+<li>本文实现了一个简单的HashMap；</li>
+</ul>
+<h3 id="HashMap具体实现">HashMap具体实现</h3><ul>
+<li>Entry类，定义节点</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> MyHashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Objects;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">	K k;</span><br><span class="line">	V v;</span><br><span class="line">	Entry&lt;K, V&gt; nextEntry = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Entry</span><span class="params">(K k, V v)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.k = k;</span><br><span class="line">		<span class="keyword">this</span>.v = v;</span><br><span class="line">		<span class="keyword">this</span>.nextEntry = <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNextEntry</span><span class="params">(Entry&lt;K, V&gt; e)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.nextEntry = e;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> Entry&lt;K, V&gt; getNextEntry() &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.nextEntry;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Objects.hashCode(k) ^ Objects.hashCode(v);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"key:"</span> + k + <span class="string">" value:"</span> + v);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>MyHashMap类，实现HashMap大部分方法</li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line">package MyHashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> MyHashMap&lt;K, V&gt; &#123;</span><br><span class="line">	<span class="keyword">public</span> static <span class="keyword">final</span> <span class="built_in">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">16</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">protected</span> <span class="built_in">Entry</span>&lt;K, V&gt;[] <span class="built_in">entry</span> = new <span class="built_in">Entry</span>[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">	<span class="keyword">protected</span> <span class="built_in">int</span> <span class="built_in">size</span> = <span class="number">0</span>; // 记录hashmap大小</span><br><span class="line">	<span class="keyword">protected</span> <span class="built_in">int</span> bucketSize = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	// 清空hashmap</span><br><span class="line">	<span class="keyword">public</span> void clear() &#123;</span><br><span class="line">		<span class="built_in">entry</span> = new <span class="built_in">Entry</span>[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">		<span class="built_in">size</span> = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 检测数组大小</span><br><span class="line">	<span class="keyword">public</span> void testSize() &#123;</span><br><span class="line">		<span class="built_in">int</span> length = <span class="built_in">entry</span>.length;</span><br><span class="line">		<span class="keyword">if</span> (bucketSize &gt;= length / <span class="number">2</span>) &#123;</span><br><span class="line">			<span class="built_in">Entry</span>&lt;K, V&gt;[] newEntry = new <span class="built_in">Entry</span>[length * <span class="number">2</span>];</span><br><span class="line">			System.arraycopy(<span class="built_in">entry</span>, <span class="number">0</span>, newEntry, <span class="number">0</span>, length);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 计算元素在数组中的位置</span><br><span class="line">	<span class="keyword">public</span> static <span class="built_in">int</span> indexFor(<span class="built_in">int</span> h, <span class="built_in">int</span> <span class="built_in">size</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> h % (<span class="built_in">size</span> - <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 是否含有特定key</span><br><span class="line">	<span class="keyword">public</span> boolean containsKey(K k) &#123;</span><br><span class="line">		<span class="built_in">int</span> <span class="built_in">index</span> = indexFor(k.hashCode(), <span class="built_in">entry</span>.length);</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">entry</span>[<span class="built_in">index</span>]<span class="comment">!=null)&#123;</span></span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">entry</span>[<span class="built_in">index</span>].k.equals(k))&#123;</span><br><span class="line">				<span class="keyword">return</span> true;</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="built_in">Entry</span>&lt;K,V&gt; e = <span class="built_in">entry</span>[<span class="built_in">index</span>].nextEntry;</span><br><span class="line">				<span class="keyword">while</span>(e<span class="comment">!=null)&#123;</span></span><br><span class="line">					<span class="keyword">if</span>(e.k.equals(k))&#123;</span><br><span class="line">						<span class="keyword">return</span> true;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> false;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 是否包含特定<span class="keyword">value</span>值</span><br><span class="line">	<span class="keyword">public</span> boolean containsValue(V v) &#123;</span><br><span class="line">		for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">entry</span>.length; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">entry</span>[i] <span class="comment">!= null) &#123;</span></span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">entry</span>[i].v.equals(v)) &#123;</span><br><span class="line">					<span class="keyword">return</span> true;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="keyword">if</span> (<span class="built_in">entry</span>[i].nextEntry <span class="comment">!= null) &#123;</span></span><br><span class="line">						<span class="built_in">Entry</span>&lt;K, V&gt; e = <span class="built_in">entry</span>[i];</span><br><span class="line">						<span class="keyword">while</span> (e <span class="comment">!= null) &#123;</span></span><br><span class="line">							<span class="keyword">if</span> (e.v.equals(v)) &#123;</span><br><span class="line">								<span class="keyword">return</span> true;</span><br><span class="line">							&#125;</span><br><span class="line">							e = e.nextEntry;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						<span class="keyword">continue</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> false;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 获取特定key的<span class="keyword">value</span>值</span><br><span class="line">	<span class="keyword">public</span> V get(K k) &#123;</span><br><span class="line">		<span class="built_in">int</span> <span class="built_in">index</span> = indexFor(k.hashCode(), <span class="built_in">entry</span>.length);</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">entry</span>[<span class="built_in">index</span>]<span class="comment">!=null)&#123;</span></span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">entry</span>[<span class="built_in">index</span>].k.equals(k))&#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="built_in">entry</span>[<span class="built_in">index</span>].v;</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="built_in">Entry</span>&lt;K,V&gt; e = <span class="built_in">entry</span>[<span class="built_in">index</span>].nextEntry;</span><br><span class="line">				<span class="keyword">while</span>(e<span class="comment">!=null)&#123;</span></span><br><span class="line">					<span class="keyword">if</span>(e.k.equals(k))&#123;</span><br><span class="line">						<span class="keyword">return</span> e.v;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> null;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 插入数据</span><br><span class="line">	<span class="keyword">public</span> void put(K k, V v) &#123;</span><br><span class="line">		testSize();</span><br><span class="line">		<span class="built_in">int</span> <span class="built_in">index</span> = indexFor(k.hashCode(), <span class="built_in">entry</span>.length); // 计算这个元素在数组中的位置</span><br><span class="line"></span><br><span class="line">		<span class="built_in">Entry</span>&lt;K, V&gt; e = new <span class="built_in">Entry</span>&lt;K, V&gt;(k, v);</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">entry</span>[<span class="built_in">index</span>] == null) &#123;</span><br><span class="line">			<span class="built_in">entry</span>[<span class="built_in">index</span>] = e;</span><br><span class="line">			bucketSize++;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">Entry</span>&lt;K, V&gt; ee = <span class="built_in">entry</span>[<span class="built_in">index</span>];</span><br><span class="line">			ee.setNextEntry(e);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">size</span>++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 删除数据</span><br><span class="line">	<span class="keyword">public</span> void remove(K k) &#123;</span><br><span class="line">		<span class="built_in">int</span> <span class="built_in">index</span> = indexFor(k.hashCode(), <span class="built_in">entry</span>.length);</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">entry</span>[<span class="built_in">index</span>]<span class="comment">!=null)&#123;</span></span><br><span class="line">			<span class="built_in">Entry</span>&lt;K,V&gt; e = <span class="built_in">entry</span>[<span class="built_in">index</span>];</span><br><span class="line">			<span class="keyword">if</span> (e.nextEntry == null) &#123;</span><br><span class="line">				<span class="keyword">if</span> (e.k.equals(k)) &#123;</span><br><span class="line">					<span class="built_in">entry</span>[<span class="built_in">index</span>] = null;</span><br><span class="line">					bucketSize--;</span><br><span class="line">					<span class="built_in">size</span>--;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (e.k.equals(k)) &#123;</span><br><span class="line">					<span class="built_in">entry</span>[<span class="built_in">index</span>] = e.nextEntry;</span><br><span class="line">					<span class="built_in">size</span>--;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="built_in">Entry</span>&lt;K, V&gt; previous = e;</span><br><span class="line">					<span class="built_in">Entry</span>&lt;K, V&gt; current = e.nextEntry;</span><br><span class="line">					<span class="keyword">while</span> (current <span class="comment">!= null) &#123;</span></span><br><span class="line">						<span class="keyword">if</span> (current.k.equals(k)) &#123;</span><br><span class="line">							previous.nextEntry = current.nextEntry;</span><br><span class="line">							<span class="built_in">size</span>--;</span><br><span class="line">							break;</span><br><span class="line">						&#125;</span><br><span class="line">						previous = current;</span><br><span class="line">						current = current.getNextEntry();</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 判断是否为空</span><br><span class="line">	<span class="keyword">public</span> boolean isEmpty() &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">size</span> == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 获取长度</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">int</span> <span class="built_in">size</span>() &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">size</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 遍历输出</span><br><span class="line">	<span class="keyword">public</span> void diaplayAll() &#123;</span><br><span class="line">		for (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">entry</span>.length; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">entry</span>[i] <span class="comment">!= null) &#123;</span></span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">entry</span>[i].nextEntry <span class="comment">!= null) &#123;</span></span><br><span class="line">					<span class="built_in">Entry</span>&lt;K, V&gt; e = <span class="built_in">entry</span>[i];</span><br><span class="line">					<span class="keyword">while</span> (e <span class="comment">!= null) &#123;</span></span><br><span class="line">						e.display();</span><br><span class="line">						e = e.nextEntry;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="built_in">entry</span>[i].display();</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>TestMyHashMap测试类</li>
+</ul>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> MyHashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class TestMyHashMap &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">		MyHashMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; mhm = <span class="keyword">new</span> MyHashMap&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt;();</span><br><span class="line">		mhm.put(<span class="string">"1"</span>, <span class="string">"111"</span>);</span><br><span class="line">		mhm.put(<span class="string">"2"</span>, <span class="string">"222"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">size</span>());  <span class="comment">//2</span></span><br><span class="line">		mhm.<span class="built_in">clear</span>();</span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.isEmpty());  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mhm.put(<span class="string">"1"</span>, <span class="string">"aaa"</span>);</span><br><span class="line">		mhm.put(<span class="string">"6"</span>, <span class="string">"fff"</span>);</span><br><span class="line">		mhm.put(<span class="string">"2"</span>, <span class="string">"bbb"</span>);</span><br><span class="line">		mhm.put(<span class="string">"5"</span>, <span class="string">"eee"</span>);</span><br><span class="line">		mhm.put(<span class="string">"4"</span>, <span class="string">"ddd"</span>);</span><br><span class="line">		mhm.put(<span class="string">"3"</span>, <span class="string">"ccc"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">size</span>());  <span class="comment">//6</span></span><br><span class="line">		mhm.remove(<span class="string">"2"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">size</span>());  <span class="comment">//5</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsKey(<span class="string">"5"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsKey(<span class="string">"2"</span>));  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsKey(<span class="string">"3"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsValue(<span class="string">"ccc"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.containsValue(<span class="string">"ggg"</span>));  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">get</span>(<span class="string">"6"</span>));  <span class="comment">//fff </span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">get</span>(<span class="string">"5"</span>));  <span class="comment">//eee</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.<span class="built_in">get</span>(<span class="string">"2"</span>));  <span class="comment">//null</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mhm.isEmpty());  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"-------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mhm.diaplayAll();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/04/2015-11-4-HashMap-traverse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -438,171 +614,6 @@
 </li>
 </ul>
 <h3 id="HashMap遍历方法汇总">HashMap遍历方法汇总</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test5;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.<span class="keyword">HashMap</span>;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Map.Entry;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class MapTest &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">		Map&lt;Integer, <span class="keyword">String</span>&gt; m = <span class="keyword">new</span> <span class="keyword">HashMap</span>&lt;Integer, <span class="keyword">String</span>&gt;();</span><br><span class="line">		m.put(<span class="number">1</span>, <span class="string">"aaa"</span>);</span><br><span class="line">		m.put(<span class="number">2</span>, <span class="string">"bbb"</span>);</span><br><span class="line">		m.put(<span class="number">3</span>, <span class="string">"ccc"</span>);</span><br><span class="line">		m.put(<span class="number">4</span>, <span class="string">"ddd"</span>);</span><br><span class="line">		m.put(<span class="number">5</span>, <span class="string">"eee"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法一</span></span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;Integer, <span class="keyword">String</span>&gt; entry : m.entrySet()) &#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + entry.getKey() + <span class="string">" value:"</span></span><br><span class="line">					+ entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法二</span></span><br><span class="line">		Iterator&lt;Entry&lt;Integer, <span class="keyword">String</span>&gt;&gt; it = m.entrySet().iterator();</span><br><span class="line">		<span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">			Map.Entry&lt;Integer, <span class="keyword">String</span>&gt; entry = it.next();</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + entry.getKey() + <span class="string">" value:"</span></span><br><span class="line">					+ entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 遍历方法三</span></span><br><span class="line">		Set&lt;Integer&gt; s = m.keySet();</span><br><span class="line">		Iterator&lt;Integer&gt; it1 = s.iterator();</span><br><span class="line">		<span class="keyword">while</span> (it1.hasNext()) &#123;</span><br><span class="line">			<span class="built_in">int</span> i = it1.next();</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span> + i + <span class="string">" value:"</span></span><br><span class="line">					+ m.<span class="built_in">get</span>(i));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//遍历方法四</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="built_in">int</span> i : m.keySet())&#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"key:"</span>+i+<span class="string">" value:"</span>+m.<span class="built_in">get</span>(i));</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//遍历方法五  遍历所有的值  不能读取key</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">String</span> value:m.values())&#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>(<span class="string">"value:"</span>+value);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/03/2015-11-3-java-ArrayList/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/03/2015-11-3-java-ArrayList/" itemprop="url">
-                  Java ArrayList的实现
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-03T00:00:00+08:00">
-                2015-11-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/11/03/2015-11-3-java-ArrayList/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/03/2015-11-3-java-ArrayList/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>Java中，ArrayList是重要的数据结构；</li>
-<li>ArrayList用数组实现；</li>
-<li>本文实现了一个简单的ArrayList；</li>
-</ul>
-<h3 id="具体实现">具体实现</h3><ul>
-<li>MyArrayList 完成大部分方法实现</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line">package arraylisttest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> MyArrayList&lt;T&gt; &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> final <span class="keyword">int</span> initialSize = <span class="number">16</span>;</span><br><span class="line">	Object[] <span class="built_in">array</span> = <span class="keyword">new</span> Object[initialSize];</span><br><span class="line">	T[] myArray = (T[]) <span class="built_in">array</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> size = <span class="number">0</span>; <span class="comment">// 数组长度</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除全部元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="built_in">array</span> = <span class="keyword">new</span> Object[initialSize];</span><br><span class="line">		myArray = (T[]) <span class="built_in">array</span>;</span><br><span class="line">		size = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 检测数组空间是否充足</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size &gt; (<span class="keyword">int</span>) (myArray.length / <span class="number">2</span>)) &#123;</span><br><span class="line">			Object[] newArray = <span class="keyword">new</span> Object[<span class="built_in">array</span>.length * <span class="number">2</span>];</span><br><span class="line">			T[] newMyArray = (T[]) newArray;</span><br><span class="line">			System.arraycopy(<span class="built_in">array</span>, <span class="number">0</span>, newMyArray, <span class="number">0</span>, myArray.length);</span><br><span class="line">			myArray = newMyArray; <span class="comment">// 新数组的引用赋值给原数组变量名，原数组的堆中的存储空间失去引用，交给垃圾回收处理</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 在末尾增加元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">		ensureCapacity();</span><br><span class="line">		myArray[size] = data;</span><br><span class="line">		size++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 在特定位置增加元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T data, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">		ensureCapacity();</span><br><span class="line">		T temp = null;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt; myArray.length; i++) &#123;</span><br><span class="line">			temp = myArray[i];</span><br><span class="line">			myArray[i] = data;</span><br><span class="line">			data = temp;</span><br><span class="line">		&#125;</span><br><span class="line">		size++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 检测是否存在元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">contains</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (myArray[i].equals(data)) &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取特定元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> myArray[index];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取特定元素的索引值</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (myArray[i].equals(data)) &#123;</span><br><span class="line">				<span class="keyword">return</span> i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//获取元素最后一次出现的索引值</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lastIndexOf</span><span class="params">(T data)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">			<span class="keyword">if</span> (myArray[i].equals(data)) &#123;</span><br><span class="line">				index = i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> index;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 判断是否为空</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 移除特定索引的元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(index&lt;size)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i =index+<span class="number">1</span>; i&lt;size; i++)&#123;</span><br><span class="line">				myArray[i-<span class="number">1</span>]=myArray[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		size--;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//移除特定元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(T data)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">		boolean match = <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;size; i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(myArray[i].equals(data))&#123;</span><br><span class="line">				index = i;</span><br><span class="line">				match = <span class="literal">true</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(!match)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i =index+<span class="number">1</span>; i&lt;size; i++)&#123;</span><br><span class="line">				myArray[i-<span class="number">1</span>]=myArray[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		size--;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//替换对应元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T data, <span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(index&lt;size)&#123;</span><br><span class="line">			myArray[index] = data;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//显示全部元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">displayAll</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;size; i++)&#123;</span><br><span class="line">			System.out.print(myArray[i]+<span class="string">" "</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>MyArrayListTest 测试类</li>
-</ul>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">package arraylisttest;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">class</span> MyArrayListTest &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] <span class="keyword">args</span>) &#123;</span><br><span class="line">		MyArrayList&lt;String&gt; <span class="keyword">list</span> = new MyArrayList&lt;String&gt;();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"111"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"222"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"333"</span>);</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"test"</span>, 1);</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		<span class="keyword">list</span>.<span class="keyword">clear</span>();</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.isEmpty()); <span class="comment">//true</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"aaa"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"bbb"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"aaa"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"ccc"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"eee"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"ddd"</span>);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.contains(<span class="string">"ccc"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.contains(<span class="string">"sss"</span>));  <span class="comment">//false</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.<span class="literal">get</span>(2));  <span class="comment">//aaa</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.indexOf(<span class="string">"aaa"</span>)); <span class="comment">//0</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.lastIndexOf(<span class="string">"aaa"</span>));  <span class="comment">//2</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.indexOf(<span class="string">"ddd"</span>)); <span class="comment">//5</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.isEmpty());  <span class="comment">//false</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		<span class="keyword">list</span>.remove(1);</span><br><span class="line">		<span class="keyword">list</span>.remove(<span class="string">"ddd"</span>);</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">list</span>.<span class="keyword">set</span>(<span class="string">"bbb"</span>,1);</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -772,6 +783,171 @@
 <li>TestMyLinkedList 测试类</li>
 </ul>
 <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> linkedtest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class TestMyLinkedList &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">		MyLinkedList&lt;<span class="keyword">String</span>&gt; mlist = <span class="keyword">new</span> MyLinkedList&lt;<span class="keyword">String</span>&gt;();</span><br><span class="line">		</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"111"</span>);</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"222"</span>);</span><br><span class="line">		mlist.displayAll();</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mlist.<span class="built_in">clear</span>();</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"aaa"</span>);</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"bbb"</span>);</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"ddd"</span>);</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"ccc"</span>);</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"aaa"</span>);</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"eee"</span>);</span><br><span class="line">		mlist.displayAll();</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mlist.<span class="built_in">add</span>(<span class="string">"sss"</span>, <span class="number">3</span>);</span><br><span class="line">		mlist.displayAll();</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mlist.addFirst(<span class="string">"000"</span>);</span><br><span class="line">		mlist.displayAll();</span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.<span class="built_in">size</span>());  <span class="comment">//8</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"------------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.contains(<span class="string">"bbb"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.<span class="built_in">get</span>(<span class="number">0</span>));  <span class="comment">//000</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.<span class="built_in">get</span>(<span class="number">1</span>));  <span class="comment">//aaa</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.<span class="built_in">get</span>(<span class="number">5</span>));  <span class="comment">//ccc</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.<span class="built_in">get</span>(<span class="number">8</span>));  <span class="comment">//null</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.getFirst());  <span class="comment">//000</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.getLast());  <span class="comment">//eee</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.indexOf(<span class="string">"sss"</span>));  <span class="comment">//4</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.indexOf(<span class="string">"aaa"</span>));  <span class="comment">//1</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.lastIndexOf(<span class="string">"aaa"</span>));  <span class="comment">//6</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mlist.remove(<span class="number">2</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.<span class="built_in">size</span>());</span><br><span class="line">		mlist.remove(<span class="string">"ddd"</span>);</span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.<span class="built_in">size</span>());</span><br><span class="line">		mlist.displayAll();</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"------------"</span>);</span><br><span class="line">		</span><br><span class="line">		mlist.removeFirst();</span><br><span class="line">		mlist.removeLast();</span><br><span class="line">		mlist.displayAll();</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"------------"</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.isEmpty());  <span class="comment">//false</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(mlist.<span class="built_in">size</span>());  <span class="comment">//4</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/03/2015-11-3-java-ArrayList/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/03/2015-11-3-java-ArrayList/" itemprop="url">
+                  Java ArrayList的实现
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-03T00:00:00+08:00">
+                2015-11-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/11/03/2015-11-3-java-ArrayList/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/03/2015-11-3-java-ArrayList/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>Java中，ArrayList是重要的数据结构；</li>
+<li>ArrayList用数组实现；</li>
+<li>本文实现了一个简单的ArrayList；</li>
+</ul>
+<h3 id="具体实现">具体实现</h3><ul>
+<li>MyArrayList 完成大部分方法实现</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line">package arraylisttest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> MyArrayList&lt;T&gt; &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> final <span class="keyword">int</span> initialSize = <span class="number">16</span>;</span><br><span class="line">	Object[] <span class="built_in">array</span> = <span class="keyword">new</span> Object[initialSize];</span><br><span class="line">	T[] myArray = (T[]) <span class="built_in">array</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> size = <span class="number">0</span>; <span class="comment">// 数组长度</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 构造器</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除全部元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="built_in">array</span> = <span class="keyword">new</span> Object[initialSize];</span><br><span class="line">		myArray = (T[]) <span class="built_in">array</span>;</span><br><span class="line">		size = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 检测数组空间是否充足</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (size &gt; (<span class="keyword">int</span>) (myArray.length / <span class="number">2</span>)) &#123;</span><br><span class="line">			Object[] newArray = <span class="keyword">new</span> Object[<span class="built_in">array</span>.length * <span class="number">2</span>];</span><br><span class="line">			T[] newMyArray = (T[]) newArray;</span><br><span class="line">			System.arraycopy(<span class="built_in">array</span>, <span class="number">0</span>, newMyArray, <span class="number">0</span>, myArray.length);</span><br><span class="line">			myArray = newMyArray; <span class="comment">// 新数组的引用赋值给原数组变量名，原数组的堆中的存储空间失去引用，交给垃圾回收处理</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 在末尾增加元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">		ensureCapacity();</span><br><span class="line">		myArray[size] = data;</span><br><span class="line">		size++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 在特定位置增加元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T data, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">		ensureCapacity();</span><br><span class="line">		T temp = null;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt; myArray.length; i++) &#123;</span><br><span class="line">			temp = myArray[i];</span><br><span class="line">			myArray[i] = data;</span><br><span class="line">			data = temp;</span><br><span class="line">		&#125;</span><br><span class="line">		size++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 检测是否存在元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">contains</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (myArray[i].equals(data)) &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取特定元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> myArray[index];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取特定元素的索引值</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (myArray[i].equals(data)) &#123;</span><br><span class="line">				<span class="keyword">return</span> i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//获取元素最后一次出现的索引值</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lastIndexOf</span><span class="params">(T data)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">			<span class="keyword">if</span> (myArray[i].equals(data)) &#123;</span><br><span class="line">				index = i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> index;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 判断是否为空</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 移除特定索引的元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(index&lt;size)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i =index+<span class="number">1</span>; i&lt;size; i++)&#123;</span><br><span class="line">				myArray[i-<span class="number">1</span>]=myArray[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		size--;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//移除特定元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(T data)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">		boolean match = <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;size; i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(myArray[i].equals(data))&#123;</span><br><span class="line">				index = i;</span><br><span class="line">				match = <span class="literal">true</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(!match)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i =index+<span class="number">1</span>; i&lt;size; i++)&#123;</span><br><span class="line">				myArray[i-<span class="number">1</span>]=myArray[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		size--;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//替换对应元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T data, <span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(index&lt;size)&#123;</span><br><span class="line">			myArray[index] = data;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//显示全部元素</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">displayAll</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;size; i++)&#123;</span><br><span class="line">			System.out.print(myArray[i]+<span class="string">" "</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>MyArrayListTest 测试类</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">package arraylisttest;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">class</span> MyArrayListTest &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] <span class="keyword">args</span>) &#123;</span><br><span class="line">		MyArrayList&lt;String&gt; <span class="keyword">list</span> = new MyArrayList&lt;String&gt;();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"111"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"222"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"333"</span>);</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"test"</span>, 1);</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		<span class="keyword">list</span>.<span class="keyword">clear</span>();</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.isEmpty()); <span class="comment">//true</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"aaa"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"bbb"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"aaa"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"ccc"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"eee"</span>);</span><br><span class="line">		<span class="keyword">list</span>.add(<span class="string">"ddd"</span>);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.contains(<span class="string">"ccc"</span>));  <span class="comment">//true</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.contains(<span class="string">"sss"</span>));  <span class="comment">//false</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.<span class="literal">get</span>(2));  <span class="comment">//aaa</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.indexOf(<span class="string">"aaa"</span>)); <span class="comment">//0</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.lastIndexOf(<span class="string">"aaa"</span>));  <span class="comment">//2</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.indexOf(<span class="string">"ddd"</span>)); <span class="comment">//5</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">list</span>.isEmpty());  <span class="comment">//false</span></span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		<span class="keyword">list</span>.remove(1);</span><br><span class="line">		<span class="keyword">list</span>.remove(<span class="string">"ddd"</span>);</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">list</span>.<span class="keyword">set</span>(<span class="string">"bbb"</span>,1);</span><br><span class="line">		<span class="keyword">list</span>.displayAll();</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"----------"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1599,6 +1775,172 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/27/js-math/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/27/js-math/" itemprop="url">
+                  javascript 数学函数汇总
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-27T00:00:00+08:00">
+                2015-10-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/10/27/js-math/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/27/js-math/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>javascript中数学函数十分强大，能够帮助我们完成大多数常用的数学计算任务；</li>
+<li>本文汇总了这些常用的数学函数；</li>
+</ul>
+<h3 id="基本计算">基本计算</h3><p><img src="/images/js-math/math1.png" alt="math1"></p>
+<h3 id="科学计算">科学计算</h3><p><img src="/images/js-math/math2.png" alt="math2"></p>
+<h3 id="实用技巧">实用技巧</h3><ul>
+<li>快速得出number数组的最大最小值：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">math</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> a = [<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">6</span>];</span><br><span class="line">	<span class="keyword">var</span> max = <span class="built_in">Math</span>.max.apply(<span class="built_in">Math</span>,a);</span><br><span class="line">	<span class="keyword">var</span> min = <span class="built_in">Math</span>.min.apply(<span class="built_in">Math</span>,a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>获取n-m之间的随机数（包含n和m）</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">math</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> num = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random()*m + n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/27/js-array/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1868,361 +2210,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/27/js-math/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/27/js-math/" itemprop="url">
-                  javascript 数学函数汇总
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-27T00:00:00+08:00">
-                2015-10-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/10/27/js-math/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/27/js-math/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>javascript中数学函数十分强大，能够帮助我们完成大多数常用的数学计算任务；</li>
-<li>本文汇总了这些常用的数学函数；</li>
-</ul>
-<h3 id="基本计算">基本计算</h3><p><img src="/images/js-math/math1.png" alt="math1"></p>
-<h3 id="科学计算">科学计算</h3><p><img src="/images/js-math/math2.png" alt="math2"></p>
-<h3 id="实用技巧">实用技巧</h3><ul>
-<li>快速得出number数组的最大最小值：</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">math</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> a = [<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">6</span>];</span><br><span class="line">	<span class="keyword">var</span> max = <span class="built_in">Math</span>.max.apply(<span class="built_in">Math</span>,a);</span><br><span class="line">	<span class="keyword">var</span> min = <span class="built_in">Math</span>.min.apply(<span class="built_in">Math</span>,a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>获取n-m之间的随机数（包含n和m）</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">math</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> num = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random()*m + n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/26/js-function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/26/js-function/" itemprop="url">
-                  javascript 函数解析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-26T00:00:00+08:00">
-                2015-10-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/10/26/js-function/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/26/js-function/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言">引言</h3><ul>
-<li>javascript中，函数是重要的机制，可以避免页面载入时执行该脚本，这些代码只能被事件激活，或者在函数被调用时才会执行；</li>
-<li>本文总结了javascript函数的定义和调用方法，以供参考；</li>
-</ul>
-<h3 id="javascript函数的定义">javascript函数的定义</h3><ul>
-<li>直接定义函数：</li>
-</ul>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span></span>&#123;   </span><br><span class="line">	alert(<span class="string">"..."</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>通过函数字面量定义</li>
-</ul>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> func = <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span>&#123;  </span><br><span class="line">    alert(x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>通过构造函数定义：</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> func2 = <span class="keyword">new</span> <span class="function"><span class="keyword">Function</span><span class="params">(x,alert<span class="params">(x)</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="javascript函数的调用">javascript函数的调用</h3><ul>
-<li>直接通过函数名调用：</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;   </span><br><span class="line">    alert(<span class="string">"..."</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test();          </span><br><span class="line"><span class="built_in">window</span>.onload = test();</span><br></pre></td></tr></table></figure>
-<ul>
-<li>通过变量调用：</li>
-</ul>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function test()&#123;   </span><br><span class="line">    alert(<span class="string">"..."</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable"><span class="keyword">var</span> fun</span> = test;  </span><br><span class="line"><span class="function"><span class="title">fun</span><span class="params">()</span>;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>下面两种方法可让函数自动执行</li>
-</ul>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">function</span> test<span class="list">()</span><span class="collection">&#123;   </span><br><span class="line">    alert<span class="list">(<span class="string">"..."</span>)</span><span class="comment">;</span></span><br><span class="line">&#125;</span>)</span><span class="list">()</span></span><br><span class="line"></span><br><span class="line"><span class="list">(<span class="keyword">function</span> test<span class="list">()</span><span class="collection">&#123;   </span><br><span class="line">    alert<span class="list">(<span class="string">"..."</span>)</span><span class="comment">;</span></span><br><span class="line">&#125;</span><span class="list">()</span>)</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>下面的代码会发生错误，请注意括号</li>
-</ul>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span></span>&#123;   <span class="comment">//error</span></span><br><span class="line">	alert(<span class="string">"..."</span>);</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2267,7 +2259,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">100</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

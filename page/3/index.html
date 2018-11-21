@@ -320,6 +320,173 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/10/2016-5-10-Leetcode-264/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Chang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eric Chang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/10/2016-5-10-Leetcode-264/" itemprop="url">
+                  对Leetcode 264题的一些思考
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-10T00:00:00+08:00">
+                2016-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/05/10/2016-5-10-Leetcode-264/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/10/2016-5-10-Leetcode-264/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="引言">引言</h3><ul>
+<li>本文展示了我对于leetcode264题的思考，如有不正确之处，请各位大神多多指教。</li>
+</ul>
+<h3 id="题目">题目</h3><ul>
+<li>Write a program to find the <code>n-th</code> ugly number.</li>
+<li>Ugly numbers are positive numbers whose prime factors only include <code>2, 3, 5</code>. For example, <code>1, 2, 3, 4, 5, 6, 8, 9, 10, 12</code> is the sequence of the first 10 ugly numbers.</li>
+<li>Note that <code>1</code> is typically treated as an ugly number.</li>
+</ul>
+<h3 id="解法">解法</h3><ul>
+<li>思路：下一个丑数是上一个丑数乘以一个数（2 3 5），但是，这样算出来的丑数不一定是有序的，比如，上一个丑数是3，3*2=6也是丑数，但是比他小的4 5也是丑数，就被隔过去了。</li>
+<li>所以如果能将上面的思路改写成一个有序的方法就好了。</li>
+<li>在丑数的序列中，总能找到这样一个数，它乘2刚刚大于目前序列中最大的丑数，也总能找到这样一个数，它乘3刚刚大于目前序列中最大的丑数，也总能找到这样一个数，它乘4刚刚大于目前序列中最大的丑数，我们要找的“下一个丑数”即为上面三个数中最大的一个。</li>
+<li>程序中，我们用m2、m3、m5三个下标，表示上述三个数在已经有序的丑数序列中的位置。</li>
+<li>之所以每一循环，三个if均需检测，是因为如果遇到了某个丑数能够有多种方法分解（2 3 5）质因数，那么此时，m2、m3、m5三个下标可能需要同时移动，否则他们乘2（3或5）后就不是刚刚好大于目前序列中最大的丑数了。</li>
+</ul>
+<h3 id="程序">程序</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> Solution &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">nthUglyNumber</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> m2 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> m3 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> m5 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> tmp = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span>[] uglyNumber = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        uglyNumber[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(count&lt;n)&#123;</span><br><span class="line">            tmp = Math.min(uglyNumber[m2]*<span class="number">2</span>,Math.min(uglyNumber[m3]*<span class="number">3</span>,uglyNumber[m5]*<span class="number">5</span>));</span><br><span class="line">            <span class="keyword">if</span>(tmp==uglyNumber[m2]*<span class="number">2</span>) m2++;</span><br><span class="line">            <span class="keyword">if</span>(tmp==uglyNumber[m3]*<span class="number">3</span>) m3++;</span><br><span class="line">            <span class="keyword">if</span>(tmp==uglyNumber[m5]*<span class="number">5</span>) m5++;</span><br><span class="line">            uglyNumber[count] = tmp;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> uglyNumber[n-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/08/2016-5-8-list-transfer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2471,194 +2638,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/09/2016-3-9-sudoku/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Chang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/me.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eric Chang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/09/2016-3-9-sudoku/" itemprop="url">
-                  九宫格样式的实现
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-09T00:00:00+08:00">
-                2016-03-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/03/09/2016-3-9-sudoku/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/09/2016-3-9-sudoku/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="九宫格样式">九宫格样式</h3><ul>
-<li>页面显示九宫格，鼠标放在哪一个格子上，相应的格子的外边框变色；</li>
-<li>具体效果如下：</li>
-</ul>
-<p><img src="/images/sudoku/sudoku.png" alt="suduku"></p>
-<ul>
-<li>下面先贴出代码：</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css"></span><br><span class="line">		<span class="id">#outer</span>&gt;<span class="tag">div</span><span class="rules">&#123;</span><br><span class="line">			<span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100px</span></span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100px</span></span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">float</span>:<span class="value"> left</span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">border</span>:<span class="value"><span class="number">5px</span> solid blue</span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">line-height</span>:<span class="value"> <span class="number">100px</span></span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;</span><br><span class="line">		&#125;</span></span><br><span class="line"></span><br><span class="line">		<span class="id">#outer</span>&gt;<span class="tag">div</span><span class="pseudo">:hover</span><span class="rules">&#123;</span><br><span class="line">			<span class="rule"><span class="attribute">border</span>:<span class="value"><span class="number">5px</span> solid red</span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">z-index</span>:<span class="value"><span class="number">999</span></span></span>;</span><br><span class="line">		&#125;</span></span><br><span class="line"></span><br><span class="line">		<span class="class">.middle</span><span class="rules">&#123;</span><br><span class="line">			<span class="rule"><span class="attribute">margin-left</span>:<span class="value"> -<span class="number">5px</span></span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">margin-right</span>:<span class="value"> -<span class="number">5px</span></span></span>;</span><br><span class="line">		&#125;</span></span><br><span class="line">		<span class="class">.middle1</span><span class="rules">&#123;</span><br><span class="line">			<span class="rule"><span class="attribute">margin-top</span>:<span class="value"> -<span class="number">5px</span></span></span>;</span><br><span class="line">			<span class="rule"><span class="attribute">margin-bottom</span>:<span class="value"> -<span class="number">5px</span></span></span>;</span><br><span class="line">		&#125;</span></span><br><span class="line">		</span><br><span class="line">	</span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"width:320px; height:320px;background-color:#eee"</span> <span class="attribute">id</span>=<span class="value">"outer"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span>&gt;</span>1<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"middle"</span>&gt;</span>2<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span>&gt;</span>3<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"middle1"</span>&gt;</span>4<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"middle middle1"</span>&gt;</span>5<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"middle1"</span>&gt;</span>6<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span>&gt;</span>7<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"middle"</span>&gt;</span>8<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="title">div</span>&gt;</span>9<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="研究">研究</h3><ul>
-<li>div换行问题：<ul>
-<li><code>&lt;div&gt;</code>是块级元素，前后有换行符，如果不加任何设置，九个div将垂直排列在页面；</li>
-<li>解决方法是，先设置好外层、内层div的宽高，然后对内层div加入<code>float: left;</code>属性，使其向左浮动，去掉div前后的换行符，由于外层div有宽度限制，内层div在达到外层div宽度后，会自动换行，实现九宫格基本样式；</li>
-</ul>
-</li>
-<li>文字的居中问题：<ul>
-<li>对于文字的左右居中，不需要使用position属性配合left、margin-left属性来设置，只需用特定作用于文字的属性<code>text-align: center;</code>即可，这个属性不仅可以作用于文字，而且还能作用于很多块级元素，美中不足的是，如果父元素设置了<code>text-align</code>属性，它的所有子元素将继承这个属性的值；</li>
-<li>对于文字的上下居中，本来也想使用position属性配合left、margin-left属性来设置，但看到网上有牛人直接用<code>line-height</code>就实现了，这个属性用于设置行间距，由于九宫格中的文字只有一行，所以将<code>line-height</code>设置为div的高度即可实现垂直居中效果；</li>
-</ul>
-</li>
-<li>负外边距的问题：<ul>
-<li>如果不对<code>.middle</code>和<code>.middle1</code>类设置负外边距，效果是下面的样子，即处于上下中间或左右中间的格子，只对自己的外边框变化了颜色，与我们要求的效果有差距；</li>
-<li>通过将2、5、8格子的左右的margin设置为负值，4、5、6格子的上下的margin设置为负值，可有效避免相邻格子间的外边距叠加的问题；</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/sudoku/sudoku-error1.png" alt="suduku_error1"></p>
-<ul>
-<li>将格子的position属性设置为relative，并且将鼠标悬浮时的格子的z-index属性设置为较大的值，可保证鼠标悬浮时，当前格子总是处于最高的层叠位置，否则会出现下图的情况：</li>
-</ul>
-<p><img src="/images/sudoku/sudoku-error2.png" alt="suduku_error2"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2703,7 +2687,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">100</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
